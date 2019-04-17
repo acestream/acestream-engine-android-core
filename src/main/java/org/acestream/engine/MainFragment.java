@@ -257,7 +257,7 @@ public class MainFragment extends Fragment implements OnClickListener
                 PlaybackManager pm = getPlaybackManager();
                 if (pm != null) {
                     showRemoteControl = pm.shouldShowRemoteControl();
-                    showBonusesMenu(pm.isUserAuthenticated());
+                    showBonusesMenu(!AceStreamEngineBaseApplication.showTvUi() && pm.isUserAuthenticated());
                 }
 
                 MenuItem menuItem = mMenu.findItem(R.id.action_remote_control);
@@ -608,7 +608,7 @@ public class MainFragment extends Fragment implements OnClickListener
             btnEngineSignIn.requestFocus();
         }
 
-        showBonusesMenu(authLevel > 0);
+        showBonusesMenu(!AceStreamEngineBaseApplication.showTvUi() && authLevel > 0);
 
         if(authLevel > 0) {
             if(!TextUtils.isEmpty(engineAuthData.package_name)) {
@@ -993,23 +993,23 @@ public class MainFragment extends Fragment implements OnClickListener
         // Do nothing is activity is stopped
         if(!mIsStarted) return;
 
-        AdManager adManager = getAdManager();
-        if(adManager != null && adManager.isRewardedVideoLoaded()) {
-            Logger.v(TAG, "updateBonusAdsStatus:admob: ads are loaded");
-            mBonusAdsStatus = BonusAdsStatus.AVAILABLE;
-        }
-        else if(Appodeal.isLoaded(Appodeal.REWARDED_VIDEO)) {
-            if (Appodeal.canShow(Appodeal.REWARDED_VIDEO, AdsWaterfall.Placement.MAIN_SCREEN)) {
-                Logger.v(TAG, "updateBonusAdsStatus:appodeal: ads are loaded and can show");
+        if (!AceStreamEngineBaseApplication.showTvUi()) {
+            AdManager adManager = getAdManager();
+            if (adManager != null && adManager.isRewardedVideoLoaded()) {
+                Logger.v(TAG, "updateBonusAdsStatus:admob: ads are loaded");
                 mBonusAdsStatus = BonusAdsStatus.AVAILABLE;
+            } else if (Appodeal.isLoaded(Appodeal.REWARDED_VIDEO)) {
+                if (Appodeal.canShow(Appodeal.REWARDED_VIDEO, AdsWaterfall.Placement.MAIN_SCREEN)) {
+                    Logger.v(TAG, "updateBonusAdsStatus:appodeal: ads are loaded and can show");
+                    mBonusAdsStatus = BonusAdsStatus.AVAILABLE;
+                } else {
+                    Logger.v(TAG, "updateBonusAdsStatus:appodeal: ads are loaded, but cannot show");
+                    mBonusAdsStatus = BonusAdsStatus.NOT_AVAILABLE;
+                }
             } else {
-                Logger.v(TAG, "updateBonusAdsStatus:appodeal: ads are loaded, but cannot show");
+                Logger.v(TAG, "updateBonusAdsStatus: ads are not loaded");
                 mBonusAdsStatus = BonusAdsStatus.NOT_AVAILABLE;
             }
-        }
-        else {
-            Logger.v(TAG, "updateBonusAdsStatus: ads are not loaded");
-            mBonusAdsStatus = BonusAdsStatus.NOT_AVAILABLE;
         }
 
         updateAds();
@@ -1018,7 +1018,10 @@ public class MainFragment extends Fragment implements OnClickListener
     private void updateAds() {
         boolean showButton;
 
-        if(mUserAdsStatus == UserAdsStatus.NOT_LOGGED_IN) {
+        if(AceStreamEngineBaseApplication.showTvUi()) {
+            showButton = false;
+        }
+        else if(mUserAdsStatus == UserAdsStatus.NOT_LOGGED_IN) {
             showButton = true;
         }
         else if(mUserAdsStatus == UserAdsStatus.SKIP_ADS) {
