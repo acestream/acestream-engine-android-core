@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="top"
+    android:paddingTop="27dp"
+    android:paddingBottom="27dp"
+    android:paddingLeft="48dp"
+    android:paddingRight="48dp"
+    >
+
+    <TextView android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/problem_description"
+        />
+    
+    <Spinner
+        android:id="@+id/category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        android:focusable="true"
+    </Spinner>
+    
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:maxLines="8"
+        android:minLines="2"
+        android:layout_marginBottom="32dp"
+        android:focusable="true"
+        />
+        
+    <Button
+        android:id="@+id/button_report"
+        android:layout_width="wrap_content"
+        android:minWidth="@dimen/signin_button_width"
+        android:maxWidth="@dimen/signin_button_width"
+        android:layout_height="@dimen/signin_button_height"
+        android:background="@drawable/button_border"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:focusable="true"
+        android:text="@string/send" />
+
+</LinearLayout>

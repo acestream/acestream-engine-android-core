@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android_auto="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_remote_control"
+        android:orderInCategory="50"
+        android_auto:showAsAction="ifRoom"
+        android:visible="false"
+        android:icon="@drawable/ic_settings_remote_white_24dp"
+        android:title="@string/remote_control"/>
+
+    <item android:id="@+id/action_get_bonuses"
+        android:orderInCategory="75"
+        android_auto:showAsAction="ifRoom"
+        android:visible="false"
+        android:icon="@drawable/ic_bonus_24dp_bluegrey100"
+        android:title="@string/get_bonuses"/>
+
+	<item android:id="@+id/action_prefs"
+        android:orderInCategory="100"
+        android_auto:showAsAction="never"
+        android:title="@string/menu_prefs"/>
+
+    <item android:id="@+id/action_content_id"
+        android:orderInCategory="100"
+        android_auto:showAsAction="never"
+        android:title="@string/menu_content_id"/>
+
+	<item android:id="@+id/action_profile"
+        android:orderInCategory="100"
+        android_auto:showAsAction="never"
+        android:title="@string/menu_profile"/>
+	
+	<item android:id="@+id/action_extensions"
+        android:orderInCategory="100"
+        android_auto:showAsAction="never"
+        android:title="@string/menu_services"/>
+	
+    <item android:id="@+id/action_clear_cache"
+        android:orderInCategory="100"
+        android_auto:showAsAction="never"
+        android:title="@string/menu_clearcache"/>
+
+    <item android:id="@+id/action_report_problem"
+        android:orderInCategory="100"
+        android_auto:showAsAction="never"
+        android:title="@string/report_problem"/>
+
+    <item android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android_auto:showAsAction="never"
+        android:title="@string/about"/>
+    
+    <item android:id="@+id/action_exit"
+        android:orderInCategory="100"
+        android_auto:showAsAction="never"
+        android:title="@string/menu_quit"/>
+</menu>

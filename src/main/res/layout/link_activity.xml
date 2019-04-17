@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
+
+    <TextView android:id="@+id/text_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/to_continue_visit_link"
+        android:visibility="gone" />
+
+    <TextView android:id="@+id/target_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:visibility="gone" />
+
+    <TextView android:id="@+id/text_pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/and_enter_pin"
+        android:visibility="gone"/>
+
+    <TextView android:id="@+id/pin_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:visibility="gone" />
+
+    <ImageView android:id="@+id/qr_code"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone" />
+    
+    <Button
+        android:id="@+id/button_ok"
+        android:layout_width="wrap_content"
+        android:minWidth="@dimen/signin_button_width"
+        android:maxWidth="@dimen/signin_button_width"
+        android:layout_height="@dimen/signin_button_height"
+        android:background="@drawable/button_border"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:text="@string/ok"
+        android:layout_marginBottom="@dimen/button_margin"
+        android:visibility="gone" />
+
+</LinearLayout>

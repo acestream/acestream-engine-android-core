@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:vlc="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="org.acestream.engine.player.Utils" />
+        <variable
+            name="progress"
+            type="androidx.databinding.ObservableInt" />
+        <variable
+            name="currentTime"
+            type="androidx.databinding.ObservableInt" />
+        <variable
+            name="title"
+            type="androidx.databinding.ObservableField&lt;String&gt;" />
+        <variable
+            name="length"
+            type="androidx.databinding.ObservableLong" />
+        <variable
+            name="player"
+            type="org.acestream.engine.player.VideoPlayerActivity" />
+    </data>
+<RelativeLayout
+    android:id="@+id/progress_overlay"
+    android:layout_width="800dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_corners"
+    android:paddingTop="@dimen/overlay_padding_top"
+    android:paddingBottom="@dimen/overlay_padding_bottom"
+    android:visibility="invisible"
+    tools:visibility="visible" >
+
+    <LinearLayout
+        android:id="@+id/title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|start"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:paddingLeft="@dimen/time_margin_sides"
+        android:paddingRight="@dimen/time_margin_sides"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_alignParentTop="true"
+        >
+        <TextView
+            android:id="@+id/player_overlay_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="left|start"
+            android:textColor="@color/white"
+            android:text="@{title}"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progress_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_below="@id/title_container"
+        >
+
+        <LinearLayout
+            android:id="@+id/stream_selector_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/time_margin_sides"
+            android:paddingStart="@dimen/time_margin_sides"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/select_stream_button"
+                android:layout_width="48dp"
+                android:layout_height="24dp"
+                android:background="@drawable/button_border"
+                android:paddingBottom="0dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="0dp"
+                android:textAllCaps="false"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:onClick="@{(v) -> player.selectStream()}"
+                />
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/player_overlay_seekbar"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxHeight="@dimen/seekbar_height"
+            android:minHeight="@dimen/seekbar_height"
+            android:splitTrack="false"
+            android:focusable="true"
+            android:progress="@{progress}"
+            android:progressDrawable="@drawable/seekbar"
+            android:thumb="@drawable/seekbar_thumb_dark"
+            vlc:mediamax="@{length}"/>
+
+        <LinearLayout
+            android:id="@+id/live_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/time_margin_sides"
+            android:paddingEnd="@dimen/time_margin_sides"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/go_live_button"
+                android:layout_width="36dp"
+                android:layout_height="24dp"
+                android:background="@drawable/button_live_blue"
+                android:paddingBottom="0dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
+                android:nextFocusDown="@id/player_overlay_play"
+                android:nextFocusRight="@id/go_live_button"
+                android:text="Live"
+                android:textAllCaps="false"
+                android:textColor="@color/live_status_yes"
+                android:onClick="@{(v) -> player.goLive()}"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/player_overlay_time"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progress_container"
+        android:layout_alignLeft="@+id/progress_container"
+        android:layout_alignStart="@+id/progress_container"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="@dimen/time_margin_sides"
+        android:layout_marginStart="@dimen/time_margin_sides"
+        android:gravity="left|start"
+        android:text="@{Utils.millisToString(currentTime)}"
+        android:textSize="12sp"
+        android:focusable="false" />
+
+    <TextView
+        android:id="@+id/player_overlay_length"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progress_container"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/progress_container"
+        android:layout_marginRight="@dimen/time_margin_sides"
+        android:gravity="right|end"
+        android:text="--:--"
+        vlc:player="@{player}"
+        vlc:length="@{length}"
+        vlc:time="@{progress}"
+        android:textSize="12sp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignEnd="@+id/progress_container"
+        android:layout_marginEnd="@dimen/time_margin_sides"
+        android:focusable="false" />
+
+    <!-- Media control buttons -->
+    <LinearLayout
+        android:id="@+id/player_overlay_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/player_overlay_length"
+        android:layout_marginRight="@dimen/images_margin_sides"
+        android:layout_marginLeft="@dimen/images_margin_sides">
+
+        <ImageView
+            android:id="@+id/lock_overlay_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/rci_lock_open_selector"
+            android:scaleType="center"
+            android:onClick="@{(v) -> player.toggleLock()}"
+            android:focusable="true"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/select_subtitles"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:src="@drawable/rci_subtitles_selector"
+            android:scaleType="center"
+            android:onClick="@{(v) -> player.selectSubtitles()}"
+            android:focusable="true"/>
+
+        <ImageView
+            android:id="@+id/select_audio_track"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:longClickable="true"
+            android:src="@drawable/rci_audiotrack_selector"
+            android:scaleType="center"
+            android:focusable="true"
+            android:onClick="@{player::onAudioOptionsClick}" />
+
+        <ImageView
+            android:id="@+id/playlist_previous"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:longClickable="true"
+            android:scaleType="center"
+            android:onClick="@{(v) -> player.previous()}"
+            android:src="@drawable/rci_skip_previous_selector"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/player_overlay_play"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/rci_pause_selector"
+            android:scaleType="fitCenter"
+            android:focusable="true"
+            android:onClick="@{(v) -> player.doPlayPause()}"
+            android:onLongClick="@{player::toggleLoop}"/>
+
+        <ImageView
+            android:id="@+id/playlist_next"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:longClickable="true"
+            android:src="@drawable/rci_skip_next_selector"
+            android:scaleType="center"
+            android:focusable="true"
+            android:onClick="@{(v) -> player.next()}"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/player_overlay_size"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rci_crop_selector"
+            android:scaleType="center"
+            android:nextFocusRight="@id/player_overlay_size"
+            android:onClick="@{(v) -> player.resizeVideo()}"
+            android:focusable="true" />
+    </LinearLayout>
+</RelativeLayout>
+</layout>

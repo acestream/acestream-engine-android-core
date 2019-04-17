@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="tag_name" />
+    <item type="id" name="tag_type" />
+    <item type="id" name="tag_title" />
+    <item type="id" name="tag_entries" />
+    <item type="id" name="tag_entry_values" />
+    <item type="id" name="tag_entries_list" />
+    <item type="id" name="tag_entry_values_list" />
+    <item type="id" name="tag_content_item" />
+    <item type="id" name="tag_position" />
+    <item type="id" name="tag_resolver_item" />
+    <item type="id" name="tag_test_cast_item" />
+    <item type="id" name="tag_send_to_engine" />
+    <item type="id" name="tag_default_value" />
+    <item type="id" name="tag_url" />
+</resources>

@@ -1,0 +1,9 @@
+# ignore all .aar except libvlc.aar
+*.aar
+!libvlc.aar
+
+# ignore all .jar
+*.jar
+
+# appodeal flag
+.appodeal_installed

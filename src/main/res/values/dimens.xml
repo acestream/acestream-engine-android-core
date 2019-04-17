@@ -1,0 +1,42 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="signin_button_width">300dp</dimen>
+    <dimen name="signin_button_height">36dp</dimen>
+    <dimen name="button_margin">10dp</dimen>
+    <!--<dimen name="rc_button_margin">32dp</dimen>-->
+    <dimen name="rc_button_margin">10dp</dimen>
+
+    <!-- remote control -->
+    <dimen name="rc_container_padding_top">0dp</dimen>
+    <dimen name="rc_container_padding_bottom">0dp</dimen>
+    <dimen name="rc_volume_bar_margin_bottom">18dp</dimen>
+    <dimen name="rc_content_image_margin_bottom">15dp</dimen>
+    <dimen name="rc_title_margin_bottom">8dp</dimen>
+    <dimen name="rc_peers_info_margin_bottom">17dp</dimen>
+    <dimen name="rc_progress_info_margin_bottom">28dp</dimen>
+
+    <!-- rate bar -->
+    <dimen name="rate_button_margin">10dp</dimen>
+    <dimen name="rate_button_no_width">82dp</dimen>
+    <dimen name="rate_button_yes_width">64dp</dimen>
+
+    <dimen name="default_margin">8dp</dimen>
+    <dimen name="half_default_margin">4dp</dimen>
+    <dimen name="overlay_margin">2dp</dimen>
+    <dimen name="player_action_bar_icon_gap">5dp</dimen>
+    <dimen name="seekbar_height">1dip</dimen>
+    <dimen name="time_margin_sides">12dp</dimen>
+    <dimen name="time_margin_with_live_button">60dp</dimen>
+    <dimen name="time_margin_with_stream_selector">72dp</dimen>
+    <dimen name="images_margin_sides">10dp</dimen>
+    <dimen name="overlay_padding_bottom">8dip</dimen>
+    <dimen name="overlay_padding_top">10dip</dimen>
+    <dimen name="dialog_time_picker_width">240dp</dimen>
+
+    <dimen name="circle_button_width">56dp</dimen>
+    <dimen name="circle_button_height">56dp</dimen>
+
+</resources>

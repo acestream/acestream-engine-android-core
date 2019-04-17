@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="get_bonuses">Получить бонусы</string>
+    <string name="bonuses">Бонусы</string>
+    <string name="show_bonus_ads">Показать бонусную рекламу</string>
+    <string name="current_bonuses_amount">Текущее количество бонусов</string>
+    <string name="you_have_earned_bonuses">Вам начислены бонусы</string>
+    <string name="bonus_ads_info">
+        Получите бонусы за просмотр рекламы и используйте их для приобретения премиальных опций
+    </string>
+    <string name="ads_are_requested">Идет запрос рекламы…</string>
+    <string name="ads_are_loaded">Загрузка рекламы…</string>
+    <string name="ads_are_missing_please_wait">Реклама отсутствует. Попробуйте позже.</string>
+    <string name="open_link">Открыть ссылку</string>
+    <string name="set_ads_price">Назначить цену за показ</string>
+    <string name="license">Лицензия</string>
+</resources>

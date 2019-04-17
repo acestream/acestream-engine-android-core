@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+    <TextView
+        android:id="@+id/setting_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center"
+        android:textColor="@color/white"
+        android:paddingRight="20dp"
+        />
+    <CheckBox
+        android:id="@+id/setting_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        />
+</FrameLayout>

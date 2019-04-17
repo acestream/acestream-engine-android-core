@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/player_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:keepScreenOn="true" >
+
+    <!--
+     the double FrameLayout is necessary here to do cropping on the bottom right
+     (which requires the surface not be centered), while keeping the result centered
+    -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false" >
+
+        <FrameLayout
+            android:id="@+id/player_surface_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:foregroundGravity="clip_horizontal|clip_vertical"
+            tools:ignore="true">
+
+            <SurfaceView
+                android:id="@+id/player_surface"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <SurfaceView
+                android:id="@+id/subtitles_surface"
+                android:layout_width="1dp"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/engine_status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@color/black"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+
+        </FrameLayout>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/player_ui_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" >
+
+        <ProgressBar
+            android:id="@+id/player_overlay_loading"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/debug_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:paddingStart="8dp"
+            android:paddingLeft="8dp"
+            android:gravity="start"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.ViewStubCompat
+            android:id="@+id/player_info_stub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:layout="@layout/player_overlay_info"/>
+
+        <androidx.appcompat.widget.ViewStubCompat
+            android:id="@+id/player_hud_stub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout="@layout/ace_player_hud"
+            android:layout_marginBottom="@dimen/overlay_margin"
+            android:layout_marginRight="@dimen/overlay_margin"
+            android:layout_marginLeft="@dimen/overlay_margin"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/video_playlist"
+        android:padding="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/blacktransparent"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:id="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/custom_ads_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/black"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/show_bonus_ads_question"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/button_show_bonus_ads"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yes" />
+
+            <Button
+                android:id="@+id/button_skip_bonus_ads"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no" />
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/checkbox_show_rewarded_ads"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/always_show_rewarded_ads"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/ad_player_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
+        android:background="@color/black"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/ad_player_surface_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:foregroundGravity="clip_horizontal|clip_vertical"
+            tools:ignore="true">
+
+            <SurfaceView
+                android:id="@+id/ad_player_surface"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- Actually it's not used but VLC won't work properly without subtitles surface -->
+            <SurfaceView
+                android:id="@+id/ad_player_subtitles_surface"
+                android:layout_width="1dp"
+                android:layout_height="1dp" />
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/ad_player_ui_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/ad_player_skip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/ad_player_skip_container"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:baselineAligned="false"
+            android:background="@drawable/button_skip_ad"
+            android:focusable="true"
+            android:nextFocusUp="@id/ad_player_button_click"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/skip_ad"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/ad_player_skip_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/skip_ad"
+                android:src="@drawable/rci_skip_next_normal" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/ad_player_button_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/learn_more"
+            android:textColor="@color/white"
+            android:focusable="true"
+            android:clickable="true"
+            android:nextFocusDown="@id/ad_player_skip_container"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/ad_player_time_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:focusable="false"
+            android:text="--:--"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+</RelativeLayout>

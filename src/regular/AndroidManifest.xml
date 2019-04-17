@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.acestream.engine">
+
+    <uses-permission
+        android:name="com.android.providers.tv.permission.READ_EPG_DATA"
+        tools:node="remove"/>
+    <uses-permission
+        android:name="com.android.providers.tv.permission.WRITE_EPG_DATA"
+        tools:node="remove"/>
+
+</manifest>

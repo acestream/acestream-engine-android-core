@@ -1,0 +1,843 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.acestream.engine">
+
+    <uses-sdk
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:overrideLibrary="org.acestream.livechannels, android.support.media.tv, androidx.tvprovider" />
+
+    <!-- normal (automatically granted by system) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- dangerous (must be granted by user) -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.software.leanback"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.location" android:required="false" />
+    <uses-feature android:name="android.hardware.location.network" android:required="false" />
+
+    <!-- remove zxing camera permissions -->
+    <uses-permission android:name="android.permission.CAMERA" tools:node="remove" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"
+        tools:node="remove" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false"
+        tools:node="remove" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false"
+        tools:node="remove" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false"
+        tools:node="remove" />
+    <uses-feature
+        android:name="android.hardware.screen.landscape"
+        android:required="false"
+        tools:node="remove" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false"
+        tools:node="remove" />
+
+    <application
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:hardwareAccelerated="true"
+        android:theme="@style/AppTheme"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_acestream"
+        android:banner="@drawable/android_tv_banner"
+        android:label="@string/app_title"
+        tools:replace="android:label">
+
+        <!-- Arch build flavor (armv7, x86 or universal) -->
+        <meta-data
+            android:name="org.acestream.arch"
+            android:value="${arch}"/>
+
+        <!-- Google Auth web client id -->
+        <meta-data
+            android:name="org.acestream.webClientId"
+            android:value="${webClientId}"/>
+
+        <!-- Ads configuration -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${adMobAppId}"/>
+        <meta-data
+            android:name="org.acestream.adMobAppId"
+            android:value="${adMobAppId}"/>
+        <meta-data
+            android:name="org.acestream.adMobBannerId"
+            android:value="${adMobBannerId}"/>
+        <meta-data
+            android:name="org.acestream.adMobInterstitialPauseId"
+            android:value="${adMobInterstitialPauseId}"/>
+        <meta-data
+            android:name="org.acestream.adMobInterstitialPrerollId"
+            android:value="${adMobInterstitialPrerollId}"/>
+        <meta-data
+            android:name="org.acestream.adMobInterstitialCloseId"
+            android:value="${adMobInterstitialCloseId}"/>
+        <meta-data
+            android:name="org.acestream.adMobRewardedVideoPrerollId"
+            android:value="${adMobRewardedVideoPrerollId}"/>
+        <meta-data
+            android:name="org.acestream.adMobRewardedVideoMainId"
+            android:value="${adMobRewardedVideoMainId}"/>
+        <meta-data
+            android:name="org.acestream.appodealAppKey"
+            android:value="${appodealAppKey}"/>
+
+        <!-- Required by Appodeal for targetSdkVersion >= 28 -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <receiver
+            android:name=".BootReceiver"
+            android:process="${applicationId}">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".maintain.AlarmReceiver"
+            android:process="${applicationId}"/>
+
+        <receiver
+            android:name=".receivers.DispatcherReceiver"
+            android:process="${applicationId}"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.acestream.action.open_topup_activity" />
+                <action android:name="org.acestream.action.open_upgrade_activity" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="androidx.media.session.MediaButtonReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Google Sing-In stuff -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+            android:process="${applicationId}"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <!-- End Google Sing-In stuff -->
+
+        <activity
+            android:name=".MainActivity"
+            android:process="${applicationId}"
+            android:theme="@style/AppTheme"
+            android:label="@string/app_title"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|keyboardHidden|locale"
+            android:taskAffinity="@string/main_affinity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="org.acestream.action.open_profile_activity" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.auth.LoginActivity"
+            android:theme="@style/AppTheme"
+            android:process="${applicationId}"
+            android:taskAffinity="@string/main_affinity">
+            <intent-filter>
+                <action android:name="org.acestream.action.open_login_activity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".notification.WebViewNotificationActivity"
+            android:process="${applicationId}"
+            android:label="@string/app_name"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity="@string/main_affinity"
+            android:theme="@style/MyWebView.NoActionBar"
+            />
+
+        <activity
+            android:name=".notification.NotificationActivity"
+            android:process="${applicationId}"
+            android:theme="@style/AppTheme"
+            android:taskAffinity="@string/main_affinity" />
+        <activity
+            android:name=".ReportProblemActivity"
+            android:process="${applicationId}"
+            android:theme="@style/AppTheme"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity="@string/main_affinity">
+            <intent-filter>
+                <action android:name="org.acestream.action.open_report_problem_activity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ResolverActivity"
+            android:process="${applicationId}"
+            android:label="@string/select_player"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity="@string/main_affinity"
+            android:theme="@android:style/Theme.Holo.Dialog">
+            <intent-filter>
+                <action android:name="org.acestream.action.open_resolver" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PairingDialogActivity"
+            android:process="${applicationId}"
+            android:label="Pairing with device"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity="@string/main_affinity"
+            android:theme="@android:style/Theme.Holo.Dialog"
+            />
+        <activity
+            android:name=".MobileNetworksDialogActivity"
+            android:process="${applicationId}"
+            android:label="Enable mobile networks"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity="@string/main_affinity"
+            android:theme="@android:style/Theme.Holo.Dialog"
+            />
+        <activity
+            android:name=".ContentIdDialogActivity"
+            android:process="${applicationId}"
+            android:label="Enter Content ID"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity="@string/main_affinity"
+            android:theme="@android:style/Theme.Holo.Dialog"
+            />
+        <activity
+            android:name=".RemoteControlActivity"
+            android:process="${applicationId}"
+            android:theme="@style/AppTheme"
+            android:label="Remote Control"
+            android:taskAffinity="@string/main_affinity">
+            <intent-filter>
+                <action android:name="org.acestream.action.open_remote_control_activity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".BonusAdsActivity"
+            android:process="${applicationId}"
+            android:theme="@style/AppTheme"
+            android:label="@string/bonuses"
+            android:configChanges="orientation|screenSize|keyboardHidden|locale"
+            android:taskAffinity="@string/main_affinity">
+            <intent-filter>
+                <action android:name="org.acestream.action.open_bonus_ads_activity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".WebViewActivity"
+            android:process="${applicationId}"
+            android:taskAffinity="@string/main_affinity"
+            android:theme="@style/MyWebView"
+            />
+        <activity
+            android:name=".player.VideoPlayerActivity"
+            android:process="${applicationId}"
+            android:launchMode="singleTask"
+            android:supportsPictureInPicture="true"
+            android:resizeableActivity="true"
+            android:finishOnTaskLaunch="true"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout"
+            android:theme="@style/Theme.Player"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.acestream.action.start_player" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PlayerSettingsActivity"
+            android:process="${applicationId}"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".notification.NotificationReceiverActivity"
+            android:process="${applicationId}"
+            android:theme="@style/AppTheme"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity="@string/main_affinity"/>
+        <activity
+            android:name=".ContentStartActivity"
+            android:process="${applicationId}"
+            android:configChanges="mcc|mnc|locale|orientation|screenLayout|screenSize|layoutDirection|fontScale"
+            android:excludeFromRecents="true"
+            android:taskAffinity="@string/main_affinity"
+            android:icon="@drawable/ic_acestream"
+            android:label="@string/app_title"
+            android:noHistory="false"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog">
+
+            <!-- explicit intent -->
+            <intent-filter>
+                <action android:name="org.acestream.action.start_content" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- acestream:// and magnet:// -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="acestream" />
+                <data android:scheme="magnet" />
+            </intent-filter>
+
+            <!-- application/x-bittorrent mime -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:mimeType="application/x-bittorrent" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="*"
+                    android:mimeType="application/x-bittorrent"
+                    android:scheme="http" />
+                <data
+                    android:host="*"
+                    android:mimeType="application/x-bittorrent"
+                    android:scheme="https" />
+                <data
+                    android:host="*"
+                    android:mimeType="application/x-bittorrent"
+                    android:scheme="ftp" />
+                <data
+                    android:host="*"
+                    android:mimeType="application/x-bittorrent"
+                    android:scheme="content" />
+                <data
+                    android:host="*"
+                    android:mimeType="application/x-bittorrent"
+                    android:scheme="file" />
+            </intent-filter>
+
+            <!-- match by extension without mime -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="*"
+                    android:scheme="http" />
+                <data
+                    android:host="*"
+                    android:scheme="https" />
+                <data
+                    android:host="*"
+                    android:scheme="file" />
+                <data
+                    android:host="*"
+                    android:scheme="content" />
+                <data
+                    android:host="*"
+                    android:scheme="ftp" />
+                <data android:pathPattern=".*\\.acelive" />
+                <data android:pathPattern=".*\\.torrent" />
+                <data android:pathPattern=".*\\.acemedia" />
+                <data android:pathPattern=".*\\.acestream" />
+                <data android:pathPattern=".*\\.ACELIVE" />
+                <data android:pathPattern=".*\\.TORRENT" />
+                <data android:pathPattern=".*\\.ACEMEDIA" />
+                <data android:pathPattern=".*\\.ACESTREAM" />
+            </intent-filter>
+
+            <!-- match by extension with mime -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:scheme="http" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:scheme="https" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:scheme="file" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:scheme="content" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:scheme="ftp" />
+                <data android:pathPattern=".*\\.acelive" />
+                <data android:pathPattern=".*\\.torrent" />
+                <data android:pathPattern=".*\\.acemedia" />
+                <data android:pathPattern=".*\\.acestream" />
+                <data android:pathPattern=".*\\.ACELIVE" />
+                <data android:pathPattern=".*\\.TORRENT" />
+                <data android:pathPattern=".*\\.ACEMEDIA" />
+                <data android:pathPattern=".*\\.ACESTREAM" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".notification.LinkActivity"
+            android:process="${applicationId}"
+            android:theme="@style/AppTheme"
+            android:taskAffinity="@string/main_affinity" />
+        <service
+            android:name=".service.AceStreamEngineService"
+            android:process="${applicationId}"
+            android:exported="true">
+            <intent-filter android:priority="100">
+                <action android:name="org.acestream.engine.service.v0.IAceStreamEngine" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".acecast.server.AceStreamDiscoveryServerService"
+            android:process="${applicationId}"
+            android:exported="false"/>
+
+        <service
+            android:name=".PlaybackManager"
+            android:process="${applicationId}"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.acestream.engine.PlaybackManager" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".maintain.AlarmService"
+            android:process="${applicationId}"
+            android:exported="false"/>
+
+        <service
+            android:name=".player.MediaSessionService"
+            android:process="${applicationId}"
+            android:exported="false"/>
+
+        <provider
+            android:name=".providers.GenericFileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+        <!-- //:appodeal -->
+        <activity android:name="com.appodeal.ads.InterstitialActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity android:name="com.appodeal.ads.VideoActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity android:name="com.appodealx.mraid.MraidActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+        <activity android:name="com.appodeal.ads.VideoPlayerActivity"
+            android:process="${applicationId}"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
+        <receiver android:name="com.appodeal.ads.AppodealPackageAddedReceiver"
+            android:process="${applicationId}"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <activity android:name="com.appodeal.ads.TestActivity"
+            android:process="${applicationId}"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity android:name="com.google.android.gms.ads.AdActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <activity android:name="org.nexage.sourcekit.vast.activity.VASTActivity"
+            android:process="${applicationId}"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+
+        <activity android:name="org.nexage.sourcekit.vast.activity.VPAIDActivity"
+            android:process="${applicationId}"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+
+        <activity android:name="com.appodeal.ads.networks.vpaid.VPAIDActivity"
+            android:process="${applicationId}"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+
+        <!-- Chartboost -->
+        <activity android:name="com.chartboost.sdk.CBImpressionActivity"
+            android:process="${applicationId}"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <!-- End Chartboost -->
+
+        <!-- Applovin -->
+        <activity android:name="com.applovin.adview.AppLovinInterstitialActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name="com.applovin.adview.AppLovinConfirmationActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|screenSize"/>
+        <!-- End Applovin -->
+
+        <!-- Mopub -->
+        <activity android:name="com.mopub.common.privacy.ConsentDialogActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name="com.mopub.common.MoPubBrowser"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name="com.mopub.mobileads.MoPubActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name="com.mopub.mobileads.MraidActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name="com.mopub.mobileads.RewardedMraidActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name="com.mopub.mobileads.MraidVideoPlayerActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <!-- End Mopub -->
+
+        <!-- Amazon_ads -->
+        <activity android:name="com.amazon.device.ads.AdActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <!-- End Amazon_ads -->
+
+        <!-- Facebook -->
+        <!--suppress AndroidDomInspection -->
+        <activity
+            android:name="com.facebook.ads.AudienceNetworkActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false" />
+        <activity
+            android:name="com.facebook.ads.internal.ipc.RemoteANActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:process=":adnw" />
+        <service
+            android:name="com.facebook.ads.internal.ipc.AdsProcessPriorityService"
+            android:process="${applicationId}"
+            android:exported="false" />
+        <service
+            android:name="com.facebook.ads.internal.ipc.AdsMessengerService"
+            android:exported="false"
+            android:process=":adnw" />
+        <!-- End Facebook -->
+
+        <!-- Startapp -->
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.startapp.android.publish.ads.list3d.List3DActivity"
+            android:process="${applicationId}"
+            android:theme="@android:style/Theme" />
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.startapp.android.publish.adsCommon.activities.OverlayActivity"
+            android:process="${applicationId}"
+            android:theme="@android:style/Theme.Translucent"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.startapp.android.publish.adsCommon.activities.FullScreenActivity"
+            android:process="${applicationId}"
+            android:theme="@android:style/Theme"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <!--suppress AndroidDomInspection -->
+        <service
+            android:name="com.startapp.android.publish.common.metaData.PeriodicMetaDataService"
+            android:process="${applicationId}"/>
+        <!--suppress AndroidDomInspection -->
+        <service
+            android:name="com.startapp.android.publish.common.metaData.InfoEventService"
+            android:process="${applicationId}"/>
+        <!--suppress AndroidDomInspection -->
+        <service android:name="com.startapp.android.publish.common.metaData.PeriodicJobService"
+            android:process="${applicationId}"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <receiver
+            android:name="com.startapp.android.publish.common.metaData.BootCompleteListener"
+            android:process="${applicationId}">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <!-- End Startapp -->
+
+        <!-- Yandex-metrica -->
+        <service android:name="com.yandex.metrica.MetricaService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":Metrica"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.yandex.metrica.IMetricaService" />
+                <data android:scheme="metrica" />
+            </intent-filter>
+            <meta-data android:name="metrica:api:level"
+                android:value="70" />
+        </service>
+        <service android:name="com.yandex.metrica.ConfigurationService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":Metrica"
+            tools:ignore="ExportedService">
+            <meta-data android:name="metrica:configuration:api:level" android:value="2" />
+            <intent-filter>
+                <action android:name="com.yandex.metrica.configuration.ACTION_START" />
+            </intent-filter>
+        </service>
+        <service android:name="com.yandex.metrica.ConfigurationJobService"
+            android:enabled="true" android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":Metrica">
+        </service>
+        <receiver android:name="com.yandex.metrica.MetricaEventHandler"
+            android:process="${applicationId}"
+            android:enabled="true"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <!-- End Yandex-metrica -->
+
+        <!-- Yandex-mobileads -->
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.yandex.mobile.ads.AdActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+        <!-- End Yandex-mobileads -->
+
+        <!-- Unity_ads -->
+        <activity android:name="com.unity3d.ads.adunit.AdUnitActivity"
+            android:process="${applicationId}"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:hardwareAccelerated="true" />
+        <activity android:name="com.unity3d.ads.adunit.AdUnitSoftwareActivity"
+            android:process="${applicationId}"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:hardwareAccelerated="false" />
+        <activity android:name="com.unity3d.ads.adunit.AdUnitTransparentActivity"
+            android:process="${applicationId}"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:hardwareAccelerated="true" />
+        <activity android:name="com.unity3d.ads.adunit.AdUnitTransparentSoftwareActivity"
+            android:process="${applicationId}"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:hardwareAccelerated="false" />
+        <activity android:name="com.unity3d.ads2.adunit.AdUnitActivity"
+            android:process="${applicationId}"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:hardwareAccelerated="true" />
+        <activity android:name="com.unity3d.ads2.adunit.AdUnitSoftwareActivity"
+            android:process="${applicationId}"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:hardwareAccelerated="false" />
+        <activity android:name="com.unity3d.ads2.adunit.AdUnitTransparentActivity"
+            android:process="${applicationId}"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:hardwareAccelerated="true" />
+        <activity android:name="com.unity3d.ads2.adunit.AdUnitTransparentSoftwareActivity"
+            android:process="${applicationId}"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:hardwareAccelerated="false" />
+        <!-- End Unity_ads -->
+
+        <!-- Vungle -->
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.vungle.warren.ui.VungleActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity android:name="com.vungle.warren.ui.VungleWebViewActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity android:name="com.vungle.warren.ui.VungleFlexViewActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <!-- End Vungle -->
+
+        <!-- Mobvista -->
+        <activity
+            android:name="com.mintegral.msdk.activity.MTGCommonActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboard|orientation"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.mintegral.msdk.reward.player.MTGRewardVideoActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.mintegral.msdk.interstitial.view.MTGInterstitialActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <service
+            android:name="com.mintegral.msdk.shell.MTGService"
+            android:process="${applicationId}">
+            <intent-filter>
+                <action android:name="com.mintegral.msdk.download.action" />
+            </intent-filter>
+        </service>
+        <!-- End Mobvista -->
+
+        <!-- Tapjoy -->
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.tapjoy.TJAdUnitActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.tapjoy.mraid.view.ActionHandler"
+            android:process="${applicationId}"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.tapjoy.mraid.view.Browser"
+            android:process="${applicationId}"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.tapjoy.TJContentActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:hardwareAccelerated="true" />
+        <!-- End Tapjoy -->
+
+        <!-- Ironsource -->
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.ironsource.sdk.controller.ControllerActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true" />
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.ironsource.sdk.controller.InterstitialActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent" />
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.ironsource.sdk.controller.OpenUrlActivity"
+            android:process="${applicationId}"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent" />
+        <!-- End Ironsource -->
+
+        <!-- Adcolony -->
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.adcolony.sdk.AdColonyInterstitialActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true"/>
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="com.adcolony.sdk.AdColonyAdViewActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true"/>
+        <!-- End Adcolony -->
+
+        <!-- Inmobi -->
+        <activity android:name="com.inmobi.rendering.InMobiAdActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboardHidden|orientation|keyboard|smallestScreenSize|screenSize|screenLayout"
+            android:hardwareAccelerated="true"
+            android:resizeableActivity="false"
+            android:theme="@android:style/Theme.NoTitleBar"
+            tools:ignore="UnusedAttribute"/>
+        <!-- End Inmobi -->
+
+        <!-- Mailru -->
+        <activity android:name="com.my.target.common.MyTargetActivity"
+            android:process="${applicationId}"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+        <!-- End Mailru -->
+
+        <!-- ///appodeal -->
+    </application>
+
+</manifest>

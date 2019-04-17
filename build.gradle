@@ -1,0 +1,196 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    dataBinding {
+        enabled = true
+    }
+    defaultConfig {
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion rootProject.ext.minSdkVersionRegular
+
+        buildConfigField "boolean", "admobUseTestAds", rootProject.ext.admobUseTestAds
+        buildConfigField "boolean", "admobUseTestDevices", rootProject.ext.admobUseTestDevices
+        buildConfigField "boolean", "appodealUseTestAds", rootProject.ext.appodealUseTestAds
+        buildConfigField "boolean", "enableDebugLogging", rootProject.ext.enableDebugLogging
+
+        resValue "string", "build_time", buildTime()
+        resValue "string", "build_host", "buildbot@build-machine"
+        resValue "string", "build_revision", revision()
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        disable 'MissingTranslation'
+        abortOnError false
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+
+    flavorDimensions "target"
+    productFlavors {
+        regular {
+            dimension "target"
+            minSdkVersion rootProject.ext.minSdkVersionRegular
+        }
+        atv {
+            dimension "target"
+            minSdkVersion rootProject.ext.minSdkVersionAtv
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    api project(':connect-sdk')
+    api project(':acestream-engine-client')
+    api project(':acestream-android-sdk')
+    api project(':libvlc')
+    atvImplementation project(':acestream-tif-provider')
+
+    testImplementation 'junit:junit:4.12'
+
+    // Core
+    api 'androidx.multidex:multidex:2.0.1'
+
+    // AppCompat
+    implementation "androidx.recyclerview:recyclerview:$rootProject.ext.androidxVersion"
+    api "com.google.android.material:material:$rootProject.ext.androidxVersion"
+    implementation "androidx.annotation:annotation:$rootProject.ext.androidxAnnotationVersion"
+    implementation "androidx.preference:preference:$rootProject.ext.androidxPreferencesVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
+
+    //TV
+    implementation "androidx.leanback:leanback:$rootProject.ext.androidxVersion"
+    implementation "androidx.leanback:leanback-preference:$rootProject.ext.androidxVersion"
+    implementation "androidx.tvprovider:tvprovider:$rootProject.ext.androidxVersion"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.ext.kotlinx_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.ext.kotlinx_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.ext.archVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.ext.archVersion"
+    implementation "androidx.room:room-runtime:$rootProject.ext.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.ext.roomVersion"
+    implementation "androidx.paging:paging-runtime:$rootProject.ext.pagingVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.ext.kotlinx_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.ext.kotlinx_version"
+
+    // GSON
+    api 'com.google.code.gson:gson:2.8.5'
+
+    // JWT
+    implementation "io.jsonwebtoken:jjwt:0.7.0"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
+
+    // Goole Play services
+    api "com.google.android.gms:play-services-auth:$rootProject.ext.playServicesAuthVersion"
+
+    // IMA SDK
+    api 'com.google.ads.interactivemedia.v3:interactivemedia:3.9.0'
+    api "com.google.android.gms:play-services-ads:$rootProject.ext.playServicesAdsVersion"
+
+    // jmDNS
+    api 'org.jmdns:jmdns:3.5.2'
+
+    // OkHttp
+    api("com.squareup.okhttp3:okhttp:$rootProject.ext.okHttpVersion") {
+        exclude group: 'org.json'
+    }
+    api("com.squareup.okhttp3:okhttp-urlconnection:$rootProject.ext.okHttpVersion") {
+        exclude group: 'org.json'
+    }
+
+    // QR-code
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+
+    // Need version 3.3.0 or earlier to support Android 14+
+    implementation 'com.google.zxing:core:3.3.0'
+
+    // BEGIN Appodeal
+    implementation "androidx.legacy:legacy-support-v4:$rootProject.ext.androidxVersion"
+    implementation 'com.squareup.picasso:picasso:2.5.2' //for Inmobi
+    implementation name: 'adcolony-3.3.4', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-alphab', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-common', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-interstitial', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-interstitialvideo', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-mtgdownloads', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-mtgjscommon', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-mtgnative', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-nativeex', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-playercommon', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-reward', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-videocommon', ext: 'aar'
+    implementation name: 'mobvista-9.0.0-videojs', ext: 'aar'
+    implementation name: 'ogury-3.0.13', ext: 'aar'
+    // END Appodeal
+
+    // Tests
+    androidTestImplementation 'com.google.truth:truth:0.42'
+    // Required -- JUnit 4 framework
+    androidTestImplementation 'junit:junit:4.12'
+    // Optional -- Robolectric environment
+    androidTestImplementation 'androidx.test:core:1.1.0'
+    // Optional -- Mockito framework
+    androidTestImplementation 'org.mockito:mockito-core:1.10.19'
+
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    // Optional -- Hamcrest library
+    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+    // Optional -- UI testing with Espresso
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    // Optional -- UI testing with UI Automator
+    // requires minSdk 18
+    //androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+static def buildTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
+def revision() {
+    def code = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = code
+    }
+    return code.toString()
+}

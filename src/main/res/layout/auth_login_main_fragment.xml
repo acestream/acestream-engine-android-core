@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:animateLayoutChanges="true">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:animateLayoutChanges="true"
+            android:weightSum="1"
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/txt_sign_in_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ececec"
+                    android:textColorLink="#ececec"
+                    android:layout_marginBottom="18dp"
+                    android:textAllCaps="false"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/sign_in_or_register_continue"
+                    />
+
+                <Button
+                    android:id="@+id/btn_engine_sign_in"
+                    android:layout_width="wrap_content"
+                    android:minWidth="@dimen/signin_button_width"
+                    android:maxWidth="@dimen/signin_button_width"
+                    android:layout_height="@dimen/signin_button_height"
+                    android:background="@drawable/button_border"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:layout_marginBottom="@dimen/button_margin"
+                    android:text="@string/action_sign_in_or_register" />
+
+                <FrameLayout android:id="@+id/btn_google_sign_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/signin_button_height"
+                    android:layout_marginBottom="@dimen/button_margin"
+                    android:background="@drawable/white_button"
+                    android:minWidth="@dimen/signin_button_width"
+                    android:maxWidth="@dimen/signin_button_width"
+                    android:focusable="true">
+                    <ImageView
+                        android:layout_gravity="start|center"
+                        android:id="@+id/sign_in_icon"
+                        android:contentDescription="@string/google"
+                        android:layout_width="24.0dip"
+                        android:layout_height="24.0dip"
+                        android:layout_marginLeft="15.0dip"
+                        android:layout_marginStart="15.0dip"
+                        android:src="@drawable/google_logo"
+                        android:scaleType="fitCenter"
+                        android:focusable="false"
+                        />
+                    <TextView
+                        android:textColor="@color/bg_dark"
+                        android:ellipsize="middle"
+                        android:layout_gravity="center"
+                        android:id="@+id/sign_in_text"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/google"
+                        android:lines="1"
+                        android:focusable="false"
+                        />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottom_container"
+                android:background="@color/bg_dark_50"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/license_agreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#a0a0a0"
+                    android:textColorLink="#a0a0a0"
+                    android:gravity="center"
+                    android:text="@string/sign_in_agreement"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:focusable="true"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

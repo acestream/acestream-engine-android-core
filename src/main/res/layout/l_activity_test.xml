@@ -1,0 +1,162 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+        </com.google.android.gms.ads.AdView>
+
+        <Button
+            android:id="@+id/btn_show_notification_ads"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Show ads notification"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_show_notification_adblock"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Show adblock notification"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_show_interstitial_ad"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Show interstitial ad"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_show_rewarded_video"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Show rewarded video"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_start_vod_single"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Start VOD single"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_start_vod_multi"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Start VOD multi"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_start_live"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Start live"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_vod_dfp_vast"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD DFP VAST"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_vod_dfp_non_linear"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD DFP Non-Linear"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_vod_dfp_vmap_preroll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD DFP VMAP Preroll"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_vod_dfp_vmap_preroll_bumper"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD DFP VMAP Preroll+Bumper"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_vod_dfp_vmap_preroll_midroll3_postroll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD DFP VMAP Preroll+Midroll(3)+Postroll"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_vod_dfp_vpaid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD DFP VPAID"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_vod_adwise_vast"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD AdWise VAST"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_vod_test_vpaid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD Test VPAID"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_vod_html5_vpaid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD HTML5 VPAID"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_vod_acestream_vast"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD AceStream VAST"
+            android:layout_marginBottom="4dp"/>
+
+        <Button
+            android:id="@+id/btn_vod_acestream_vast_2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="VOD AceStream VAST 2"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView android:text="Native ad"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+        <FrameLayout
+            android:id="@+id/fl_adplaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- rate bar -->
+    <dimen name="rate_button_margin">16dp</dimen>
+    <dimen name="rate_button_no_width">72dp</dimen>
+    <dimen name="rate_button_yes_width">72dp</dimen>
+</resources>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="back_quit_lock">Press Back again to quit video</string>
+    <string name="locked">Locked</string>
+    <string name="unlocked">Unlocked</string>
+    <string name="unseekable_stream">Unseekable stream</string>
+    <string name="audio_boost_warning" formatted="false">Slide up again to go beyond 100%</string>
+    <string name="volume">Volume</string>
+    <string name="sound_off">Sound Off</string>
+    <string name="sound_on">Sound On</string>
+    <string name="brightness">Brightness</string>
+    <string name="repeat">Repeat none</string>
+    <string name="repeat_single">Repeat single</string>
+    <string name="aout">Audio output</string>
+    <string name="track_audio">Audio track</string>
+    <string name="track_text">Subtitle track</string>
+    <string name="surface_best_fit">Best fit</string>
+    <string name="surface_fit_screen">Fit screen</string>
+    <string name="surface_fill">Fill</string>
+    <string name="surface_original">Center</string>
+    <string name="confirm_resume">Resume from last position?</string>
+    <string name="resume_from_position">Resume from last position</string>
+    <string name="play_from_start">Play from start</string>
+    <string name="loading">Loading</string>
+    <string name="playback_speed">Playback speed</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="failed_to_load_web_page">Failed to load web page</string>
+    <string name="retry">Retry</string>
+    <string name="about">About</string>
+    <string name="preferences">Settings</string>
+    <string name="confirm_resume_title">Ask confirmation to resume</string>
+    <string name="enable_time_stretching_audio">Time-stretching audio</string>
+    <string name="chroma_format">Force video chroma</string>
+    <string name="chroma_format_default" translatable="false">RV16</string>
+    <string name="deblocking">Deblocking filter settings</string>
+    <string name="enable_frame_skip">Enable frame skip</string>
+    <string name="enable_verbose_mode">Verbose</string>
+    <string name="network_caching">Network caching value</string>
+    <string name="audio_digital_title" translatable="false">Digital audio output (passthrough)</string>
+    <string name="opengl_automatic">Automatic</string>
+    <string name="opengl_on">Force On</string>
+    <string name="opengl_off">Force Off</string>
+    <string name="automatic">Automatic</string>
+    <string name="hardware_acceleration_disabled">Disabled</string>
+    <string name="hardware_acceleration_decoding">Decoding acceleration</string>
+    <string name="hardware_acceleration_full">Full acceleration</string>
+    <string name="deblocking_always">Full deblocking (slowest)</string>
+    <string name="deblocking_nonref">Medium deblocking</string>
+    <string name="deblocking_nonkey">Low deblocking</string>
+    <string name="deblocking_all">No deblocking (fastest)</string>
+    <string name="aout_audiotrack" translatable="false">AudioTrack</string>
+    <string name="aout_opensles" translatable="false">OpenSL ES</string>
+    <string name="sleep_in">Sleep in</string>
+    <string name="jump_to_time">Jump to Time</string>
+    <string name="audio_delay">Audio delay</string>
+    <string name="spu_delay">Subtitle delay</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="browsing">Browsing</string>
+    <string name="history">History</string>
+    <string name="plugins">Plugins</string>
+    <string name="directories">Directories</string>
+    <string name="network_browsing">Local Network</string>
+    <string name="open_link">Open link</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="get_bonuses">Get bonuses</string>
+    <string name="bonuses">Bonuses</string>
+    <string name="show_bonus_ads">Show bonus ads</string>
+    <string name="current_bonuses_amount">Current amount of bonuses</string>
+    <string name="you_have_earned_bonuses">You have earned bonuses</string>
+    <string name="bonus_ads_info">
+        Earn bonuses for viewing ads and use them to buy premium options
+    </string>
+    <string name="ads_are_requested">Ads are requested…</string>
+    <string name="ads_are_loaded">Loading ads…</string>
+    <string name="ads_are_missing_please_wait">There is no ads. Try later.</string>
+    <string name="set_ads_price">Set price for watching ads</string>
+    <string name="license">License</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_margin">16dp</dimen>
+
+    <!-- remote control -->
+    <dimen name="rc_container_padding_top">0dp</dimen>
+    <dimen name="rc_container_padding_bottom">0dp</dimen>
+    <dimen name="rc_volume_bar_margin_bottom">23dp</dimen>
+    <dimen name="rc_content_image_margin_bottom">19dp</dimen>
+    <dimen name="rc_title_margin_bottom">10dp</dimen>
+    <dimen name="rc_peers_info_margin_bottom">22dp</dimen>
+    <dimen name="rc_progress_info_margin_bottom">35dp</dimen>
+
+</resources>

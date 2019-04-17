@@ -1,0 +1,6 @@
+<resources>
+    <!-- rate bar -->
+    <dimen name="rate_button_margin">10dp</dimen>
+    <dimen name="rate_button_no_width">64dp</dimen>
+    <dimen name="rate_button_yes_width">64dp</dimen>
+</resources>
