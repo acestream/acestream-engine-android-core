@@ -38,6 +38,7 @@
                     android:layout_marginBottom="18dp"
                     android:textAllCaps="false"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAlignment="center"
                     android:text="@string/sign_in_or_register_continue"
                     />
 
