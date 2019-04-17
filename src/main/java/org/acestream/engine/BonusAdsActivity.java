@@ -114,10 +114,20 @@ public class BonusAdsActivity
         @Override
         public void onRewarded(RewardItem rewardItem) {
             Log.d(TAG, "admob:onRewardedVideoFinished: amount=" + rewardItem.getAmount() + " name=" + rewardItem.getType());
+
+            String source = AceStreamEngineBaseApplication.getBonusSource(rewardItem.getAmount());
             addCoins(
-                AceStreamEngineBaseApplication.getBonusSource(rewardItem.getAmount()),
+                source,
                 rewardItem.getAmount(),
                 false);
+
+            Bundle params = new Bundle();
+            params.putString("source", source);
+            AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                    AdManager.ADS_PROVIDER_ADMOB,
+                    AdsWaterfall.Placement.MAIN_SCREEN,
+                    AdsWaterfall.AdType.REWARDED_VIDEO,
+                    params);
         }
 
         @Override
@@ -168,6 +178,7 @@ public class BonusAdsActivity
     protected void onStart() {
         super.onStart();
         mIsStarted = true;
+        AceStreamEngineBaseApplication.getInstance().logEvent("bonus_ads_open", null);
         AceStreamEngineBaseApplication
                 .getPreferences()
                 .registerOnSharedPreferenceChangeListener(mPrefsListener);
@@ -191,6 +202,7 @@ public class BonusAdsActivity
     protected void onStop() {
         super.onStop();
         mIsStarted = false;
+        AceStreamEngineBaseApplication.getInstance().logEvent("bonus_ads_close", null);
         AceStreamEngineBaseApplication
                 .getPreferences()
                 .unregisterOnSharedPreferenceChangeListener(mPrefsListener);
@@ -295,10 +307,20 @@ public class BonusAdsActivity
             public void onRewardedVideoFinished(double amount, String name) {
                 int realAmount = (int)Math.round(mLastStartedAppodealRewardedVideoCpm * 100);
                 Log.d(TAG, "appodeal:onRewardedVideoFinished: cpm=" + mLastStartedAppodealRewardedVideoCpm + " amount=" + amount + " real=" + realAmount + " name=" + name);
+
+                String source = AceStreamEngineBaseApplication.getBonusSource(realAmount);
                 addCoins(
-                        AceStreamEngineBaseApplication.getBonusSource(realAmount),
+                        source,
                         realAmount,
                         false);
+
+                Bundle params = new Bundle();
+                params.putString("source", source);
+                AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                        AdManager.ADS_PROVIDER_APPODEAL,
+                        AdsWaterfall.Placement.MAIN_SCREEN,
+                        AdsWaterfall.AdType.REWARDED_VIDEO,
+                        params);
             }
 
             @Override

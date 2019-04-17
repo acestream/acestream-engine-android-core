@@ -96,10 +96,7 @@ import com.google.ads.interactivemedia.v3.api.player.ContentProgressProvider;
 import com.google.ads.interactivemedia.v3.api.player.VideoAdPlayer;
 import com.google.ads.interactivemedia.v3.api.player.VideoProgressUpdate;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import org.acestream.engine.AceStreamManagerImpl;
@@ -162,7 +159,6 @@ import java.util.List;
 import java.util.Locale;
 
 import static org.acestream.engine.Constants.ADMOB_TEST_INTERSTITIAL;
-import static org.acestream.engine.Constants.ADMOB_TEST_REWARDED_VIDEO;
 
 public class VideoPlayerActivity extends BaseAppCompatActivity
         implements
@@ -697,6 +693,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             case COMPLETED:
                 String source = mMidrollAdsRequested ? "vast:player:midroll" : "vast:player:preroll";
                 addCoins(source, 0, true);
+                AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                        AdManager.ADS_PROVIDER_VAST,
+                        AdsWaterfall.Placement.PREROLL,
+                        AdsWaterfall.AdType.VAST);
                 break;
             case CONTENT_PAUSE_REQUESTED:
                 // AdEventType.CONTENT_PAUSE_REQUESTED is fired immediately before a video
@@ -5235,6 +5235,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                     notifyAdsLoaded();
                     onContentPauseRequested(AdSource.INTERSTITIAL_AD);
                     addCoins("interstitial:player:preroll", 0, true);
+                    AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                            AdManager.ADS_PROVIDER_ADMOB,
+                            AdsWaterfall.Placement.PREROLL,
+                            AdsWaterfall.AdType.INTERSTITIAL);
                 }
 
                 @Override
@@ -5282,6 +5286,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                             App.v(TAG, "ads:event:interstitial:pause:onAdOpened");
                             onContentPauseRequested(AdSource.INTERSTITIAL_AD);
                             addCoins("interstitial:player:pause", 0, true);
+                            AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                                    AdManager.ADS_PROVIDER_ADMOB,
+                                    AdsWaterfall.Placement.PAUSE,
+                                    AdsWaterfall.AdType.INTERSTITIAL);
                         }
 
                         @Override
@@ -5331,6 +5339,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                             App.v(TAG, "ads:event:interstitial:close:onAdOpened");
                             notifyAdsLoaded();
                             addCoins("interstitial:player:close", 0, true);
+                            AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                                    AdManager.ADS_PROVIDER_ADMOB,
+                                    AdsWaterfall.Placement.CLOSE,
+                                    AdsWaterfall.AdType.INTERSTITIAL);
                         }
 
                         @Override
@@ -5443,7 +5455,17 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             @Override
             public void onRewarded(RewardItem reward) {
                 App.v(TAG, "ads:event:rv:preroll:onRewarded: currency: " + reward.getType() + "  amount: " + reward.getAmount());
-                addCoins("rv:player:preroll", 0, false);
+
+                String source = "rv:player:preroll";
+                addCoins(source, 0, false);
+
+                Bundle params = new Bundle();
+                params.putString("source", source);
+                AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                        AdManager.ADS_PROVIDER_ADMOB,
+                        AdsWaterfall.Placement.PREROLL,
+                        AdsWaterfall.AdType.REWARDED_VIDEO,
+                        params);
             }
 
             @Override
@@ -5587,29 +5609,53 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             return false;
         }
 
-        if(hasNoAds()) {
+        boolean hasNoads = hasNoAds();
+        boolean showAds = true;
+
+        if(hasNoads) {
             if(TextUtils.equals(mAdsWaterfall.getPlacement(), "preroll")) {
                 if(!AceStreamEngineBaseApplication.showAdsOnPreroll()) {
                     App.v(TAG, "requestNextAds: skip preroll");
-                    return false;
+                    showAds = false;
                 }
             }
             else if(TextUtils.equals(mAdsWaterfall.getPlacement(), "pause")
                     || TextUtils.equals(mAdsWaterfall.getPlacement(), "unpause")) {
                 if(!AceStreamEngineBaseApplication.showAdsOnPause()) {
                     App.v(TAG, "requestNextAds: skip pause");
-                    return false;
+                    showAds = false;
                 }
             }
             else if(TextUtils.equals(mAdsWaterfall.getPlacement(), "close")) {
                 if(!AceStreamEngineBaseApplication.showAdsOnClose()) {
                     App.v(TAG, "requestNextAds: skip close");
-                    return false;
+                    showAds = false;
                 }
             }
         }
 
-        return mAdsWaterfall.showNext(skipFrequencyCapping);
+        Bundle params = new Bundle();
+        try {
+            if(!showAds) {
+                params.putBoolean("show_ads", false);
+                params.putString("skip_reason", "noads");
+                return false;
+            }
+
+            params.putBoolean("show_ads", true);
+            return mAdsWaterfall.showNext(skipFrequencyCapping);
+        }
+        catch(AdsWaterfall.FrequencyCapError e) {
+            params.putBoolean("show_ads", false);
+            params.putString("skip_reason", "frequency_cap");
+            return false;
+        }
+        finally {
+            params.putBoolean("has_noads", hasNoads);
+            AceStreamEngineBaseApplication.getInstance().logAdRequest(
+                    mAdsWaterfall.getPlacement(),
+                    params);
+        }
     }
 
     private void notifyAdsLoaded() {
@@ -6279,6 +6325,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 }
                 onContentPauseRequested(AdSource.INTERSTITIAL_AD);
                 addCoins("interstitial:player", 0, true);
+                AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                        AdManager.ADS_PROVIDER_APPODEAL,
+                        placement,
+                        AdsWaterfall.AdType.INTERSTITIAL);
             }
             @Override
             public void onInterstitialClicked() {
@@ -6328,7 +6378,17 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             @Override
             public void onRewardedVideoFinished(double amount, String name) {
                 Log.d(TAG, "appodeal:onRewardedVideoFinished: amount=" + amount + " name=" + name);
-                addCoins("rv:player:preroll", 0, false);
+
+                String source = "rv:player:preroll";
+                addCoins(source, 0, false);
+
+                Bundle params = new Bundle();
+                params.putString("source", source);
+                AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                        AdManager.ADS_PROVIDER_APPODEAL,
+                        AdsWaterfall.Placement.PREROLL,
+                        AdsWaterfall.AdType.REWARDED_VIDEO,
+                        params);
             }
 
             @Override

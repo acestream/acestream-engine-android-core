@@ -22,6 +22,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.acestream.engine.ads.AdManager;
 import org.acestream.engine.aliases.App;
 import org.acestream.engine.controller.Engine;
 import org.acestream.engine.interfaces.ChannelsSyncListener;
@@ -1415,5 +1416,36 @@ public class AceStreamEngineBaseApplication {
 		for(Map.Entry<String, ?> item: getPreferences().getAll().entrySet()) {
 			Log.v(TAG, "dump_prefs: name=" + item.getKey() + " value=" + item.getValue());
 		}
+	}
+
+	// This method can be overridden to use some external analytics
+	public void logEvent(@NonNull String name, @Nullable Bundle params) {
+	}
+
+	// Helpers
+	public void logAdImpression(String provider, String placement, String type) {
+		logAdImpression(provider, placement, type, null);
+	}
+
+	public void logAdImpression(String provider, String placement, String type, @Nullable Bundle params) {
+		if(params == null) {
+			params = new Bundle();
+		}
+		params.putString("provider", provider);
+		params.putString("placement", placement);
+		params.putString("type", type);
+		logEvent(AdManager.AD_EVENT_IMPRESSION, params);
+	}
+
+	public void logAdRequest(String placement) {
+		logAdRequest(placement, null);
+	}
+
+	public void logAdRequest(String placement, @Nullable Bundle params) {
+		if(params == null) {
+			params = new Bundle();
+		}
+		params.putString("placement", placement);
+		logEvent(AdManager.AD_EVENT_REQUEST, params);
 	}
 }

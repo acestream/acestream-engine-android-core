@@ -151,10 +151,20 @@ public class MainFragment extends Fragment implements OnClickListener
         @Override
         public void onRewarded(RewardItem rewardItem) {
             Log.d(TAG, "admob:onRewardedVideoFinished: amount=" + rewardItem.getAmount() + " name=" + rewardItem.getType());
+
+            String source = AceStreamEngineBaseApplication.getBonusSource(rewardItem.getAmount());
             addCoins(
-                    AceStreamEngineBaseApplication.getBonusSource(rewardItem.getAmount()),
+                    source,
                     rewardItem.getAmount(),
                     false);
+
+            Bundle params = new Bundle();
+            params.putString("source", source);
+            AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                    AdManager.ADS_PROVIDER_ADMOB,
+                    AdsWaterfall.Placement.MAIN_SCREEN,
+                    AdsWaterfall.AdType.REWARDED_VIDEO,
+                    params);
         }
 
         @Override
@@ -892,10 +902,20 @@ public class MainFragment extends Fragment implements OnClickListener
             public void onRewardedVideoFinished(double amount, String name) {
                 int realAmount = (int)Math.round(mLastStartedAppodealRewardedVideoCpm * 100);
                 Log.d(TAG, "appodeal:onRewardedVideoFinished: cpm=" + mLastStartedAppodealRewardedVideoCpm + " amount=" + amount + " real=" + realAmount + " name=" + name);
+
+                String source = AceStreamEngineBaseApplication.getBonusSource(realAmount);
                 addCoins(
-                        AceStreamEngineBaseApplication.getBonusSource(realAmount),
+                        source,
                         realAmount,
                         false);
+
+                Bundle params = new Bundle();
+                params.putString("source", source);
+                AceStreamEngineBaseApplication.getInstance().logAdImpression(
+                        AdManager.ADS_PROVIDER_APPODEAL,
+                        AdsWaterfall.Placement.MAIN_SCREEN,
+                        AdsWaterfall.AdType.REWARDED_VIDEO,
+                        params);
             }
 
             @Override

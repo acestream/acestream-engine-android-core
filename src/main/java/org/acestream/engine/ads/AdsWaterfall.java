@@ -26,6 +26,8 @@ public class AdsWaterfall {
         boolean allowCustomAds();
     }
 
+    public static class FrequencyCapError extends Exception {}
+
     enum InventoryStatus {
         IDLE,
         LOADING,
@@ -67,6 +69,12 @@ public class AdsWaterfall {
         public final static String CLOSE = "close";
         // Used for Appodeal placement identification only
         public final static String MAIN_SCREEN = "main_screen";
+    }
+
+    public class AdType {
+        public final static String VAST = "vast";
+        public final static String INTERSTITIAL = "interstitial";
+        public final static String REWARDED_VIDEO = "rewarded_video";
     }
 
     public class Inventory {
@@ -172,11 +180,11 @@ public class AdsWaterfall {
         }
     }
 
-    public boolean showNext() {
+    public boolean showNext() throws FrequencyCapError {
         return showNext(false);
     }
 
-    public boolean showNext(boolean skipFrequencyCapping) {
+    public boolean showNext(boolean skipFrequencyCapping) throws FrequencyCapError {
         List<String> inventoryList = next(skipFrequencyCapping);
         if(inventoryList == null) {
             App.v(TAG, "showNext: no next inventory");
@@ -302,7 +310,7 @@ public class AdsWaterfall {
         mInventoryWait.put(inventory, System.currentTimeMillis());
     }
 
-    public List<String> next(boolean skipFrequencyCapping) {
+    public List<String> next(boolean skipFrequencyCapping) throws FrequencyCapError {
         ++mIndex;
         List<List<String>> list = getList(mPlacement);
 
@@ -316,8 +324,8 @@ public class AdsWaterfall {
             return null;
         }
 
-        if(!skipFrequencyCapping && !checkFrequency(mPlacement)) {
-            return null;
+        if(!skipFrequencyCapping) {
+            checkFrequency(mPlacement);
         }
 
         if(mIndex < 0 || mIndex >= list.size()) {
@@ -417,7 +425,12 @@ public class AdsWaterfall {
             App.v(TAG, "onFailed: remove waiting item: inventory=" + inventory + " done=" + mDone + " waiting=" + mInventoryWait.size());
             if(!mDone && mInventoryWait.size() == 0) {
                 // All waiting items failed.
-                showNext();
+                try {
+                    showNext();
+                }
+                catch(FrequencyCapError e) {
+                    // ignore
+                }
             }
         }
     }
@@ -477,26 +490,22 @@ public class AdsWaterfall {
         return counter.addAndGet(1);
     }
 
-    private boolean checkFrequency(String placement) {
+    private void checkFrequency(String placement) throws FrequencyCapError {
         int minInterval = getMinImpressionInterval(placement);
         if(minInterval == 0) {
-            return true;
+            return;
         }
 
         long now = System.currentTimeMillis();
-        //AtomicInteger counter = getAdFrequencyCounter(placement);
-        //int impressions = counter.get();
         long lastImpressionAt = AceStreamEngineBaseApplication.getLongValue(getAdFrequencyKey(placement, "last_at"), 0);
 
         long age = now - lastImpressionAt;
 
         if(age < minInterval) {
             App.v(TAG, "freq:skip: placement=" + placement + " age=" + age + "/" + minInterval);
-            return false;
+            throw new FrequencyCapError();
         }
 
         App.v(TAG, "freq:allow: placement=" + placement + " age=" + age + "/" + minInterval);
-
-        return true;
     }
 }
