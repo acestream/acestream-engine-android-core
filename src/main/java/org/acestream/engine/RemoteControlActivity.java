@@ -700,8 +700,8 @@ public class RemoteControlActivity
                     mDebugInfoContainer.setVisibility(View.VISIBLE);
                     long usedMemoryPercent = Math.round(100 - status.systemInfo.memoryAvailable / status.systemInfo.memoryTotal * 100);
                     mDebugInfoText.setText(String.format(
-                            "CPU: %d%%    RAM: %d%%    Output: %s",
-                            Math.round(status.systemInfo.cpuUsage * 100),
+                            Locale.getDefault(),
+                            "RAM: %d%%    Output: %s",
                             usedMemoryPercent,
                             status.outputFormat
                             ));

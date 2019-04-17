@@ -4765,8 +4765,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 if(si.memoryTotal != 0)
                     p = Math.round(si.memoryAvailable / si.memoryTotal * 100);
                 sb.append("\nram: ").append(p).append("%");
-
-                sb.append("\ncpu: ").append(Math.round(si.cpuUsage * 100)).append("%");
             }
 
             mDebugInfo.setText(sb.toString());
