@@ -1312,7 +1312,8 @@ public class MainActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         } else if (id == R.id.nav_shutdown_engine) {
-            engineShutdown();
+            VlcBridge.engineShutdown();
+            finish();
         } else if (id == R.id.nav_clear_cache) {
             if(mPlaybackManager != null) {
                 mPlaybackManager.clearCache();
