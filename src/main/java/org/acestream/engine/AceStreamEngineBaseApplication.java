@@ -1166,8 +1166,8 @@ public class AceStreamEngineBaseApplication {
 	}
 
 	public static boolean shouldStartAceCastServerByDefault() {
-			return true;
-		}
+		return showTvUi();
+	}
 
 	public static boolean getGdprConsent() {
 		return getPreferences().getBoolean(Constants.PREF_KEY_GDPR_CONSENT, false);
