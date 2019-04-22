@@ -97,7 +97,9 @@ public class ReportProblemActivity
     public void onClick(View v) {
 		int i = v.getId();
 		if (i == R.id.button_report) {
-			new sendRequesTask().execute(mTextDescription.getText().toString());
+			new SendRequestTask(this, true).execute(
+					mSpinner.getSelectedItem().toString(),
+					mTextDescription.getText().toString());
 			finish();
 
 		} else if (i == R.id.main_layout) {
@@ -189,7 +191,19 @@ public class ReportProblemActivity
 
 	}
 
-	private class sendRequesTask extends AsyncTask<String, Void, Void> {
+	public static void sendReport(String category, String description) {
+		new SendRequestTask(AceStream.context(), false).execute(category, description);
+	}
+
+	private static class SendRequestTask extends AsyncTask<String, Void, Void> {
+
+		private final Context mContext;
+		private final boolean mShowToast;
+
+		public SendRequestTask(Context context, boolean showToast) {
+			mContext = context;
+			mShowToast = showToast;
+		}
 
 		private void addString(GZIPOutputStream out, String data) throws IOException {
 			out.write(data.getBytes());
@@ -260,7 +274,7 @@ public class ReportProblemActivity
 			}
 		}
 
-		private void sendRequest(String description) {
+		private void sendRequest(String category, String description) {
 			File tempFile = null;
 			try {
 				String logsDir = AceStream.externalFilesDir();
@@ -285,14 +299,14 @@ public class ReportProblemActivity
 				GZIPOutputStream out = new GZIPOutputStream(output);
 
 				builder = new StringBuilder();
-				builder.append(mSpinner.getSelectedItem().toString());
+				builder.append(category);
 				builder.append("\n---\n");
 				builder.append(description);
 				builder.append("\n---\n");
 
 				ActivityManager activityManager = null;
 				try {
-					activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+					activityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
 				}
 				catch(Throwable e) {
 					Log.e(TAG, "sendRequest: failed to get activity manager", e);
@@ -380,7 +394,9 @@ public class ReportProblemActivity
 				String response = builder.toString();
 				Log.d(TAG, "response: " + response);
 
-				toast(R.string.report_has_been_sent);
+				if(mShowToast) {
+					toast(R.string.report_has_been_sent);
+				}
 			}
 			catch(Throwable e) {
 				Log.e(TAG, "request failed", e);
@@ -396,18 +412,19 @@ public class ReportProblemActivity
 
 		@Override
 		protected Void doInBackground(String... params) {
-			sendRequest(params[0]);
+			sendRequest(params[0], params[1]);
 			return null;
 		}
 
+		private void toast(final int resId) {
+			AceStreamEngineBaseApplication.runOnMainThread(new Runnable() {
+				@Override
+				public void run() {
+					AceStreamEngineBaseApplication.toast(mContext.getString(resId));
+				}
+			});
+		}
 	}
 
-	private void toast(final int resId) {
-		AceStreamEngineBaseApplication.runOnMainThread(new Runnable() {
-			@Override
-			public void run() {
-				AceStreamEngineBaseApplication.toast(getString(resId));
-			}
-		});
-	}
+
 }

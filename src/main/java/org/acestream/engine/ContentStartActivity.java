@@ -112,7 +112,11 @@ public class ContentStartActivity
             updateInfoText(R.string.starting_player);
 
             if(mSelectedPlayer == null) {
-                throw new IllegalStateException("missing selected player");
+                // temporary workaround
+                Log.e(TAG, "onPlay: missing selected player");
+                ReportProblemActivity.sendReport("other", "missing selected player");
+                finish();
+                return;
             }
 
             if(mSelectedPlayer.type == SelectedPlayer.LOCAL_PLAYER) {
