@@ -19,7 +19,6 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.media.MediaBrowserServiceCompat;
-import androidx.media.session.MediaButtonReceiver;
 
 public class MediaSessionService extends MediaBrowserServiceCompat {
 
@@ -52,9 +51,9 @@ public class MediaSessionService extends MediaBrowserServiceCompat {
         Logger.v(TAG, "onCreate");
 
         final Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        mediaButtonIntent.setClass(this, MediaButtonReceiver.class);
+        mediaButtonIntent.setClass(this, AceStreamMediaButtonReceiver.class);
         final PendingIntent mbrIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, 0);
-        final ComponentName mbrName = new ComponentName(this, MediaButtonReceiver.class);
+        final ComponentName mbrName = new ComponentName(this, AceStreamMediaButtonReceiver.class);
 
         mMediaSession = new MediaSessionCompat(
                 this,
