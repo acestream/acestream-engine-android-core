@@ -104,6 +104,7 @@ public class AceStreamEngineBaseApplication {
 	public static final String DEFAULT_SCRIPT = "main.py";
 	public static final String VERSION_FILE = ".version";
     public static final String TAG = "AS/App";
+    public static final boolean ENABLE_MAINTAIN = false;
 
 	private static Context appContext = null;
 	private static String appPackageName = null;
@@ -681,7 +682,11 @@ public class AceStreamEngineBaseApplication {
 	}
 
 	public static void initMaintainAlarm(long triggerInterval) {
-		Log.v(TAG, "init maintain alarm");
+		Log.v(TAG, "init maintain alarm: enabled=" + ENABLE_MAINTAIN);
+
+		if(!ENABLE_MAINTAIN) {
+			return;
+		}
 
 		AlarmManager alarmMgr = (AlarmManager)appContext.getSystemService(Context.ALARM_SERVICE);
 		if(alarmMgr == null) {
