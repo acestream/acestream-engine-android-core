@@ -809,7 +809,16 @@ public class ContentStartActivity
         bundle.putStringArray("fileNames", fileNames);
         bundle.putIntArray("fileIndexes", fileIndexes);
         dialogFragment.setArguments(bundle);
-        dialogFragment.show(getSupportFragmentManager(), "select_file_dialog");
+
+        try {
+            dialogFragment.show(getSupportFragmentManager(), "select_file_dialog");
+        }
+        catch(IllegalStateException e) {
+            // Catch possible error: "Can not perform this action after onSaveInstanceState"
+            Log.e(TAG, "showFileSelector: error", e);
+            // start first file
+            onFileSelected(mMediaFiles.files[0].index);
+        }
     }
 
     private void showEngineStatus(EngineStatus status) {

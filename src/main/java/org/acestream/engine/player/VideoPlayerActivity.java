@@ -4033,6 +4033,8 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
      * show overlay
      */
     protected void showOverlayTimeout(int timeout) {
+        if(isFinishing())
+            return;
         if(isInPictureInPictureMode())
             return;
         initOverlay();
@@ -4185,7 +4187,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         if (mHudBinding == null)
             return;
         if (isPausable())
-            mHudBinding.playerOverlayPlay.setImageResource(mMediaPlayer.isPlaying()
+            mHudBinding.playerOverlayPlay.setImageResource(mMediaPlayer != null && mMediaPlayer.isPlaying()
                     ? R.drawable.rci_pause_selector
                     : R.drawable.rci_play_selector);
         if(!mIsAdDisplayed) {

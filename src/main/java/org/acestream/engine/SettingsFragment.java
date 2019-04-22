@@ -343,7 +343,7 @@ public class SettingsFragment extends Fragment {
         if(!AceStream.isAndroidTv()) {
             // AceCast server
             item = new HashMap<>();
-            item.put("name", "start_acecast_server");
+            item.put("name", "start_acecast_server_on_boot");
             item.put("type", "bool");
             item.put("sendToEngine", false);
             item.put("defaultValue", AceStreamEngineBaseApplication.shouldStartAceCastServerByDefault());
