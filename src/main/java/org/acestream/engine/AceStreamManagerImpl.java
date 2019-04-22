@@ -2244,6 +2244,11 @@ public abstract class AceStreamManagerImpl
         boolean updatePrefs = true;
         boolean sendToEngine = AceStreamPreferences.ENGINE_PREFS.contains(name);
 
+        // Remove "acestream_" prefix
+        if(name.startsWith("acestream_")) {
+            name = name.substring(10);
+        }
+
         if(AceStreamPreferences.INTEGER_PREFS.contains(name)) {
             value = MiscUtils.getIntegerValue((String)value);
         }
@@ -2283,7 +2288,7 @@ public abstract class AceStreamManagerImpl
                 return;
             }
         }
-        else if("start_acecast_server".equals(name)) {
+        else if("start_acecast_server_on_boot".equals(name)) {
             boolean startServer = (boolean)value;
             if(startServer) {
                 Log.d(TAG, "start acecast server");

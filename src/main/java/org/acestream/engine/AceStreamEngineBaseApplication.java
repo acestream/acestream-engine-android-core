@@ -1015,7 +1015,7 @@ public class AceStreamEngineBaseApplication {
 
 		// app prefs
 		prefs.putBoolean("mobile_network_available", sp.getBoolean("mobile_network_available", false));
-		prefs.putBoolean("start_acecast_server", sp.getBoolean("start_acecast_server", shouldStartAceCastServerByDefault()));
+		prefs.putBoolean("acestream_start_acecast_server_on_boot", sp.getBoolean("start_acecast_server_on_boot", shouldStartAceCastServerByDefault()));
 		prefs.putBoolean("enable_debug_logging", sp.getBoolean("enable_debug_logging", false));
 		prefs.putBoolean(Constants.PREF_KEY_SHOW_DEBUG_INFO, sp.getBoolean(Constants.PREF_KEY_SHOW_DEBUG_INFO, false));
 		prefs.putString(Constants.PREF_KEY_SELECTED_PLAYER, resolverPrefs.getString(Constants.PREF_KEY_SELECTED_PLAYER, null));
@@ -1162,7 +1162,7 @@ public class AceStreamEngineBaseApplication {
 		final boolean shouldStartByDefault = shouldStartAceCastServerByDefault();
 
 		SharedPreferences sp = getPreferences();
-		return sp.getBoolean("start_acecast_server", shouldStartByDefault);
+		return sp.getBoolean("start_acecast_server_on_boot", shouldStartByDefault);
 	}
 
 	public static boolean shouldStartAceCastServerByDefault() {
