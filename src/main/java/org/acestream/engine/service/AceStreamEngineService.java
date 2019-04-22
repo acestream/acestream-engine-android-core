@@ -725,9 +725,6 @@ public class AceStreamEngineService extends ForegroundService
 	public void onCreate() {
 		Log.d(TAG, "#Create Service# (" + BuildConfig.APPLICATION_ID + ")");
 
-		mIsDelegatedService = AceStream.getTargetApp() != null;
-
-        // Call this after setting mIsDelegatedService
         super.onCreate();
 
 		mStopFlag = false;

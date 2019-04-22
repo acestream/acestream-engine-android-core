@@ -8,6 +8,7 @@ import android.util.Log;
 
 import org.acestream.engine.BaseService;
 import org.acestream.engine.R;
+import org.acestream.sdk.AceStream;
 
 public abstract class ForegroundService extends BaseService {
 
@@ -31,6 +32,7 @@ public abstract class ForegroundService extends BaseService {
     @Override
     public void onCreate() {
         super.onCreate();
+        mIsDelegatedService = AceStream.getTargetApp() != null;
         if(!mIsDelegatedService) {
             mNotificationManager = new AceStreamEngineNotificationManager(this);
             try {
