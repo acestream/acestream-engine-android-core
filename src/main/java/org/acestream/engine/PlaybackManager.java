@@ -252,6 +252,12 @@ public class PlaybackManager extends AceStreamManagerImpl {
     }
 
     @Override
+    public void onStopped() {
+        super.onStopped();
+        stopAuthUpdate();
+    }
+
+    @Override
     public void onFailed() {
         super.onFailed();
         stopAuthUpdate();
