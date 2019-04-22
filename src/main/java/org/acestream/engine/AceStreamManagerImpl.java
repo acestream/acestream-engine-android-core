@@ -2342,7 +2342,12 @@ public abstract class AceStreamManagerImpl
                 }
             }
 
-            mEngineApi.setPreference(name, engineValue, null);
+            if(mEngineApi != null) {
+                mEngineApi.setPreference(name, engineValue, null);
+            }
+            else {
+                Log.w(TAG, "setPreference: missing engine api");
+            }
         }
 
         if(updatePrefs) {
