@@ -1261,7 +1261,12 @@ public class AceStreamEngineBaseApplication {
 	}
 
 	public static String getBonusSource(int amount) {
-		return "bonuses:segment:" + AceStreamEngineBaseApplication.getAdSegmentByAmount(amount);
+		int segment = getAdSegmentByAmount(amount);
+		int currentSegment = getAdSegment();
+		if(currentSegment > 0) {
+			segment = Math.min(segment, currentSegment);
+		}
+		return "bonuses:segment:" + segment;
 	}
 
 	public static String getAdSegmentName() {
