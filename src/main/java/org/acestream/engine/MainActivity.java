@@ -183,9 +183,11 @@ public class MainActivity
         String targetApp = AceStream.getTargetApp();
         if (targetApp != null) {
             // redirect intent
-            AceStreamEngineBaseApplication.redirectIntent(this, getIntent(), targetApp);
-            finish();
-            return;
+            Log.v(TAG, "ASDEBUG:onCreate: redirect: targetApp=" + targetApp + " this=" + this);
+            if(AceStreamEngineBaseApplication.redirectIntent(this, getIntent(), targetApp)) {
+                finish();
+                return;
+            }
         }
 
         final Toolbar toolbar;

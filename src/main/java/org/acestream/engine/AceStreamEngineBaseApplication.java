@@ -56,6 +56,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
@@ -582,7 +583,7 @@ public class AceStreamEngineBaseApplication {
 		else threadPool.execute(runnable);
 	}
 
-	public static void redirectIntent(Activity activity, Intent intent, String targetApp) {
+	public static boolean redirectIntent(Activity activity, Intent intent, String targetApp) {
 		if(intent == null) {
 			intent = new Intent();
 			intent.setAction(Intent.ACTION_VIEW);
@@ -596,7 +597,28 @@ public class AceStreamEngineBaseApplication {
 				+ " class=" + className
 				+ " action=" + intent.getAction());
 
-		activity.startActivity(intent);
+		try {
+			activity.startActivity(intent);
+		}
+		catch(ActivityNotFoundException e) {
+			PackageManager pm = context().getPackageManager();
+			Intent query = new Intent();
+			query.setPackage(targetApp);
+			query.setAction(Intent.ACTION_MAIN);
+			query.addCategory(Intent.CATEGORY_LAUNCHER);
+			ResolveInfo ri = pm.resolveActivity(query, 0);
+			if(ri != null) {
+				Log.d(TAG, "redirectIntent: target activity resolved: targetApp=" + targetApp + " name=" + ri.activityInfo.name);
+				intent.setClassName(targetApp, ri.activityInfo.name);
+				activity.startActivity(intent);
+			}
+			else {
+				Log.e(TAG, "Cannot resolve target activity: targetApp=" + targetApp);
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public static String getArch() {
