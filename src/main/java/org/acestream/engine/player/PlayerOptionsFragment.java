@@ -72,9 +72,13 @@ public class PlayerOptionsFragment extends BasePlayerSettingsFragment
         mButtonRepeat.setOnClickListener(this);
         mButtonShuffle.setOnClickListener(this);
 
-        updateControls();
-
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateControls();
     }
 
     private void updateControls() {
