@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PowerManager;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
@@ -24,7 +23,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.Configuration;
 import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
 import android.net.Uri;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -88,8 +86,6 @@ public class ContentStartActivity
     private PowerManager.WakeLock mWakeLock;
     private ExtendedEngineApi mEngineService = null;
 
-	private Handler uiHandler = new Handler();
-
     private PlaybackManager.PlaybackStateCallback mPlaybackStateCallback = new PlaybackManager.PlaybackStateCallback() {
         @Override
         public void onPlaylistUpdated() {
@@ -109,15 +105,22 @@ public class ContentStartActivity
         @Override
         public void onPlay(@Nullable EngineSession session) {
             Log.v(TAG, "pstate:onPlay: session=" + session + " player=" + mSelectedPlayer);
-            updateInfoText(R.string.starting_player);
 
             if(mSelectedPlayer == null) {
-                // temporary workaround
-                Log.e(TAG, "onPlay: missing selected player");
-                ReportProblemActivity.sendReport("other", "missing selected player");
-                finish();
+                // This happens in such case:
+                // - start content A
+                // - init engine session
+                // - close ContentStartActivity before session is started
+                // - session is not stopped because there is not command URL
+                // - start content B
+                // - previous session generates "onPlay" event before player is selected
+                //
+                // Solution is just to ignore this 'onPlay' event.
+                Log.d(TAG, "onPlay: missing selected player");
                 return;
             }
+
+            updateInfoText(R.string.starting_player);
 
             if(mSelectedPlayer.type == SelectedPlayer.LOCAL_PLAYER) {
                 if(session == null) {
