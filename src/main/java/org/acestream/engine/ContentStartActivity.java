@@ -215,14 +215,6 @@ public class ContentStartActivity
 		super.onCreate(savedInstanceState);
 		Logger.v(TAG, "onCreate: this=" + this);
 
-        String targetApp = AceStream.getTargetApp();
-        if(targetApp != null) {
-            // redirect intent
-            AceStreamEngineBaseApplication.redirectIntent(this, getIntent(), targetApp);
-            finish();
-            return;
-        }
-
 		setContentView(R.layout.l_activity_start_content);
 
 		Button btnCancel = findViewById(R.id.cancel_btn_id);
