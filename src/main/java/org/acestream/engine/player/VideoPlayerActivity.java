@@ -2188,7 +2188,13 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 + " tag=" + adTagUrl
         );
 
-        initAdsLoader();
+        try {
+            initAdsLoader();
+        }
+        catch(Throwable e) {
+            Log.e(TAG, "Failed to create ads loader", e);
+            return false;
+        }
 
         AdDisplayContainer adDisplayContainer = mSdkFactory.createAdDisplayContainer();
         adDisplayContainer.setAdContainer(mAdUiContainer);
@@ -4477,6 +4483,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         Log.v(TAG, "receiver: p2p starting");
+        AceStreamEngineBaseApplication.getInstance().logPlayRequest(SelectedPlayer.getOurPlayer());
         updatePausable(false);
         mProgress.set(0);
         mCurrentTime.set(0);
