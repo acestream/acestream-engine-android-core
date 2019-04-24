@@ -4477,6 +4477,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         Log.v(TAG, "receiver: p2p starting");
+        AceStreamEngineBaseApplication.getInstance().logPlayRequest(SelectedPlayer.getOurPlayer());
         updatePausable(false);
         mProgress.set(0);
         mCurrentTime.set(0);

@@ -3720,6 +3720,7 @@ public abstract class AceStreamManagerImpl
         Logger.v(TAG, "startLocalPlayer: player=" + player + " url=" + url);
 
         stopRemotePlayback(true);
+        AceStreamEngineBaseApplication.getInstance().logPlayRequest(player);
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
@@ -3761,7 +3762,7 @@ public abstract class AceStreamManagerImpl
                 + " (this=" + hashCode() + ")");
         mWaitReconnect = false;
 
-        //disableP2PUpload();
+        AceStreamEngineBaseApplication.getInstance().logPlayRequest(SelectedPlayer.CONNECTABLE_DEVICE);
         setLastSelectedDeviceId(device.getId());
         castToDevice(device, null, restartFromLastPosition, startFrom, listener);
     }
@@ -3807,6 +3808,8 @@ public abstract class AceStreamManagerImpl
             }
             return;
         }
+
+        AceStreamEngineBaseApplication.getInstance().logPlayRequest(SelectedPlayer.ACESTREAM_DEVICE);
 
         // check device state after some timeout
         mHandler.postDelayed(new Runnable() {

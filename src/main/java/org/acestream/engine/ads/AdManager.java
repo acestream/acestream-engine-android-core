@@ -31,9 +31,6 @@ import androidx.annotation.NonNull;
 public class AdManager {
     private final static String TAG = "AS/AdManager";
 
-    public final static String AD_EVENT_IMPRESSION = "custom_ad_impression";
-    public final static String AD_EVENT_REQUEST = "custom_ad_request";
-
     public final static String ADS_PROVIDER_ADMOB = "admob";
     public final static String ADS_PROVIDER_APPODEAL = "appodeal";
     public final static String ADS_PROVIDER_VAST = "vast";

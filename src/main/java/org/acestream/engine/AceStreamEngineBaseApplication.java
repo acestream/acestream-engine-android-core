@@ -107,6 +107,10 @@ public class AceStreamEngineBaseApplication {
     public static final String TAG = "AS/App";
     public static final boolean ENABLE_MAINTAIN = false;
 
+	public final static String ANALYTICS_EVENT_PLAY_REQUEST = "as_play_request";
+	public final static String ANALYTICS_EVENT_AD_IMPRESSION = "custom_ad_impression";
+	public final static String ANALYTICS_EVENT_AD_REQUEST = "custom_ad_request";
+
 	private static Context appContext = null;
 	private static String appPackageName = null;
 	private static SharedPreferences sPreferences = null;
@@ -1468,7 +1472,25 @@ public class AceStreamEngineBaseApplication {
 		params.putString("provider", provider);
 		params.putString("placement", placement);
 		params.putString("type", type);
-		logEvent(AdManager.AD_EVENT_IMPRESSION, params);
+		logEvent(ANALYTICS_EVENT_AD_IMPRESSION, params);
+	}
+
+	public void logPlayRequest(SelectedPlayer player) {
+		logPlayRequest(player.getTypeName(), player.id1);
+	}
+
+	public void logPlayRequest(int playerType) {
+		logPlayRequest(SelectedPlayer.getTypeName(playerType), null);
+	}
+
+	public void logPlayRequest(String playerType, String playerId) {
+		Bundle params = new Bundle();
+		params.putString("player", playerType);
+		if(playerId != null && TextUtils.equals(playerType, "external")) {
+			params.putString("id", playerId);
+		}
+
+		logEvent(ANALYTICS_EVENT_PLAY_REQUEST, params);
 	}
 
 	public void logAdRequest(String placement) {
@@ -1480,6 +1502,6 @@ public class AceStreamEngineBaseApplication {
 			params = new Bundle();
 		}
 		params.putString("placement", placement);
-		logEvent(AdManager.AD_EVENT_REQUEST, params);
+		logEvent(ANALYTICS_EVENT_AD_REQUEST, params);
 	}
 }
