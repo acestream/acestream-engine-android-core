@@ -2188,7 +2188,13 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 + " tag=" + adTagUrl
         );
 
-        initAdsLoader();
+        try {
+            initAdsLoader();
+        }
+        catch(Throwable e) {
+            Log.e(TAG, "Failed to create ads loader", e);
+            return false;
+        }
 
         AdDisplayContainer adDisplayContainer = mSdkFactory.createAdDisplayContainer();
         adDisplayContainer.setAdContainer(mAdUiContainer);
