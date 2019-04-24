@@ -93,7 +93,7 @@ public class MainActivity
     private boolean mEngineStarted = false;
     private boolean mEngineWasStarted = false;
     private boolean mEnginePrefsReceived = false;
-    private boolean mGotStorageAccess = false;
+    private int mGotStorageAccess = -1;
 
     private String mEngineVersion = null;
 
@@ -333,10 +333,10 @@ public class MainActivity
         Log.d(TAG, "onResume: engineStarted=" + mEngineStarted);
 
         // Additional check on resume: access can be granted from system settings
-        if(!mGotStorageAccess && PermissionUtils.hasStorageAccess()) {
+        if(mGotStorageAccess != 1 && PermissionUtils.hasStorageAccess()) {
             onStorageAccessGranted();
         }
-        else if(mGotStorageAccess && !PermissionUtils.hasStorageAccess()) {
+        else if(mGotStorageAccess != 0 && !PermissionUtils.hasStorageAccess()) {
             onStorageAccessDenied();
         }
 	}
@@ -351,7 +351,7 @@ public class MainActivity
             PermissionUtils.requestStoragePermissions(this, REQUEST_CODE_PERMISSIONS);
         }
         else {
-            mGotStorageAccess = true;
+            mGotStorageAccess = 1;
             mStartPlaybackManager = true;
         }
 
@@ -420,11 +420,9 @@ public class MainActivity
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 Log.d(TAG, "user granted permission");
-                onStorageAccessGranted();
 
             } else {
                 Log.d(TAG, "user denied permission");
-                onStorageAccessDenied();
             }
         }
     }
@@ -442,7 +440,7 @@ public class MainActivity
     private void onStorageAccessGranted() {
         Log.v(TAG, "onStorageAccessGranted");
         AceStreamEngineBaseApplication.onStorageAccessGranted();
-        mGotStorageAccess = true;
+        mGotStorageAccess = 1;
         mStartPlaybackManager = true;
         mActivityHelper.onStart();
 
@@ -454,7 +452,7 @@ public class MainActivity
 
     private void onStorageAccessDenied() {
         Log.v(TAG, "onStorageAccessDenied");
-        mGotStorageAccess = false;
+        mGotStorageAccess = 0;
         MainFragment f = getMainFragment();
         if(f != null) {
             f.onStorageAccessDenied();
