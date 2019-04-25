@@ -171,6 +171,7 @@ public class AceStreamDiscoveryServerService extends BaseService {
     @Override
     public void onCreate() {
         Log.d(TAG, "onCreate");
+        super.onCreate();
         mServer = new AceStreamDiscoveryServer(this);
     }
 
@@ -206,6 +207,7 @@ public class AceStreamDiscoveryServerService extends BaseService {
     @Override
     public void onDestroy() {
         Log.d(TAG, "onDestroy");
+        super.onDestroy();
         mServer.shutdown();
     }
 
