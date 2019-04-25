@@ -192,7 +192,7 @@ public class ReportProblemActivity
 	}
 
 	public static void sendReport(String category, String description) {
-		new SendRequestTask(AceStream.context(), false).execute(category, description);
+		new SendRequestTask(AceStream.context(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, category, description);
 	}
 
 	private static class SendRequestTask extends AsyncTask<String, Void, Void> {
