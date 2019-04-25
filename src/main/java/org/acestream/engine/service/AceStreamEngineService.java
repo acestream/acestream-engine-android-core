@@ -7,6 +7,7 @@ import java.util.Queue;
 
 import org.acestream.engine.AceStreamEngineBaseApplication;
 import org.acestream.engine.MobileNetworksDialogActivity;
+import org.acestream.engine.ReportProblemActivity;
 import org.acestream.engine.ServiceClient;
 import org.acestream.engine.aliases.App;
 import org.acestream.engine.prefs.NotificationData;
@@ -64,6 +65,9 @@ public class AceStreamEngineService extends ForegroundService
 
 	private static final int CLIENT_TYPE_AIDL = 0;
 	private static final int CLIENT_TYPE_MESSENGER = 1;
+
+	//tmp
+	private static long sLastEngineStopAt = 0;
 
 	private Status mStatus = Status.IDLE;
 	private final Object mStatusLock = new Object();
@@ -910,6 +914,7 @@ public class AceStreamEngineService extends ForegroundService
 			mStopFlag = true;
 			synchronized (mStatusLock) {
 				mStatus = Status.STOPPING;
+				showNotification(R.string.notify_stopping);
 			}
 		}
 		else {
@@ -1083,6 +1088,14 @@ public class AceStreamEngineService extends ForegroundService
 	private void startPythonScript() {
 		Log.d(TAG, "startPythonScript: mNetworkStatus=" + mNetworkStatus);
 
+		//tmp
+		if(sLastEngineStopAt != 0) {
+			long age = System.currentTimeMillis() - sLastEngineStopAt;
+			if(age < 30000) {
+				ReportProblemActivity.sendReport("other", "detected engine restart");
+			}
+		}
+
 		killPythonScriptProcess();
 		new RunPythonScript().execute();
 	}
@@ -1177,6 +1190,8 @@ public class AceStreamEngineService extends ForegroundService
 	}
 	
 	private void killPythonScriptProcess() {
+		//tmp
+		sLastEngineStopAt = System.currentTimeMillis();
 		if(mPyEmbedded != null) {
 			mPyEmbedded.kill();
 		}
@@ -1214,11 +1229,14 @@ public class AceStreamEngineService extends ForegroundService
 		@Override
 		public void run() {
 			Log.d(TAG, "Finishing script task");
+			//tmp
+			sLastEngineStopAt = System.currentTimeMillis();
 			if(mStatus == Status.CONNECTING) {
 				notifyErrorAndStop();
-				}
-			else
+			}
+			else {
 				notifyStopped();
+			}
 		}
 	}
 
