@@ -997,13 +997,12 @@ public class MainActivity
 
         NotificationData notification = AceStreamEngineBaseApplication.getPendingNotification("main");
         if(notification != null) {
-            AceStreamEngineBaseApplication.showNotification(
+            mNotificationShown = AceStreamEngineBaseApplication.showNotification(
                     notification,
                     this,
                     true,
                     REQUEST_CODE_ADS_NOTIFICATION);
-            mNotificationShown = true;
-            return true;
+            return mNotificationShown;
         }
 
         return false;

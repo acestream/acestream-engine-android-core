@@ -237,15 +237,17 @@ public class ContentStartActivity
             Log.e(TAG, "Failed to init wake lock: " + e.getMessage());
         }
 
+        boolean notificationShown = false;
         NotificationData notification = AceStreamEngineBaseApplication.getPendingNotification("content-start");
         if(notification != null) {
-            AceStreamEngineBaseApplication.showNotification(
+            notificationShown = AceStreamEngineBaseApplication.showNotification(
                     notification,
                     this,
                     true,
                     REQUEST_CODE_ADS_NOTIFICATION);
         }
-        else {
+
+        if(!notificationShown) {
             startEngineWhenConnected();
         }
 	}

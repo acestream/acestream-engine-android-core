@@ -64,7 +64,16 @@ public class WebViewActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.l_webview_activity);
+        try {
+            setContentView(R.layout.l_webview_activity);
+        }
+        catch(Throwable e) {
+            AceStream.toast("Failed to open WebView");
+            AceStreamEngineBaseApplication.setWebViewAvailable(false);
+            Log.e(TAG, "Failed to create activity", e);
+            finish();
+            return;
+        }
         mWebView = findViewById(R.id.webview);
         mProgressBar = findViewById(R.id.progress);
         mErrorOverlay = findViewById(R.id.error_overlay);

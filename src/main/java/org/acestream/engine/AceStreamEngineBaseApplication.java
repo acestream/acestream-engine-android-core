@@ -121,6 +121,7 @@ public class AceStreamEngineBaseApplication {
 	private static Resources appResources = null;
 	private static DeviceUuidFactory mUuidFactory = null;
     private static boolean sUseVlcBridge = false;
+    private static boolean sWebViewAvailable = true;
 
 	private static Class<? extends WebViewActivity> sWebViewActivityClass = WebViewActivity.class;
 	private static Class<? extends WebViewActivity> sWebViewNotificationActivityClass = WebViewNotificationActivity.class;
@@ -908,19 +909,24 @@ public class AceStreamEngineBaseApplication {
 		}
 	}
 
-	public static void showNotification(NotificationData notification, Context context) {
-		showNotification(notification, context, false, -1);
+	public static boolean showNotification(NotificationData notification, Context context) {
+		return showNotification(notification, context, false, -1);
 	}
 
-	public static void showNotification(NotificationData notification, Context context, boolean startForResult, int requestCode) {
+	public static boolean showNotification(NotificationData notification, Context context, boolean startForResult, int requestCode) {
+		if(!isWebViewAvailable()) {
+			Log.e(TAG, "showNotification: webview is not available");
+			return false;
+		}
+
 		if(!TextUtils.equals(notification.type, "webview")) {
 			Log.e(TAG, "unsupported notification type: " + notification.type);
-			return;
+			return false;
 		}
 
 		if(TextUtils.isEmpty(notification.url)) {
 			Log.e(TAG, "empty notification url");
-			return;
+			return false;
 		}
 
 		// add "tv" flag when on TV interface
@@ -949,6 +955,8 @@ public class AceStreamEngineBaseApplication {
 		else {
 			context.startActivity(intent);
 		}
+
+		return true;
 	}
 
 	public static void showAdblockNotification(Context context) {
@@ -1503,5 +1511,14 @@ public class AceStreamEngineBaseApplication {
 		}
 		params.putString("placement", placement);
 		logEvent(ANALYTICS_EVENT_AD_REQUEST, params);
+	}
+
+	public static void setWebViewAvailable(boolean available) {
+		Log.d(TAG, "setWebViewAvailable: " + available);
+		sWebViewAvailable = available;
+	}
+
+	public static boolean isWebViewAvailable() {
+		return sWebViewAvailable;
 	}
 }
