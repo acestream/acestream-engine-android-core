@@ -554,19 +554,6 @@ public class MainActivity
         return mEngineVersion;
     }
 
-    public void engineShutdown() {
-        if(mHttpAsyncTaskFactory != null) {
-            // stop engine service when python process is stopped
-            if(mPlaybackManager != null) {
-                mPlaybackManager.setEngineServiceStopFlag();
-            }
-            mHttpAsyncTaskFactory.build(HttpAsyncTask.HTTPTASK_SHUTDOWN, this).execute2("GET");
-        }
-        else {
-            processShutdown(true);
-        }
-    }
-
     public void engineClearCache() {
         if(mHttpAsyncTaskFactory != null) {
             mHttpAsyncTaskFactory.build(HttpAsyncTask.HTTPTASK_CLEAN_CACHE, this).execute2("GET");
@@ -664,9 +651,6 @@ public class MainActivity
                 break;
             case HttpAsyncTask.HTTPTASK_CLEAN_CACHE:
                 break;
-            case HttpAsyncTask.HTTPTASK_SHUTDOWN:
-                processShutdown(false);
-                break;
             default:
                 break;
         }
@@ -745,38 +729,6 @@ public class MainActivity
             e.printStackTrace();
             Toast.makeText(AceStreamEngineBaseApplication.context(), R.string.task_services_fail, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void processShutdown(boolean stopNow) {
-        Log.d(TAG, "shutdown engine: stopNow=" + stopNow);
-
-        if(stopNow && mPlaybackManager != null) {
-            mPlaybackManager.stopEngineService();
-        }
-
-        // close remote control activity
-        Intent intent = new Intent(this, RemoteControlActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("shutdown", true);
-        startActivity(intent);
-
-        if(mPlaybackManager != null) {
-            mPlaybackManager.shutdown();
-        }
-
-        // Add some delay before finish to prevent error:
-        // "Activity org.acestream.engine.MainActivity has leaked window".
-        // This error is probably caused by dropdown menu which needs some time to close.
-
-        // UPD: delayed finish() don't stop activity on some devices
-        finish();
-//        mHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.v(TAG, "delayed finish");
-//                finish();
-//            }
-//        }, 500);
     }
 
     public boolean canUpdateUI() {
@@ -1311,8 +1263,7 @@ public class MainActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         } else if (id == R.id.nav_shutdown_engine) {
-            VlcBridge.engineShutdown();
-            finish();
+            AceStream.stopApp();
         } else if (id == R.id.nav_clear_cache) {
             if(mPlaybackManager != null) {
                 mPlaybackManager.clearCache();

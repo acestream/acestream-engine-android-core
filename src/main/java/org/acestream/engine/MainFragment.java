@@ -302,8 +302,7 @@ public class MainFragment extends Fragment implements OnClickListener
         } else if (i == R.id.action_report_problem) {
             startActivity(new Intent(getActivity(), ReportProblemActivity.class));
         } else if (i == R.id.action_exit) {
-            mainActivity.engineShutdown();
-
+            AceStream.stopApp();
         } else {
             return super.onOptionsItemSelected(item);
         }

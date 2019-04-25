@@ -934,6 +934,12 @@ public abstract class AceStreamManagerImpl
         stopSelf();
     }
 
+    @Override
+    protected void stopApp() {
+        Log.d(TAG, "stopApp");
+        stopEngine();
+    }
+
     public void setCurrentDevice(ConnectableDevice device, boolean disconnectOther) {
         Log.d(TAG, "set current device: current="
                 + (mCurrentDevice == null ? "null" : mCurrentDevice.getName())
