@@ -176,6 +176,9 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private final static int REQUEST_CODE_SELECT_PLAYER = 1;
     public final static String SLEEP_INTENT = Utils.buildPkgString("SleepIntent");
 
+    // 99=sensor
+    private final static int DEFAULT_SCREEN_ORIENTATION = 99;
+
     private static final boolean ADS_ENABLE_PRELOAD = false;
     private static final int AD_PLAYER_PLAYBACK_TIMEOUT = 8000;
 
@@ -784,7 +787,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private boolean mIsBuffering = false;
     private boolean mMediaStartedPlaying = false;
     private ProgressBar mLoading;
-    private int mScreenOrientation;
+    private int mScreenOrientation = DEFAULT_SCREEN_ORIENTATION;
     private int mScreenOrientationLock;
     private int mCurrentScreenOrientation;
     private String KEY_REMAINING_TIME_DISPLAY = "remaining_time_display";
@@ -1509,8 +1512,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 }
             });
         }
-
-        mScreenOrientation = 99;
 
         mSurfaceView = findViewById(R.id.player_surface);
         mSubtitlesSurfaceView = findViewById(R.id.subtitles_surface);
@@ -6871,6 +6872,16 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             mAout = prefs.getString("aout", null);
         }
 
+        String screenOrientation = intent.getStringExtra(AceStreamPlayer.EXTRA_SCREEN_ORIENTATION);
+        if(screenOrientation != null) {
+            try {
+                mScreenOrientation = Integer.valueOf(screenOrientation);
+            }
+            catch(NumberFormatException e) {
+                mScreenOrientation = DEFAULT_SCREEN_ORIENTATION;
+            }
+        }
+
         if(BuildConfig.DEBUG) {
             Log.v(TAG, "parseIntent: mShowTvUi=" + mShowTvUi);
             Log.v(TAG, "parseIntent: mAskResume=" + mAskResume);
@@ -6880,6 +6891,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             Log.v(TAG, "parseIntent: mAout=" + mAout);
             Log.v(TAG, "parseIntent: mBroadcastAction=" + mBroadcastAction);
             Log.v(TAG, "parseIntent: remoteClientId=" + intent.getStringExtra(AceStreamPlayer.EXTRA_REMOTE_CLIENT_ID));
+            Log.v(TAG, "parseIntent: screenOrientation=" + screenOrientation);
         }
     }
 
