@@ -97,8 +97,12 @@ public class ReportProblemActivity
     public void onClick(View v) {
 		int i = v.getId();
 		if (i == R.id.button_report) {
+			String category = "other";
+			if(mSpinner.getSelectedItem() != null) {
+				category = mSpinner.getSelectedItem().toString();
+			}
 			new SendRequestTask(this, true).execute(
-					mSpinner.getSelectedItem().toString(),
+					category,
 					mTextDescription.getText().toString());
 			finish();
 
