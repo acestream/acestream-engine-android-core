@@ -150,7 +150,7 @@ public class LogcatOutputStreamWriter {
 					else if(line.contains("/Ads")) {
 						skipLine = false;
 					}
-					else if(line.contains("/VLC")) {
+					else if(line.contains("/VLC") && !line.contains("I/VLC/medialibrary")) {
 						// log all tags with "VLC/" prefix
 						skipLine = false;
 					}
