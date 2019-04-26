@@ -776,9 +776,7 @@ public class AceStreamEngineBaseApplication {
 	}
 
 	public static boolean isDebugLoggingEnabled() {
-		// remove this later
-		return true;
-		//return getPreferences().getBoolean("enable_debug_logging", BuildConfig.enableDebugLogging);
+		return getPreferences().getBoolean("enable_debug_logging", BuildConfig.enableDebugLogging);
 	}
 
 	public static void setValue(String key, Object value) {
