@@ -2283,7 +2283,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     }
 
     private void initPlaylistUi() {
-        if (mPlaylist.size() > 1) {
+        if (mHudBinding != null && mPlaylist.size() > 1) {
             mHasPlaylist = true;
             mPlaylistAdapter = new PlaylistAdapter(this, mPlaylist, mPlaylistView);
 
