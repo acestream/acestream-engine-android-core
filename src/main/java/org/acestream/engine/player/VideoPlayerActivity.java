@@ -4884,6 +4884,11 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
     @Override
     public void onRestartPlayer() {
+        if(mMediaPlayer == null) {
+            Log.d(TAG, "onRestartPlayer: no media player");
+            return;
+        }
+
         Log.d(TAG, "onRestartPlayer");
         mRestartingPlayer = true;
         mMediaPlayer.stop();
