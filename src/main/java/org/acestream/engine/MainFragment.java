@@ -56,7 +56,7 @@ import java.util.Random;
 
 public class MainFragment extends Fragment implements OnClickListener
 {
-	private final static String TAG = "AceStream/MainFragment";
+	private final static String TAG = "AS/MainFragment";
     private static final int RC_UNINSTALL = 0;
     private static final int UPGRADE_BUTTON_ROTATE_INTERVAL = 10000;
 
@@ -302,6 +302,7 @@ public class MainFragment extends Fragment implements OnClickListener
         } else if (i == R.id.action_report_problem) {
             startActivity(new Intent(getActivity(), ReportProblemActivity.class));
         } else if (i == R.id.action_exit) {
+            Logger.v(TAG, "stopApp");
             AceStream.stopApp();
         } else {
             return super.onOptionsItemSelected(item);

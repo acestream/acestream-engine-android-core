@@ -9,7 +9,6 @@ import org.acestream.engine.AceStreamEngineBaseApplication;
 import org.acestream.engine.MobileNetworksDialogActivity;
 import org.acestream.engine.ReportProblemActivity;
 import org.acestream.engine.ServiceClient;
-import org.acestream.engine.aliases.App;
 import org.acestream.engine.prefs.NotificationData;
 import org.acestream.engine.python.IPyFinishedListener;
 import org.acestream.engine.python.PyEmbedded;
@@ -50,6 +49,7 @@ import org.acestream.engine.BuildConfig;
 import org.acestream.sdk.AceStream;
 import org.acestream.engine.acecast.server.AceStreamDiscoveryServerService;
 import org.acestream.sdk.utils.HttpAsyncTask;
+import org.acestream.sdk.utils.Logger;
 import org.acestream.sdk.utils.MiscUtils;
 
 public class AceStreamEngineService extends ForegroundService 
@@ -277,7 +277,7 @@ public class AceStreamEngineService extends ForegroundService
     		final int clientType,
     		final String clientApp,
 			final org.acestream.engine.service.v0.IStartEngineResponse callback) {
-        App.vv(TAG, "clientStartEngine: post to main thread: clientType=" + clientType  + " clientApp=" + clientApp + " callback=" + callback);
+        Logger.v(TAG, "clientStartEngine: post to main thread: clientType=" + clientType  + " clientApp=" + clientApp + " callback=" + callback);
 
         // Get a handler that can be used to post to the main thread
         Handler mainHandler = new Handler(getMainLooper());
@@ -285,7 +285,7 @@ public class AceStreamEngineService extends ForegroundService
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
-                App.vv(TAG, "clientStartEngine: delegate=" + mIsDelegatedService + " service=" + mDelegateService);
+                Logger.vv(TAG, "clientStartEngine: delegate=" + mIsDelegatedService + " service=" + mDelegateService);
 
                 if(mIsDelegatedService) {
                     //TODO: deal with callback
@@ -330,7 +330,7 @@ public class AceStreamEngineService extends ForegroundService
 						Log.d(TAG, "aidl:startEngine: no storage access");
 						throw new RemoteException("No storage access");
 					}
-					App.vv(TAG, "aidl:startEngine");
+					Logger.vv(TAG, "aidl:startEngine");
 					clientStartEngine(CLIENT_TYPE_AIDL, getCallingApp(), null);
 				}
 
@@ -340,7 +340,7 @@ public class AceStreamEngineService extends ForegroundService
 						Log.d(TAG, "aidl:startEngineWithCallback: no storage access");
 						throw new RemoteException("No storage access");
 					}
-					App.vv(TAG, "aidl:startEngineWithCallback: callback=" + callback);
+					Logger.vv(TAG, "aidl:startEngineWithCallback: callback=" + callback);
 					clientStartEngine(CLIENT_TYPE_AIDL, getCallingApp(), callback);
 				}
 
@@ -843,6 +843,9 @@ public class AceStreamEngineService extends ForegroundService
 			return;
 		}
 
+		//tmp
+		sLastEngineStopAt = System.currentTimeMillis();
+
 		killPythonScriptProcess();
 
 		unregisterReceiver(mNetworkStatusListener);
@@ -979,19 +982,19 @@ public class AceStreamEngineService extends ForegroundService
 
 			try {
 				if (mStatus == Status.IDLE) {
-					App.v(TAG, "Client command to Start: IDLE -> start service");
+					Logger.v(TAG, "Client command to Start: IDLE -> start service");
 					Intent serviceIntent = ServiceClient.getServiceIntent(this);
 					serviceIntent.putExtra(EXTRA_CLIENT_TYPE, clientType);
 					serviceIntent.putExtra(EXTRA_CALLING_APP, clientApp);
 					startService(serviceIntent);
 				} else if (mStatus == Status.FINISHED) {
-					App.v(TAG, "Client command to Start: FINISHED -> start service");
+					Logger.v(TAG, "Client command to Start: FINISHED -> start service");
 					Intent serviceIntent = ServiceClient.getServiceIntent(this);
 					serviceIntent.putExtra(EXTRA_CLIENT_TYPE, clientType);
 					serviceIntent.putExtra(EXTRA_CALLING_APP, clientApp);
 					startService(serviceIntent);
 				} else if (mStatus == Status.RUNNING) {
-					App.vv(TAG, "Client command to Start: RUNNING -> notify ready: callback=" + callback);
+					Logger.vv(TAG, "Client command to Start: RUNNING -> notify ready: callback=" + callback);
 					if (callback != null) {
 						try {
 							callback.onResult(true);
@@ -1002,10 +1005,10 @@ public class AceStreamEngineService extends ForegroundService
 						notifyReady(false);
 					}
 				} else if (mStatus == Status.STOPPING) {
-					App.v(TAG, "Client command to Start: STOPPING -> restart after stop");
+					Logger.v(TAG, "Client command to Start: STOPPING -> restart after stop");
 					mRestartAfterStopFlag = true;
 				} else {
-					App.v(TAG, "Client command to Start: " + String.valueOf(mStatus) + " -> skip");
+					Logger.v(TAG, "Client command to Start: " + String.valueOf(mStatus) + " -> skip");
 				}
 			}
 			catch(ServiceClient.ServiceMissingException e) {
@@ -1016,7 +1019,7 @@ public class AceStreamEngineService extends ForegroundService
 	
 	private void executeOnConnectivityChanged() {
 		synchronized(mStatusLock) {
-			App.v(TAG, "executeOnConnectivityChanged: status=" + mStatus + " net=" + mNetworkStatus);
+			Logger.v(TAG, "executeOnConnectivityChanged: status=" + mStatus + " net=" + mNetworkStatus);
 			if(mStatus == Status.RUNNING) {
 				updateEngineOnlineStatus();
 			}
@@ -1091,8 +1094,14 @@ public class AceStreamEngineService extends ForegroundService
 		//tmp
 		if(sLastEngineStopAt != 0) {
 			long age = System.currentTimeMillis() - sLastEngineStopAt;
-			if(age < 30000) {
-				ReportProblemActivity.sendReport("other", "detected engine restart");
+			if (age < 20000) {
+				Logger.v(TAG, "detected engine restart: age=" + age);
+				if(AceStreamEngineBaseApplication.getPreferences().getBoolean("send_debug_reports", true)) {
+					ReportProblemActivity.sendReport("other", "detected engine restart");
+				}
+				else {
+					Logger.v(TAG, "startPythonScript: skip debug report");
+				}
 			}
 		}
 
@@ -1190,8 +1199,6 @@ public class AceStreamEngineService extends ForegroundService
 	}
 	
 	private void killPythonScriptProcess() {
-		//tmp
-		sLastEngineStopAt = System.currentTimeMillis();
 		if(mPyEmbedded != null) {
 			mPyEmbedded.kill();
 		}

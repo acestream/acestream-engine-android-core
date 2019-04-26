@@ -52,6 +52,7 @@ import org.acestream.sdk.helpers.SettingDialogFragmentCompat;
 import org.acestream.sdk.interfaces.IHttpAsyncTaskListener;
 import org.acestream.sdk.utils.AuthUtils;
 import org.acestream.sdk.utils.HttpAsyncTask;
+import org.acestream.sdk.utils.Logger;
 import org.acestream.sdk.utils.MiscUtils;
 import org.acestream.sdk.utils.PermissionUtils;
 import org.acestream.sdk.utils.VlcBridge;
@@ -1262,6 +1263,7 @@ public class MainActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         } else if (id == R.id.nav_shutdown_engine) {
+            Logger.v(TAG, "stopApp");
             AceStream.stopApp();
         } else if (id == R.id.nav_clear_cache) {
             if(mPlaybackManager != null) {
