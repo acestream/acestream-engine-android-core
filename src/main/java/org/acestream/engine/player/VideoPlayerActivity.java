@@ -2016,6 +2016,8 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
         if(mPlaybackManager != null) {
             mPlaybackManager.setOurPlayerActive(false);
+            mPlaybackManager.removeEngineStatusListener(mEngineStatusListener);
+            mPlaybackManager.removeEngineCallbackListener(this);
         }
 
         if(mRemoteClientId != null) {
