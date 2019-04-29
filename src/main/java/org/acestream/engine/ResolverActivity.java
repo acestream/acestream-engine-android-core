@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -152,7 +153,7 @@ public class ResolverActivity
             }
 
             riList = AceStream.getInstalledPlayers();
-            if (riList != null && riList.size() > 0) {
+            if (riList.size() > 0) {
                 for (ResolveInfo ri : riList) {
                     App.v(TAG, "add installed player: " + ri.activityInfo.packageName);
                     itemList.add(new ResolveItem(this, mUseDarkIcons, ri));
