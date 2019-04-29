@@ -323,6 +323,7 @@ public class ReportProblemActivity
 				builder.append("api_level=" + Build.VERSION.SDK_INT + "\n");
 				builder.append("os_version=" + Build.VERSION.CODENAME+ "\n");
 				builder.append("device=" + Build.DEVICE + "\n");
+				builder.append("model=" + Build.MODEL + "\n");
 
 				if(activityManager == null) {
 					builder.append("memory_class=?\n");
