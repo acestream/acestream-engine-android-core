@@ -39,7 +39,6 @@ import com.connectsdk.service.capability.VolumeControl;
 import com.connectsdk.service.capability.listeners.ResponseListener;
 import com.connectsdk.service.command.ServiceCommandError;
 import com.connectsdk.service.sessions.LaunchSession;
-import com.google.gson.Gson;
 
 import org.acestream.engine.acecast.client.AceStreamDiscoveryClient;
 import org.acestream.engine.acecast.client.AceStreamRemoteDevice;
@@ -180,6 +179,7 @@ public abstract class AceStreamManagerImpl
     private SelectedPlayer mCurrentSelectedPlayer = null;
     private boolean mEngineConnected = false;
     private boolean mFreezeBonusAdsAvailable = false;
+    private int mRemoteEngineStatusListeners = 0;
 
     // Last engine preferences
     protected ExtendedEnginePreferences mEnginePreferences = null;
@@ -1618,6 +1618,10 @@ public abstract class AceStreamManagerImpl
             return true;
         }
         else {
+            if(mRemoteEngineStatusListeners > 0) {
+                return true;
+            }
+
             // update player activity if at least one listener wants so
             for (EngineStatusListener listener : mEngineStatusListeners) {
                 if(listener.updatePlayerActivity()) {
@@ -2252,6 +2256,11 @@ public abstract class AceStreamManagerImpl
         for(String key: preferences.keySet()) {
             setPreference(key, preferences.get(key));
         }
+    }
+
+    private void updateRemoteEngineStatusListeners(int count) {
+        Logger.v(TAG, "updateRemoteEngineStatusListeners: count=" + count);
+        mRemoteEngineStatusListeners = count;
     }
 
     public void setPreference(String name, Object value) {
@@ -4101,6 +4110,9 @@ public abstract class AceStreamManagerImpl
                     break;
                 case AceStreamManager.MSG_SET_PREFERENCES:
                     setPreferences(d.getBundle(AceStreamManager.MSG_PARAM_PREFERENCES));
+                    break;
+                case AceStreamManager.MSG_SET_ENGINE_STATUS_LISTENERS:
+                    updateRemoteEngineStatusListeners(d.getInt(AceStreamManager.MSG_PARAM_COUNT));
                     break;
                 case AceStreamManager.MSG_SET_PLAYER_ACTIVITY_TIMEOUT:
                     setPlayerActivityTimeout(d.getInt(AceStreamManager.MSG_PARAM_TIMEOUT));
