@@ -1776,18 +1776,25 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     public void switchToPopup() {
         App.v(TAG, "switchToPopup");
         if (Utils.hasPiP) {
-            if (AndroidUtil.isOOrLater)
-                try {
-                    final int height = mVideoHeight;
-                    final int width = Math.min(mVideoWidth, (int) (height*2.39f));
-                    enterPictureInPictureMode(new PictureInPictureParams.Builder().setAspectRatio(new Rational(width, height)).build());
-                } catch (IllegalArgumentException e) { // Fallback with default parameters
+            try {
+                if (AndroidUtil.isOOrLater)
+                    try {
+                        final int height = mVideoHeight;
+                        final int width = Math.min(mVideoWidth, (int) (height * 2.39f));
+                        enterPictureInPictureMode(new PictureInPictureParams.Builder().setAspectRatio(new Rational(width, height)).build());
+                    } catch (IllegalArgumentException e) { // Fallback with default parameters
+                        //noinspection deprecation
+                        enterPictureInPictureMode();
+                    }
+                else {
                     //noinspection deprecation
                     enterPictureInPictureMode();
                 }
-            else {
-                //noinspection deprecation
-                enterPictureInPictureMode();
+            }
+            catch(IllegalStateException e) {
+                // Some devices throw IllegalStateException("enterPictureInPictureMode: Device doesn't support picture-in-picture mode.")
+                Logger.wtf(TAG, "Failed to enter pip", e);
+                AceStream.toast("Failed to enter PiP");
             }
         }
     }
