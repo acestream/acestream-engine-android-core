@@ -82,6 +82,7 @@ public class ContentStartActivity
     private boolean mSkipRememberedPlayer = false;
     private int mGotStorageAccess = -1;
     private Button mButtonGrantPermissions;
+    private boolean mShowingNotification = false;
 
     private MediaFilesResponse mMediaFiles = null;
     private SelectedPlayer mSelectedPlayer = null;
@@ -138,7 +139,7 @@ public class ContentStartActivity
                         session.playbackUrl,
                         session.playbackData.mediaFile.mime);
                 mPlayerStarted = true;
-                finish();
+                exit();
             }
             else if(mSelectedPlayer.type == SelectedPlayer.CONNECTABLE_DEVICE) {
                 if(session == null) {
@@ -260,18 +261,20 @@ public class ContentStartActivity
 	    Logger.v(TAG, "onStorageAccessGranted");
 
         mButtonGrantPermissions.setVisibility(View.GONE);
+        ((Button)findViewById(R.id.cancel_btn_id)).setText(getResources().getString(R.string.cancel));
+        findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
 
-        boolean notificationShown = false;
+        mShowingNotification = false;
         NotificationData notification = AceStreamEngineBaseApplication.getPendingNotification("content-start");
         if(notification != null) {
-            notificationShown = AceStreamEngineBaseApplication.showNotification(
+            mShowingNotification = AceStreamEngineBaseApplication.showNotification(
                     notification,
                     this,
                     true,
                     REQUEST_CODE_ADS_NOTIFICATION);
         }
 
-        if(!notificationShown) {
+        if(!mShowingNotification) {
             startEngineWhenConnected();
         }
     }
@@ -358,9 +361,10 @@ public class ContentStartActivity
             mWakeLock.release();
         }
 
-        if(!isFinishing()) {
-            // Always finish this activity because it's used like modal dialog
-            finish();
+        // Always finish this activity because it's used like modal dialog
+        // But don't finish when we're showing notification.
+        if(!isFinishing() && !mShowingNotification) {
+            exit();
         }
 
         if(mPlaybackManager != null) {
@@ -404,7 +408,7 @@ public class ContentStartActivity
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.cancel_btn_id) {
-            this.finish();
+            exit();
         }
         else if (i == R.id.button_grant_permissions) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -456,8 +460,9 @@ public class ContentStartActivity
 
     }
 
-    private void closeActivity() {
-        this.finish();
+    private void exit() {
+        Logger.v(TAG, "exit");
+	    finish();
     }
 
     private void showError(int resourceId) {
@@ -529,14 +534,14 @@ public class ContentStartActivity
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     AceStreamEngineBaseApplication.setMobileNetworkingEnabled(false);
-                    closeActivity();
+                    exit();
                 }
             });
             builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     AceStreamEngineBaseApplication.setMobileNetworkingEnabled(false);
-                    closeActivity();
+                    exit();
                 }
             });
             builder.create().show();
@@ -749,7 +754,7 @@ public class ContentStartActivity
     @Override
     public void onDialogCancelled() {
         Log.d(TAG, "onDialogCancelled");
-        finish();
+        exit();
     }
 
     private void showResolver() {
@@ -784,14 +789,15 @@ public class ContentStartActivity
                 onPlayerSelected(player);
             }
             else if(resultCode == AceStream.Resolver.RESULT_CLOSE_CALLER) {
-                finish();
+                exit();
             }
             else {
                 Log.i(TAG, "onActivityResult: resolver cancelled");
-                finish();
+                exit();
             }
         }
         else if(requestCode == REQUEST_CODE_ADS_NOTIFICATION) {
+            mShowingNotification = false;
             startEngineWhenConnected();
         }
     }
@@ -933,7 +939,7 @@ public class ContentStartActivity
 
         mPlaybackManager.setLastSelectedDeviceId(null);
         mPlayerStarted = true;
-        finish();
+        exit();
     }
 
     private void gotCastError(final String errorMessage) {
@@ -1000,7 +1006,7 @@ public class ContentStartActivity
     @Override
     public void onEngineStopped() {
         Log.d(TAG, "onEngineStopped");
-        closeActivity();
+        exit();
     }
     //
 
@@ -1014,7 +1020,7 @@ public class ContentStartActivity
             intent.putExtra("selectedPlayer", selectedPlayer.toJson());
         }
         startActivity(intent);
-        finish();
+        exit();
     }
 
     // EngineStatusListener
