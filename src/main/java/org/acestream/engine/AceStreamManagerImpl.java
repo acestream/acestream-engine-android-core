@@ -2,6 +2,7 @@ package org.acestream.engine;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -3753,7 +3754,13 @@ public abstract class AceStreamManagerImpl
         intent.setComponent(new ComponentName(player.id1, player.id2));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        context.startActivity(intent);
+        try {
+            context.startActivity(intent);
+        }
+        catch(ActivityNotFoundException|SecurityException e) {
+            Logger.wtf(TAG, "Failed to start local player: player" + player, e);
+            AceStream.toast(R.string.failed_to_start);
+        }
         setLastSelectedDeviceId(null);
     }
 
