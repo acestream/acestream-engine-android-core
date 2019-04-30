@@ -1064,7 +1064,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 @Override
                 public void onSuccess(AdConfig config) {
                     Logger.v(TAG, "init ad manager");
-                    mAdManager = new AdManager(VideoPlayerActivity.this, config);
+                    mAdManager = mPlaybackManager.getAdManager();
                 }
             });
 
