@@ -8,9 +8,12 @@ import org.acestream.engine.controller.ExtendedEngineApi;
 import org.acestream.engine.prefs.ExtendedEnginePreferences;
 import org.acestream.engine.prefs.NotificationData;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import androidx.annotation.MainThread;
@@ -49,6 +52,7 @@ import org.acestream.sdk.interfaces.IRemoteDevice;
 import org.acestream.sdk.player.api.AceStreamPlayer;
 import org.acestream.sdk.utils.Logger;
 import org.acestream.sdk.utils.MiscUtils;
+import org.acestream.sdk.utils.PermissionUtils;
 import org.acestream.sdk.utils.VlcBridge;
 import org.acestream.sdk.utils.Workers;
 
@@ -76,8 +80,9 @@ public class ContentStartActivity
     private boolean mStartingLocalPlayback = false;
     private boolean mStartedFromExternalRequest = true;
     private boolean mSkipRememberedPlayer = false;
+    private int mGotStorageAccess = -1;
+    private Button mButtonGrantPermissions;
 
-    // new
     private MediaFilesResponse mMediaFiles = null;
     private SelectedPlayer mSelectedPlayer = null;
     private TransportFileDescriptor mDescriptor = null;
@@ -220,6 +225,9 @@ public class ContentStartActivity
 		Button btnCancel = findViewById(R.id.cancel_btn_id);
 		btnCancel.setOnClickListener(this);
 
+        mButtonGrantPermissions = findViewById(R.id.button_grant_permissions);
+        mButtonGrantPermissions.setOnClickListener(this);
+
         try {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -237,6 +245,22 @@ public class ContentStartActivity
             Log.e(TAG, "Failed to init wake lock: " + e.getMessage());
         }
 
+        if(!PermissionUtils.hasStorageAccess()) {
+            Log.v(TAG, "onStart: request storage access");
+            PermissionUtils.requestStoragePermissions(this, MainActivity.REQUEST_CODE_PERMISSIONS);
+        }
+        else {
+            Logger.v(TAG, "onStart: got storage access");
+            mGotStorageAccess = 1;
+            onStorageAccessGranted();
+        }
+	}
+
+	private void onStorageAccessGranted() {
+	    Logger.v(TAG, "onStorageAccessGranted");
+
+        mButtonGrantPermissions.setVisibility(View.GONE);
+
         boolean notificationShown = false;
         NotificationData notification = AceStreamEngineBaseApplication.getPendingNotification("content-start");
         if(notification != null) {
@@ -250,7 +274,13 @@ public class ContentStartActivity
         if(!notificationShown) {
             startEngineWhenConnected();
         }
-	}
+    }
+
+    private void onStorageAccessDenied() {
+        Logger.v(TAG, "onStorageAccessDenied");
+        showError(R.string.need_storage_access);
+        mButtonGrantPermissions.setVisibility(View.VISIBLE);
+    }
 
     private void applyTheme() {
         if (mPlaybackManager == null || mPlaybackManager.isBlackThemeEnabled()) {
@@ -263,8 +293,8 @@ public class ContentStartActivity
 
     @Override
     protected void onStart() {
+	    Logger.v(TAG, "onStart");
         super.onStart();
-        Logger.v(TAG, "onStart: this=" + this);
     }
 
     @Override
@@ -285,6 +315,13 @@ public class ContentStartActivity
         mActive = true;
         mStartedFromExternalRequest = getIntent().getBooleanExtra(Constants.EXTRA_STARTED_FROM_EXTERNAL_REQUEST, true);
         mSkipRememberedPlayer = getIntent().getBooleanExtra(Constants.EXTRA_SKIP_REMEMBERED_PLAYER, false);
+
+        if(mGotStorageAccess != 1 && PermissionUtils.hasStorageAccess()) {
+            onStorageAccessGranted();
+        }
+        else if(mGotStorageAccess != 0 && !PermissionUtils.hasStorageAccess()) {
+            onStorageAccessDenied();
+        }
 	}
 
 	@Override
@@ -368,6 +405,24 @@ public class ContentStartActivity
         int i = v.getId();
         if (i == R.id.cancel_btn_id) {
             this.finish();
+        }
+        else if (i == R.id.button_grant_permissions) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    PermissionUtils.requestStoragePermissions(this, MainActivity.REQUEST_CODE_PERMISSIONS);
+                }
+                else {
+                    final Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                    intent.setData(Uri.parse("package:" + AceStreamEngineBaseApplication.context().getPackageName()));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(intent);
+                    }
+                    catch (Exception ignored) {
+                    }
+                }
+            }
         }
     }
 
@@ -1060,5 +1115,31 @@ public class ContentStartActivity
             intent.putExtra(Constants.EXTRA_SELECTED_PLAYER, player.toJson());
         }
         return intent;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        App.v(TAG, "onRequestPermissionsResult: requestCode=" + requestCode);
+        if(requestCode == MainActivity.REQUEST_CODE_PERMISSIONS) {
+            // If request is cancelled, the result arrays are empty.
+
+            int i;
+            for(i=0; i<permissions.length; i++) {
+                Log.d(TAG, "grant: i=" + i + " permission=" + permissions[i]);
+            }
+            for(i=0; i<grantResults.length; i++) {
+                Log.d(TAG, "grant: i=" + i + " result=" + grantResults[i]);
+            }
+
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Log.d(TAG, "user granted permission");
+
+            } else {
+                Log.d(TAG, "user denied permission");
+                mGotStorageAccess = 0;
+            }
+        }
     }
 }

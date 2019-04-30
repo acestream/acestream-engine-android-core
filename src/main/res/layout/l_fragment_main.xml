@@ -92,7 +92,7 @@
                     android:textColor="@color/white"
                     android:textAllCaps="false"
                     android:layout_marginBottom="@dimen/button_margin"
-                    android:text="Grant permissions"
+                    android:text="@string/grant_permissions"
                     android:visibility="gone"
                     />
 

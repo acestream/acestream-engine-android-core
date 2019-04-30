@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="4dp"
         android:gravity="center"
         android:textAppearance="?android:textAppearanceMedium"
         android:text="@string/starting" />
@@ -24,17 +25,27 @@
         android:layout_height="1dp"
         android:layout_below="@+id/text_info"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:indeterminate="true"
         android:indeterminateBehavior="repeat" />
+
+    <Button
+        android:id="@+id/button_grant_permissions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progress_bar"
+        android:layout_centerHorizontal="true"
+        style="?android:attr/borderlessButtonStyle"
+        android:visibility="gone"
+        android:text="@string/grant_permissions" />
          
     <Button
         android:id="@+id/cancel_btn_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/progress_bar"
+        android:layout_below="@+id/button_grant_permissions"
         android:layout_centerHorizontal="true"
-        android:paddingTop="16dp"
         style="?android:attr/borderlessButtonStyle"
         android:text="@string/cancel" />
 
