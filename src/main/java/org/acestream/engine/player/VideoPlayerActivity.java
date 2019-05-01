@@ -1063,8 +1063,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             mPlaybackManager.getAdConfigAsync(new AceStreamManagerImpl.AdConfigCallback() {
                 @Override
                 public void onSuccess(AdConfig config) {
-                    Logger.v(TAG, "init ad manager");
-                    mAdManager = mPlaybackManager.getAdManager();
+                    if(mPlaybackManager != null) {
+                        Logger.v(TAG, "init ad manager");
+                        mAdManager = mPlaybackManager.getAdManager();
+                    }
                 }
             });
 
