@@ -29,7 +29,8 @@ public class Utils {
         final PackageManager pm = ctx != null ? ctx.getPackageManager() : null;
         hasTsp = pm == null || pm.hasSystemFeature("android.hardware.touchscreen");
         isAndroidTv = pm != null && pm.hasSystemFeature("android.software.leanback");
-        hasPiP = AndroidUtil.isOOrLater || AndroidUtil.isNougatOrLater && isAndroidTv;
+        hasPiP = AndroidUtil.isOOrLater && pm != null && pm.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+                || AndroidUtil.isNougatOrLater && isAndroidTv;
         final TelephonyManager tm = ctx != null ? ((TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE)) : null;
         isPhone = tm == null || tm.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
         hasCombBar = false;
