@@ -12,12 +12,12 @@ public class UtilsTest {
         Map<String,String> result;
         MiscUtils.getQueryParameters("http://test.mp4");
 
-        result = MiscUtils.getQueryParameters("acestream:?content_id=test&index=");
+        result = MiscUtils.getQueryParameters("acestream:?content_id=test&index=aaa");
         assertEquals(2, result.size());
         assertTrue(result.containsKey("content_id"));
         assertEquals("test", result.get("content_id"));
         assertTrue(result.containsKey("index"));
-        assertEquals("", result.get("index"));
+        assertEquals("aaa", result.get("index"));
 
         result = MiscUtils.getQueryParameters("acestream:?content_id=test&index&");
         assertEquals(2, result.size());
