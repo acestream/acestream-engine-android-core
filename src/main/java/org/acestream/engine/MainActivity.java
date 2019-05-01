@@ -1082,7 +1082,7 @@ public class MainActivity
             mAccountBalanceButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mPlaybackManager.isUserLoggedIn()) {
+                    if (mPlaybackManager != null && mPlaybackManager.isUserLoggedIn()) {
                         AceStream.openTopupActivity(MainActivity.this);
                     } else {
                         AceStream.openProfileActivity(MainActivity.this);
@@ -1110,7 +1110,7 @@ public class MainActivity
             mAccountUpgradeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mPlaybackManager.isUserLoggedIn()) {
+                    if (mPlaybackManager != null && mPlaybackManager.isUserLoggedIn()) {
                         AceStream.openUpgradeActivity(MainActivity.this);
                     } else {
                         AceStream.openProfileActivity(MainActivity.this);
