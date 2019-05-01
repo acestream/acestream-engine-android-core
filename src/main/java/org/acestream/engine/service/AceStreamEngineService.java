@@ -986,13 +986,13 @@ public class AceStreamEngineService extends ForegroundService
 					Intent serviceIntent = ServiceClient.getServiceIntent(this);
 					serviceIntent.putExtra(EXTRA_CLIENT_TYPE, clientType);
 					serviceIntent.putExtra(EXTRA_CALLING_APP, clientApp);
-					startService(serviceIntent);
+					Util.startForegroundService(this, serviceIntent);
 				} else if (mStatus == Status.FINISHED) {
 					Logger.v(TAG, "Client command to Start: FINISHED -> start service");
 					Intent serviceIntent = ServiceClient.getServiceIntent(this);
 					serviceIntent.putExtra(EXTRA_CLIENT_TYPE, clientType);
 					serviceIntent.putExtra(EXTRA_CALLING_APP, clientApp);
-					startService(serviceIntent);
+					Util.startForegroundService(this, serviceIntent);
 				} else if (mStatus == Status.RUNNING) {
 					Logger.vv(TAG, "Client command to Start: RUNNING -> notify ready: callback=" + callback);
 					if (callback != null) {
@@ -1180,7 +1180,7 @@ public class AceStreamEngineService extends ForegroundService
 			if(mRestartAfterStopFlag) {
 				mRestartAfterStopFlag = false;
 				try {
-					startService(ServiceClient.getServiceIntent(this));
+					Util.startForegroundService(this, ServiceClient.getServiceIntent(this));
 				}
 				catch(ServiceClient.ServiceMissingException e) {
 					Log.e(TAG, "AceStream is not installed");

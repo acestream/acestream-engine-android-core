@@ -12,7 +12,7 @@ import org.acestream.sdk.AceStream;
 
 public abstract class ForegroundService extends BaseService {
 
-	private static String TAG = "AceStream/Service";
+	private static String TAG = "AS/Service";
 	
 	private static final Class<?>[] mSetForegroundSignature = new Class[] { boolean.class };
 	private static final Class<?>[] mStartForegroundSignature = new Class[] { int.class, Notification.class };
@@ -60,7 +60,9 @@ public abstract class ForegroundService extends BaseService {
     }
     
     public void showNotification(int strRes) {
-    	mNotificationManager.notifySimple(strRes);
+        if(mNotificationManager != null) {
+            mNotificationManager.notifySimple(strRes);
+        }
     }
     
     public final AceStreamEngineNotificationManager getNotificationManager() {

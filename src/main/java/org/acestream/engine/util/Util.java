@@ -1,5 +1,9 @@
 package org.acestream.engine.util;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,6 +13,8 @@ import java.io.IOException;
 
 import org.acestream.engine.AceStreamEngineBaseApplication;
 import org.acestream.sdk.AceStream;
+
+import androidx.annotation.NonNull;
 
 public class Util {
 
@@ -65,4 +71,13 @@ public class Util {
 		return false;
 	}
 
+	public static void startForegroundService(@NonNull final Context context,
+											  @NonNull final Intent intent) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			context.startForegroundService(intent);
+		}
+		else {
+			context.startService(intent);
+		}
+	}
 }

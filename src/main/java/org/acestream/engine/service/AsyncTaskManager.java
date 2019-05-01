@@ -80,8 +80,7 @@ public class AsyncTaskManager
 			}
 			
 			if(mNotificationManager != null) {
-				AceStreamEngineNotificationManager nm = mNotificationManager.get();
-				if(nm != null) mTask.setNotificationManager(nm);
+				mTask.setNotificationManager(mNotificationManager.get());
 			}
 	
 			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
