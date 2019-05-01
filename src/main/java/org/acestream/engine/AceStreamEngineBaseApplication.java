@@ -272,8 +272,14 @@ public class AceStreamEngineBaseApplication {
 	public static void clearWebViewCookies() {
 		Log.v(TAG, "clearWebViewCookies");
 		if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-			CookieManager.getInstance().removeAllCookies(null);
-			CookieManager.getInstance().flush();
+			try {
+				CookieManager.getInstance().removeAllCookies(null);
+				CookieManager.getInstance().flush();
+			}
+			catch(Throwable e) {
+				// Can throw exceptions when WebView is not installed
+				Logger.e(TAG, "clearWebViewCookies", e);
+			}
 		}
 		else {
 			//TODO: implement for older versions
