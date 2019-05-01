@@ -75,6 +75,7 @@ public class ContentStartActivity
 	private boolean mStartEngineWhenConnected = false;
 
     private boolean mActive = false;
+    private boolean mRunning = false;
     private boolean mIsWaiting = false;
     private boolean mStartingPlayback = false;
     private boolean mStartingLocalPlayback = false;
@@ -298,6 +299,7 @@ public class ContentStartActivity
     protected void onStart() {
 	    Logger.v(TAG, "onStart");
         super.onStart();
+        mRunning = true;
     }
 
     @Override
@@ -357,6 +359,7 @@ public class ContentStartActivity
 	@Override
 	public void onStop() {
         Logger.v(TAG, "onStop: this=" + this + " player_started=" + mPlayerStarted + " pm=" + mPlaybackManager);
+        mRunning = false;
         if(mWakeLock != null && mWakeLock.isHeld()) {
             mWakeLock.release();
         }
@@ -627,6 +630,11 @@ public class ContentStartActivity
     }
 
     private void startLoadingFiles(final Intent intent) {
+        if(!mRunning) {
+            Logger.v(TAG, "startLoadingFiles: activity is stopped");
+            return;
+        }
+
 	    ensureEngineService();
 
 	    // Check mobile network connection
@@ -975,7 +983,9 @@ public class ContentStartActivity
     // PlaybackManager.Callback interface
     @Override
     public void onEngineConnected(ExtendedEngineApi service) {
-        Log.d(TAG, "onEngineConnected: service=" + mEngineService);
+        Log.d(TAG, "onEngineConnected: running=" + mRunning + " service=" + mEngineService);
+
+        if(!mRunning) return;
 
         if(mEngineService == null) {
             mEngineService = service;
