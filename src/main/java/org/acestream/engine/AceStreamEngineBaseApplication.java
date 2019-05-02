@@ -237,6 +237,9 @@ public class AceStreamEngineBaseApplication {
 		AceStream.setHttpApiProductKey("40e9ba380752b7b4feb7c6616e0eb3949e6d1412");
 		detectVlcBridge();
 
+		Log.i(TAG, "startup: package=" + AceStream.getApplicationId());
+		Log.i(TAG, "startup: version=" + AceStream.getApplicationVersionCode());
+
 		if(BuildConfig.enableDebugLogging) {
 			getPreferences().edit().putBoolean("enable_debug_logging", true).apply();
 			Logger.enableDebugLogging(true);
