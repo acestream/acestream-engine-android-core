@@ -14,6 +14,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import org.acestream.engine.AceStreamEngineBaseApplication;
 import org.acestream.engine.R;
+import org.acestream.sdk.AceStream;
 import org.acestream.sdk.utils.VlcBridge;
 
 public class AceStreamEngineNotificationManager {
@@ -65,11 +66,6 @@ public class AceStreamEngineNotificationManager {
 		mContext = context;
 		mNotificationManager = NotificationManagerCompat.from(mContext);
 		mBuilder = new NotificationCompat.Builder(context, SERVICE_NOTIFICATION_CHANNEL_ID);
-		
-		mBuilder.setSmallIcon(R.drawable.ic_acestream);
-		mBuilder.setContentTitle(mContext.getString(R.string.app_name));
-		mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
 
 		Intent intent;
 		PendingIntent contentIntent;
@@ -82,8 +78,17 @@ public class AceStreamEngineNotificationManager {
 			contentIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
 		}
 
-		mBuilder.setContentIntent(contentIntent);
-		mBuilder.setAutoCancel(true);
+		final PendingIntent quitIntent = PendingIntent.getBroadcast(
+				mContext, 0, AceStream.getStopAppIntent(), 0);
+
+		mBuilder
+			.setSmallIcon(R.drawable.ic_acestream)
+			.setContentTitle(mContext.getString(R.string.app_name))
+			.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+			.setContentIntent(contentIntent)
+			.setAutoCancel(true)
+			.addAction(new NotificationCompat.Action(R.drawable.ace_ic_close_normal,
+					mContext.getResources().getString(R.string.menu_quit), quitIntent));
 	}
 	
 	public void notify(Notification notification) {
