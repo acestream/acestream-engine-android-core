@@ -717,6 +717,32 @@ public class ContentStartActivity
     public void onFileSelected(int fileIndex) {
         Log.d(TAG, "onFileSelected: fileIndex=" + fileIndex);
 
+        if(mSelectedPlayer == null) {
+            throw new IllegalStateException("missing selected player");
+        }
+
+        boolean startOurPlayer = false;
+        if(mSelectedPlayer.isOurPlayer()) {
+            startOurPlayer = true;
+        }
+        else if(AceStreamEngineBaseApplication.useVlcBridge()
+                && (mSelectedPlayer.type == SelectedPlayer.ACESTREAM_DEVICE
+                || mSelectedPlayer.type == SelectedPlayer.CONNECTABLE_DEVICE)) {
+            // In media app remote control is in VideoPlayerActivity
+            startOurPlayer = true;
+        }
+
+        if(startOurPlayer) {
+            startOurPlayer(mSelectedPlayer, fileIndex);
+        }
+        else {
+            startExternalPlayer(fileIndex);
+        }
+    }
+
+    private void startExternalPlayer(int fileIndex) {
+	    Logger.v(TAG, "startExternalPlayer: fileIndex=" + fileIndex);
+
         final MediaFilesResponse.MediaFile mediaFile = mMediaFiles.getMediaFileByIndex(fileIndex);
         if(mediaFile == null) {
             Log.e(TAG, "onFileSelected: cannot select file: fileIndex=" + fileIndex);
@@ -831,21 +857,7 @@ public class ContentStartActivity
         mSelectedPlayer = player;
         AceStream.setLastSelectedPlayer(player);
 
-        boolean startOurPlayer = false;
-        if(player.isOurPlayer()) {
-            startOurPlayer = true;
-        }
-        else if(AceStreamEngineBaseApplication.useVlcBridge()
-                && (player.type == SelectedPlayer.ACESTREAM_DEVICE
-                    || player.type == SelectedPlayer.CONNECTABLE_DEVICE)) {
-            // In media app remote control is in VideoPlayerActivity
-            startOurPlayer = true;
-        }
-
-        if(startOurPlayer) {
-            startOurPlayer(player);
-        }
-        else if(mMediaFiles.files.length > 1) {
+        if(mMediaFiles.files.length > 1) {
             if(mSelectedFileIndex == -1) {
                 // choose file before starting player
                 showFileSelector();
@@ -914,8 +926,18 @@ public class ContentStartActivity
         updateInfoText(statusString);
     }
 
-    private void startOurPlayer(@NonNull SelectedPlayer player) {
-        App.v(TAG, "startOurPlayer: player=" + player);
+    private void startOurPlayer(@NonNull SelectedPlayer player, int fileIndex) {
+        App.v(TAG, "startOurPlayer: player=" + player + " fileIndex=" + fileIndex);
+
+        int playlistPosition = 0;
+        if(fileIndex != -1) {
+            for (int i = 0; i < mMediaFiles.files.length; i++) {
+                if (mMediaFiles.files[i].index == fileIndex) {
+                    playlistPosition = i;
+                    break;
+                }
+            }
+        }
 
         if(AceStreamEngineBaseApplication.useVlcBridge()) {
             //TODO: how to pass mStartedFromExternalRequest?
@@ -923,6 +945,7 @@ public class ContentStartActivity
                     .setPlayer(player)
                     .setMetadata(mMediaFiles)
                     .setMediaFiles(mMediaFiles.files)
+                    .setPlaylistPosition(playlistPosition)
                     .send();
         }
         else {
@@ -941,7 +964,7 @@ public class ContentStartActivity
             Intent intent = AceStreamPlayer.getPlayerIntent();
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(AceStreamPlayer.EXTRA_PLAYLIST, AceStreamPlayer.Playlist.toJson(playlist));
-            intent.putExtra(AceStreamPlayer.EXTRA_PLAYLIST_POSITION, 0);
+            intent.putExtra(AceStreamPlayer.EXTRA_PLAYLIST_POSITION, playlistPosition);
             startActivity(intent);
         }
 
