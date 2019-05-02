@@ -10,12 +10,9 @@ import android.util.Log;
 
 import org.acestream.engine.AceStreamEngineBaseApplication;
 import org.acestream.engine.Constants;
-import org.acestream.engine.MainActivity;
 import org.acestream.engine.PlaybackManager;
 import org.acestream.engine.PlaybackManagerAppCompatActivity;
 import org.acestream.engine.R;
-import org.acestream.engine.WebViewActivity;
-import org.acestream.engine.notification.LinkActivity;
 import org.acestream.sdk.AceStream;
 import org.acestream.sdk.controller.api.response.AuthData;
 import org.acestream.sdk.utils.AuthUtils;
@@ -176,6 +173,9 @@ public class LoginActivity
 			else {
 				intent.setClass(this, AceStreamEngineBaseApplication.getWebViewActivityClass());
 				intent.putExtra(Constants.EXTRA_WEBVIEW_URL, mTargetUrl);
+				if(!TextUtils.isEmpty(mTargetInfohash)) {
+					intent.putExtra(EXTRA_INFOHASH, mTargetInfohash);
+				}
 			}
 		}
 		else if(TextUtils.equals(mTarget, AceStream.LOGIN_TARGET_BONUS_ADS)) {
