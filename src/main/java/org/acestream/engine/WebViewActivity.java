@@ -43,6 +43,8 @@ import org.acestream.sdk.utils.UiUtils;
 
 import java.io.File;
 
+import static org.acestream.sdk.Constants.EXTRA_INFOHASH;
+
 public class WebViewActivity
     extends PlaybackManagerAppCompatActivity
     implements View.OnClickListener
@@ -59,6 +61,7 @@ public class WebViewActivity
     private boolean mRequireEngine = true;
     private boolean mNavigationStarted = false;
     private String mTargetUrl = null;
+    protected String mTargetInfohash = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +144,7 @@ public class WebViewActivity
         Intent intent = getIntent();
         Uri uri = intent.getData();
         mTargetUrl = intent.getStringExtra(Constants.EXTRA_WEBVIEW_URL);
+        mTargetInfohash = intent.getStringExtra(EXTRA_INFOHASH);
 
         if(mTargetUrl == null && uri != null) {
             mTargetUrl = uri.toString();
