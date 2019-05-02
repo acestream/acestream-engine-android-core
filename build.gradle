@@ -120,7 +120,7 @@ dependencies {
     api "com.google.android.gms:play-services-ads:$rootProject.ext.playServicesAdsVersion"
 
     // jmDNS
-    api 'org.jmdns:jmdns:3.5.2'
+    api 'org.jmdns:jmdns:3.5.5'
 
     // OkHttp
     api("com.squareup.okhttp3:okhttp:$rootProject.ext.okHttpVersion") {
