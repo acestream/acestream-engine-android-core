@@ -724,14 +724,6 @@ public abstract class AceStreamManagerImpl
         AceStreamEngineBaseApplication.updateNotifications(preferences);
         checkAdConfig();
 
-        //tmp
-        if(mEnginePreferences != null && mEnginePreferences.android_config != null) {
-            Logger.v(TAG, "send_debug_reports=" + mEnginePreferences.android_config.send_debug_reports);
-            SharedPreferences.Editor edit = AceStreamEngineBaseApplication.getPreferences().edit();
-            edit.putBoolean("send_debug_reports", mEnginePreferences.android_config.send_debug_reports);
-            edit.apply();
-        }
-
         notifyEngineSettingsUpdated(mAppPreferences);
     }
 
