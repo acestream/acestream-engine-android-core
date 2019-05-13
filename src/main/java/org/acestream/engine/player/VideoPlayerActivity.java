@@ -3192,6 +3192,8 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (mMediaPlayer == null)
+            return true;
         if (mDetector == null) {
             mDetector = new GestureDetectorCompat(this, mGestureListener);
             mDetector.setOnDoubleTapListener(mGestureListener);
