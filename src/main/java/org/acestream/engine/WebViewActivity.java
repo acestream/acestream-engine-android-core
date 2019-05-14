@@ -71,7 +71,6 @@ public class WebViewActivity
             setContentView(R.layout.l_webview_activity);
         }
         catch(Throwable e) {
-            AceStream.toast("Failed to open WebView");
             AceStreamEngineBaseApplication.setWebViewAvailable(false);
             Log.e(TAG, "Failed to create activity", e);
             finish();
