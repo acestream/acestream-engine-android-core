@@ -22,7 +22,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.acestream.engine.ads.AdManager;
 import org.acestream.engine.aliases.App;
 import org.acestream.engine.controller.Engine;
 import org.acestream.engine.interfaces.ChannelsSyncListener;
@@ -110,6 +109,8 @@ public class AceStreamEngineBaseApplication {
 	public final static String ANALYTICS_EVENT_PLAY_REQUEST = "as_play_request";
 	public final static String ANALYTICS_EVENT_AD_IMPRESSION = "custom_ad_impression";
 	public final static String ANALYTICS_EVENT_AD_REQUEST = "custom_ad_request";
+
+	public final static String BROADCAST_DO_INTERNAL_MAINTAIN = "do_internal_maintain";
 
 	private static Context appContext = null;
 	private static String appPackageName = null;
@@ -1527,5 +1528,12 @@ public class AceStreamEngineBaseApplication {
 
 	public static boolean isWebViewAvailable() {
 		return sWebViewAvailable;
+	}
+
+	public long internalMaintainInterval() {
+		return 900000;
+	}
+
+    public void doInternalMaintain(@NonNull final AceStreamManagerImpl pm) {
 	}
 }

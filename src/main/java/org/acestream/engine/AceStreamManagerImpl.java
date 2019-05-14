@@ -110,6 +110,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import androidx.annotation.MainThread;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static org.acestream.sdk.Constants.CONTENT_TYPE_VOD;
 import static org.acestream.sdk.Constants.MIME_HLS;
@@ -129,6 +130,8 @@ public abstract class AceStreamManagerImpl
     private static final String TAG = "AS/Manager";
     private final int ENGINE_STATUS_UPDATE_INTERVAL = 1000;
     private final int DEVICE_STATUS_UPDATE_INTERVAL = 1000;
+
+    private final int LOCAL_PACKAGE_INFO_TTL = 3600000;
 
     private DiscoveryManager mDiscoveryManager = null;
     private AceStreamDiscoveryClient mDiscoveryClient = null;
@@ -150,6 +153,8 @@ public abstract class AceStreamManagerImpl
 
     private long mLastNotificationAt = 0;
     protected AuthData mCurrentAuthData = null;
+    // Local info about user package (obtained from Google Play Billing)
+    protected UserPackageInfo mLocalPackageInfo = null;
     private EngineSession mEngineSession;
     private final Object mEngineSessionLock = new Object();
     private EngineStatus mLastEngineStatus = null;
@@ -229,6 +234,14 @@ public abstract class AceStreamManagerImpl
         void onEngineStopped();
     }
 
+    private static class UserPackageInfo {
+        int authLevel;
+        String packageName = "?";
+        String packageColor = "green";
+        int packageDaysLeft;
+        long expiresAt;
+    }
+
     public interface AdConfigCallback {
         void onSuccess(AdConfig config);
     }
@@ -265,10 +278,34 @@ public abstract class AceStreamManagerImpl
         }
     }
 
+    private BroadcastReceiver mLocalBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent == null) return;
+            if(intent.getAction() == null) return;
+
+            switch(intent.getAction()) {
+                case AceStreamEngineBaseApplication.BROADCAST_DO_INTERNAL_MAINTAIN:
+                    mHandler.removeCallbacks(mInternalMaintainTask);
+                    mHandler.postDelayed(mInternalMaintainTask, 60000);
+                    break;
+            }
+        }
+    };
+
     private BroadcastReceiver mNetworkStatusListener = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             onNetworkStateChanged(MiscUtils.isNetworkConnected(context));
+        }
+    };
+
+    private Runnable mInternalMaintainTask = new Runnable() {
+        @Override
+        public void run() {
+            AceStreamEngineBaseApplication app = AceStreamEngineBaseApplication.getInstance();
+            app.doInternalMaintain(AceStreamManagerImpl.this);
+            mHandler.postDelayed(mInternalMaintainTask, app.internalMaintainInterval());
         }
     };
 
@@ -623,6 +660,9 @@ public abstract class AceStreamManagerImpl
         // Listen for network status changes
         registerReceiver(mNetworkStatusListener, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
+        IntentFilter filter = new IntentFilter(AceStreamEngineBaseApplication.BROADCAST_DO_INTERNAL_MAINTAIN);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mLocalBroadcastReceiver, filter);
+
         mDiscoveryServerServiceClient = new AceStreamDiscoveryServerService.Client(this, mDSSCallback);
         mDiscoveryServerServiceClient.connect();
 
@@ -673,8 +713,7 @@ public abstract class AceStreamManagerImpl
 
         mDiscoveryServerServiceClient.removeServerListener(mDSSServerCallback);
 
-        mHandler.removeCallbacks(mStopDiscoveryTask);
-        mHandler.removeCallbacks(mPauseDiscoveryTask);
+        mHandler.removeCallbacksAndMessages(null);
 
         if(mEngineServiceClient != null) {
             mEngineServiceClient.unbind();
@@ -3221,6 +3260,9 @@ public abstract class AceStreamManagerImpl
 
         if(mEngineApi == null) {
             onEngineServiceConnected(service);
+
+            mHandler.removeCallbacks(mInternalMaintainTask);
+            mHandler.postDelayed(mInternalMaintainTask, 60000);
         }
 
         synchronized(mCallbacks) {
@@ -4138,13 +4180,14 @@ public abstract class AceStreamManagerImpl
 
     protected String getRemoteAuthUpdatedPayload() {
         final String payload;
-        if(mCurrentAuthData == null) {
+        AuthData authData = getAuthData();
+        if(authData == null) {
             payload = null;
         }
         else {
             // Populate login because it's normally not contained in auth data.
-            mCurrentAuthData.login = getAuthLogin();
-            payload = mCurrentAuthData.toJson();
+            authData.login = getAuthLogin();
+            payload = authData.toJson();
         }
 
         return payload;
@@ -4537,11 +4580,25 @@ public abstract class AceStreamManagerImpl
     }
 
     public AuthData getAuthData() {
+        if(mLocalPackageInfo != null
+                && mCurrentAuthData != null
+                && mCurrentAuthData.auth_level != 0
+                && mLocalPackageInfo.expiresAt > System.currentTimeMillis()
+                && mCurrentAuthData.auth_level != mLocalPackageInfo.authLevel) {
+            // Update auth data with local info
+            AuthData authData = new AuthData(mCurrentAuthData);
+            authData.auth_level = mLocalPackageInfo.authLevel;
+            authData.package_name = mLocalPackageInfo.packageName;
+            authData.package_color = mLocalPackageInfo.packageColor;
+            authData.package_days_left = mLocalPackageInfo.packageDaysLeft;
+            return authData;
+        }
         return mCurrentAuthData;
     }
 
     public int getAuthLevel() {
-        return mCurrentAuthData == null ? 0 : mCurrentAuthData.auth_level;
+        AuthData authData = getAuthData();
+        return authData == null ? 0 : authData.auth_level;
     }
 
     public boolean isUserLoggedIn() {
@@ -4648,7 +4705,7 @@ public abstract class AceStreamManagerImpl
         // Notify in-process listeners
         synchronized(mAuthCallbacks) {
             for (AuthCallback callback : mAuthCallbacks) {
-                callback.onAuthUpdated(mCurrentAuthData);
+                callback.onAuthUpdated(getAuthData());
             }
         }
 
@@ -4748,5 +4805,83 @@ public abstract class AceStreamManagerImpl
 
     public AdManager getAdManager() {
         return mAdManager;
+    }
+
+    public void setLocalPackageInfo(String sku, long startTime) {
+        mLocalPackageInfo = null;
+
+        long expiresAt = startTime + LOCAL_PACKAGE_INFO_TTL;
+        long ttl = expiresAt - System.currentTimeMillis();
+        if(ttl <= 0) {
+            notifyAuthUpdated();
+            return;
+        }
+
+        if(TextUtils.isEmpty(sku)) {
+            notifyAuthUpdated();
+            return;
+        }
+
+        // format: packagesmartandroid.m1.v2
+        String[] parts = TextUtils.split(sku, "\\.");
+        if(parts.length != 3) {
+            notifyAuthUpdated();
+            return;
+        }
+
+        String packageId = parts[0];
+        String periodId = parts[1];
+        String packageName;
+        String packageColor;
+        int daysLeft;
+
+        switch(packageId) {
+            case "packagesmartandroid":
+                packageName = "Smart";
+                packageColor = "green";
+                break;
+            case "packagesmart":
+                packageName = "Smart";
+                packageColor = "green";
+                break;
+            case "packagestandard":
+                packageName = "Standard";
+                packageColor = "green";
+                break;
+            case "packagepremium":
+                packageName = "Premium";
+                packageColor = "blue";
+                break;
+            default:
+                return;
+        }
+
+        // No need to calculate how many days left because local subscription will
+        // be active for a short period of time from its start.
+        switch(periodId) {
+            case "m1":
+                daysLeft = 30;
+                break;
+            case "y1":
+                daysLeft = 365;
+                break;
+            default:
+                return;
+        }
+
+        mLocalPackageInfo = new UserPackageInfo();
+        mLocalPackageInfo.authLevel = 645;
+        mLocalPackageInfo.packageName = packageName;
+        mLocalPackageInfo.packageColor = packageColor;
+        mLocalPackageInfo.packageDaysLeft = daysLeft;
+        mLocalPackageInfo.expiresAt = expiresAt;
+        notifyAuthUpdated();
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                notifyAuthUpdated();
+            }
+        }, ttl);
     }
 }
