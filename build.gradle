@@ -139,7 +139,6 @@ dependencies {
     // BEGIN Appodeal
     implementation "androidx.legacy:legacy-support-v4:$rootProject.ext.androidxVersion"
     implementation 'com.squareup.picasso:picasso:2.5.2' //for Inmobi
-    implementation name: 'adcolony-3.3.4', ext: 'aar'
     implementation name: 'mobvista-9.0.0-alphab', ext: 'aar'
     implementation name: 'mobvista-9.0.0-common', ext: 'aar'
     implementation name: 'mobvista-9.0.0-interstitial', ext: 'aar'
@@ -154,6 +153,20 @@ dependencies {
     implementation name: 'mobvista-9.0.0-videojs', ext: 'aar'
     implementation name: 'ogury-3.0.13', ext: 'aar'
     // END Appodeal
+
+    // InMobi
+    implementation 'com.inmobi.monetization:inmobi-ads:7.2.7'
+    implementation 'com.google.ads.mediation:inmobi:7.2.7.0'
+
+    // MoPub
+    implementation 'com.google.ads.mediation:mopub:5.1.0.0'
+
+    // AdColony
+    implementation 'com.adcolony:sdk:3.3.9'
+    implementation 'com.google.ads.mediation:adcolony:3.3.9.0'
+
+    // Tapjoy
+    implementation 'com.google.ads.mediation:tapjoy:11.12.2.0'
 
     // Tests
     androidTestImplementation 'com.google.truth:truth:0.42'
@@ -173,7 +186,6 @@ dependencies {
     // Optional -- UI testing with UI Automator
     // requires minSdk 18
     //androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-
 }
 
 kotlin {
