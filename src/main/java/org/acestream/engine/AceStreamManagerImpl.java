@@ -4796,7 +4796,7 @@ public abstract class AceStreamManagerImpl
         }
 
         if(mAdManager == null) {
-            mAdManager = new AdManager(this, config);
+            mAdManager = new AdManager(config);
         }
         else {
             mAdManager.setAdConfig(config);

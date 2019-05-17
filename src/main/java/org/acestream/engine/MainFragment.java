@@ -494,7 +494,8 @@ public class MainFragment extends Fragment implements OnClickListener
                     if(config.isProviderEnabled(AdManager.ADS_PROVIDER_ADMOB)) {
                         AdManager adManager = getAdManager();
                         if(adManager != null) {
-                            adManager.initRewardedVideo(mAdMobRewardedVideoListener);
+                            adManager.init(activity);
+                            adManager.initRewardedVideo(activity, mAdMobRewardedVideoListener);
                         }
                         else {
                             Log.e(TAG, "initAds: missing ad manager");

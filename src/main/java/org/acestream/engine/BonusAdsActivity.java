@@ -220,7 +220,8 @@ public class BonusAdsActivity
                 if(config.isProviderEnabled(AdManager.ADS_PROVIDER_ADMOB)) {
                     AdManager adManager = getAdManager();
                     if(adManager != null) {
-                        adManager.initRewardedVideo(mAdMobRewardedVideoListener);
+                        adManager.init(BonusAdsActivity.this);
+                        adManager.initRewardedVideo(BonusAdsActivity.this, mAdMobRewardedVideoListener);
                     }
                     else {
                         Log.e(TAG, "initAds: missing ad manager");

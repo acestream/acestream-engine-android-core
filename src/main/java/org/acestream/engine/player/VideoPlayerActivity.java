@@ -1066,6 +1066,9 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                     if(mPlaybackManager != null) {
                         Logger.v(TAG, "init ad manager");
                         mAdManager = mPlaybackManager.getAdManager();
+                        if(mAdManager != null) {
+                            mAdManager.init(VideoPlayerActivity.this);
+                        }
                     }
                 }
             });
@@ -5235,6 +5238,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
         if(loadPreroll) {
             mAdManager.initInterstitial(
+                    this,
                     "preroll",
                     useTestAds
                         ? ADMOB_TEST_INTERSTITIAL
@@ -5287,6 +5291,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
         if(loadPause) {
             mAdManager.initInterstitial(
+                    this,
                     "pause",
                     BuildConfig.admobUseTestAds
                         ? ADMOB_TEST_INTERSTITIAL
@@ -5340,6 +5345,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
         if(loadClose) {
             mAdManager.initInterstitial(
+                    this,
                     "close",
                     BuildConfig.admobUseTestAds
                         ? ADMOB_TEST_INTERSTITIAL
@@ -5451,7 +5457,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         // Use an activity context to get the rewarded video instance.
-        mAdManager.initRewardedVideo(mAdManager.getAutoAdSegment(), new RewardedVideoAdListener() {
+        mAdManager.initRewardedVideo(this, mAdManager.getAutoAdSegment(), new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
                 App.v(TAG, "ads:event:rv:preroll:onRewardedVideoAdLoaded");

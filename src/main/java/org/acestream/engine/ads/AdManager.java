@@ -1,10 +1,11 @@
 package org.acestream.engine.ads;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import com.adcolony.sdk.AdColonyAppOptions;
+import com.google.ads.mediation.adcolony.AdColonyMediationAdapter;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -12,6 +13,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.tapjoy.Tapjoy;
 
 import org.acestream.engine.AceStreamEngineBaseApplication;
 import org.acestream.engine.BuildConfig;
@@ -31,11 +33,13 @@ import androidx.annotation.NonNull;
 public class AdManager {
     private final static String TAG = "AS/AdManager";
 
+    private static AdManager sInstance = null;
+
     public final static String ADS_PROVIDER_ADMOB = "admob";
     public final static String ADS_PROVIDER_APPODEAL = "appodeal";
     public final static String ADS_PROVIDER_VAST = "vast";
 
-    private final Context mContext;
+    private Activity mActivity = null;
     private Map<String, InterstitialAd> mInterstitialAd;
     private RewardedVideoAd mRewardedVideoAd;
     private Handler mHandler = new Handler();
@@ -47,9 +51,38 @@ public class AdManager {
     private RewardedVideoAdListener mRewardedVideoAdListener = null;
     private static Set<Activity> sRewardedVideoActivities = new CopyOnWriteArraySet<>();
 
-    public AdManager(Context context, AdConfig config) {
-        mContext = context;
+    public static AdManager getInstance() {
+        return sInstance;
+    }
+
+    public AdManager(AdConfig config) {
         setAdConfig(config);
+        sInstance = this;
+    }
+
+    public void init(Activity activity) {
+        if(activity == mActivity) {
+            return;
+        }
+
+        mActivity = activity;
+        if(mAdConfig != null && mAdConfig.isProviderEnabled("admob")) {
+            Tapjoy.setUserConsent(AceStreamEngineBaseApplication.getGdprConsent()
+                    ? "1"
+                    : "0");
+
+            AdColonyAppOptions appOptions = AdColonyMediationAdapter.getAppOptions();
+            appOptions.setGDPRConsentString(AceStreamEngineBaseApplication.getGdprConsent()
+                    ? "1"
+                    : "0");
+            appOptions.setGDPRRequired(true);
+
+            // AdMob
+            MobileAds.initialize(mActivity,
+                    BuildConfig.admobUseTestAds
+                            ? org.acestream.engine.Constants.ADMOB_TEST_APP_ID
+                            : AceStreamEngineBaseApplication.getStringAppMetadata("adMobAppId"));
+        }
     }
 
     public void setAdConfig(AdConfig config) {
@@ -57,12 +90,6 @@ public class AdManager {
 
         if(mInterstitialAd == null && config.isProviderEnabled("admob")) {
             mInterstitialAd = new HashMap<>();
-
-            // AdMob
-            MobileAds.initialize(mContext,
-                    BuildConfig.admobUseTestAds
-                            ? org.acestream.engine.Constants.ADMOB_TEST_APP_ID
-                            : AceStreamEngineBaseApplication.getStringAppMetadata("adMobAppId"));
         }
     }
 
@@ -78,13 +105,13 @@ public class AdManager {
         return ad != null && ad.isLoaded();
     }
 
-    public void initInterstitial(final String tag, String adUnitId, AdListener listener) {
+    public void initInterstitial(final @NonNull Activity activity, final String tag, String adUnitId, AdListener listener) {
         if(mInterstitialAd == null) {
             return;
         }
         InterstitialAd ad = mInterstitialAd.get(tag);
         if(ad == null) {
-            ad = new InterstitialAd(mContext);
+            ad = new InterstitialAd(activity);
             ad.setAdUnitId(adUnitId);
             mInterstitialAd.put(tag, ad);
         }
@@ -153,16 +180,16 @@ public class AdManager {
         sRewardedVideoActivities.remove(activity);
     }
 
-    public void initRewardedVideo(@NonNull final RewardedVideoAdListener listener) {
-        initRewardedVideo(-1, listener);
+    public void initRewardedVideo(final @NonNull Activity activity, @NonNull final RewardedVideoAdListener listener) {
+        initRewardedVideo(activity, -1, listener);
     }
 
-    public void initRewardedVideo(int segmentId, @NonNull final RewardedVideoAdListener listener) {
+    public void initRewardedVideo(final @NonNull Activity activity, int segmentId, @NonNull final RewardedVideoAdListener listener) {
         mRewardedVideoAdListener = listener;
         mRewardedVideoSegmentId = segmentId;
 
         if(mRewardedVideoAd == null) {
-            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext);
+            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(activity);
 
             mRewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
                 @Override
