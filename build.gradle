@@ -2,6 +2,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+rootProject.allprojects {
+    repositories {
+        maven {
+            url "https://adcolony.bintray.com/AdColony"
+        }
+    }
+}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
