@@ -207,15 +207,16 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private boolean mAppodealInitialized = false;
     private AdsWaterfall mAdsWaterfall;
     private AdManager mAdManager;
-    //private RewardedVideoAd mRewardedVideoAdPreroll;
     protected ExtendedEngineApi mEngineService = null;
     private VastTag[] mAdTags = null;
     private int mCurrentAdTagIndex = -1;
     private int mCountAdsLoaded = 0;
+    protected int mAdmobInterstitialBackgroundLoadInterval = 0;
     // The container for the ad's UI.
     private ViewGroup mAdUiContainer;
     protected boolean mMidrollAdsRequested = false;
     protected boolean mIsAdDisplayed = false;
+    protected boolean mGoingToShowAds = false;
     protected AdSource mAdSource = null;
     protected ImaSdkFactory mSdkFactory;
     protected AdsLoader mAdsLoader;
@@ -470,6 +471,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.ADMOB_INTERSTITIAL_PREROLL)) {
             if(mAdManager != null) {
                 if (mAdManager.showInterstitial("preroll")) {
+                    goingToShowAds();
                     return true;
                 }
             }
@@ -480,6 +482,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.ADMOB_INTERSTITIAL_PAUSE)) {
             if(mAdManager != null) {
                 if (mAdManager.showInterstitial("pause")) {
+                    goingToShowAds();
                     return true;
                 }
             }
@@ -499,18 +502,35 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
         else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.ADMOB_REWARDED_VIDEO)) {
             if (mAdManager != null && mAdManager.isRewardedVideoLoaded()) {
-                mAdManager.showRewardedVideo();
+                if(mAdManager.showRewardedVideo()) {
+                    goingToShowAds();
+                }
                 return true;
             }
         }
         else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.APPODEAL_REWARDED_VIDEO)) {
             mAdsWaterfall.resetInventoryStatus(AdsWaterfall.Inventory.APPODEAL_REWARDED_VIDEO);
-            Appodeal.show(this, Appodeal.REWARDED_VIDEO, placement);
+            if(Appodeal.show(this, Appodeal.REWARDED_VIDEO, placement)) {
+                goingToShowAds();
+            }
             return true;
         }
         else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL)) {
             mAdsWaterfall.resetInventoryStatus(AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL);
-            Appodeal.show(this, Appodeal.INTERSTITIAL, placement);
+            if(Appodeal.show(this, Appodeal.INTERSTITIAL, placement)) {
+                goingToShowAds();
+            }
+            else {
+                Logger.v(TAG, "ads:showInventory: cannot show, try next");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mIsStarted) {
+                            requestNextAds(true, false, true);
+                        }
+                    }
+                });
+            }
             return true;
         }
         else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.CUSTOM)) {
@@ -700,6 +720,17 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                         AdManager.ADS_PROVIDER_VAST,
                         AdsWaterfall.Placement.PREROLL,
                         AdsWaterfall.AdType.VAST);
+
+                if(mMidrollAdsRequested) {
+                    AceStreamEngineBaseApplication.getInstance().logAdImpressionUnpause(
+                            AdManager.ADS_PROVIDER_VAST,
+                            AdsWaterfall.AdType.VAST);
+                }
+                else {
+                    AceStreamEngineBaseApplication.getInstance().logAdImpressionPreroll(
+                            AdManager.ADS_PROVIDER_VAST,
+                            AdsWaterfall.AdType.VAST);
+                }
                 break;
             case CONTENT_PAUSE_REQUESTED:
                 // AdEventType.CONTENT_PAUSE_REQUESTED is fired immediately before a video
@@ -744,6 +775,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         Log.v(TAG, "ads:event:hideAds");
         mIsAdDisplayed = false;
         mAdSource = null;
+        mGoingToShowAds = false;
 
         if(source == AdSource.IMA_SDK) {
             if(mUseCustomAdPlayer) {
@@ -1068,6 +1100,9 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                         mAdManager = mPlaybackManager.getAdManager();
                         if(mAdManager != null) {
                             mAdManager.init(VideoPlayerActivity.this);
+                        }
+                        if(config != null) {
+                            mAdmobInterstitialBackgroundLoadInterval = config.admob_interstitial_background_load_interval;
                         }
                     }
                 }
@@ -1941,7 +1976,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         cleanUI();
 
         int delayInterval = 0;
-        if(mIsAdDisplayed) {
+        if(mIsAdDisplayed || mGoingToShowAds) {
             if (mMediaPlayer != null) {
                 if (isPlaying) {
                     final IVLCVout vlcVout = mMediaPlayer.getVLCVout();
@@ -2173,6 +2208,14 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             manager.destroy();
         }
         mAdsManagers.clear();
+
+        updateVastAdsCount();
+    }
+
+    private void updateVastAdsCount() {
+        if(mAdsWaterfall != null) {
+            mAdsWaterfall.setVastAdsCount(mAdTags == null ? 0 : mAdTags.length);
+        }
     }
 
     private boolean requestVastAds() {
@@ -2541,6 +2584,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             hideOverlay(true);
         } else {
             if(shouldShowAds() && mAdsWaterfall != null) {
+                AceStreamEngineBaseApplication.getInstance().logAdRequestClose();
                 mAdsWaterfall.setPlacement(AdsWaterfall.Placement.CLOSE);
                 requestNextAds();
             }
@@ -4474,8 +4518,9 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         if(shouldShowAds()) {
-            initAds();
+            AceStreamEngineBaseApplication.getInstance().logAdRequestPreroll();
             initVastAds(vastTags);
+            initAds();
             requestNextAds();
         }
     }
@@ -5058,11 +5103,14 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             return;
         }
 
-        if(hasNoAds()) {
+        boolean hasNoAds = hasNoAds();
+        if(hasNoAds) {
             showAdsOnPause = AceStreamEngineBaseApplication.showAdsOnPause();
         }
 
         App.v(TAG, "onContentPaused: showAds=" + showAdsOnPause);
+
+        AceStreamEngineBaseApplication.getInstance().logAdRequestPause();
 
         if(mAdsWaterfall != null) {
             mAdsWaterfall.setPlacement(AdsWaterfall.Placement.PAUSE, true);
@@ -5132,6 +5180,8 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             return false;
         }
 
+        AceStreamEngineBaseApplication.getInstance().logAdRequestUnpause();
+
         if (mAdsWaterfall != null) {
             mAdsWaterfall.setPlacement(AdsWaterfall.Placement.UNPAUSE);
             return requestNextAds();
@@ -5186,6 +5236,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 this);
 
         mAdsWaterfall.setPlacement(AdsWaterfall.Placement.PREROLL);
+        updateVastAdsCount();
 
         if(!AceStreamEngineBaseApplication.shouldShowAdMobAds()) {
             App.v(TAG, "initAds: non-vast ads are disabled for this device");
@@ -5256,18 +5307,32 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                     // Code to be executed when an ad request fails.
                     App.v(TAG, "ads:event:interstitial:preroll:onAdFailedToLoad: errorCode=" + errorCode);
                     mAdsWaterfall.onFailed(AdsWaterfall.Inventory.ADMOB_INTERSTITIAL_PREROLL);
+
+                    if(mIsStarted && mAdmobInterstitialBackgroundLoadInterval > 0) {
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(mIsStarted) {
+                                    loadInterstitialAdPreroll();
+                                }
+                            }
+                        }, mAdmobInterstitialBackgroundLoadInterval);
+                    }
                 }
 
                 @Override
                 public void onAdOpened() {
                     // Code to be executed when the ad is displayed.
                     App.v(TAG, "ads:event:interstitial:preroll:onAdOpened");
-                    notifyAdsLoaded();
                     onContentPauseRequested(AdSource.INTERSTITIAL_AD);
                     addCoins("interstitial:player:preroll", 0, true);
                     AceStreamEngineBaseApplication.getInstance().logAdImpression(
                             AdManager.ADS_PROVIDER_ADMOB,
                             AdsWaterfall.Placement.PREROLL,
+                            AdsWaterfall.AdType.INTERSTITIAL);
+
+                    AceStreamEngineBaseApplication.getInstance().logAdImpressionPreroll(
+                            AdManager.ADS_PROVIDER_ADMOB,
                             AdsWaterfall.AdType.INTERSTITIAL);
                 }
 
@@ -5283,7 +5348,9 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                     App.v(TAG, "ads:event:interstitial:preroll:onAdClosed: finishing=" + isFinishing());
 
                     if (!isFinishing()) {
-                        onContentResumeRequested(AdSource.INTERSTITIAL_AD);
+                        if(!requestNextAds(true, true, true)) {
+                            onContentResumeRequested(AdSource.INTERSTITIAL_AD);
+                        }
                     }
                 }
             });
@@ -5320,6 +5387,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                             AceStreamEngineBaseApplication.getInstance().logAdImpression(
                                     AdManager.ADS_PROVIDER_ADMOB,
                                     AdsWaterfall.Placement.PAUSE,
+                                    AdsWaterfall.AdType.INTERSTITIAL);
+
+                            AceStreamEngineBaseApplication.getInstance().logAdImpressionPause(
+                                    AdManager.ADS_PROVIDER_ADMOB,
                                     AdsWaterfall.AdType.INTERSTITIAL);
                         }
 
@@ -5374,6 +5445,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                             AceStreamEngineBaseApplication.getInstance().logAdImpression(
                                     AdManager.ADS_PROVIDER_ADMOB,
                                     AdsWaterfall.Placement.CLOSE,
+                                    AdsWaterfall.AdType.INTERSTITIAL);
+
+                            AceStreamEngineBaseApplication.getInstance().logAdImpressionClose(
+                                    AdManager.ADS_PROVIDER_ADMOB,
                                     AdsWaterfall.AdType.INTERSTITIAL);
                         }
 
@@ -5457,6 +5532,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         // Use an activity context to get the rewarded video instance.
+        mAdsWaterfall.onLoading(AdsWaterfall.Inventory.ADMOB_REWARDED_VIDEO);
         mAdManager.initRewardedVideo(this, mAdManager.getAutoAdSegment(), new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
@@ -5467,7 +5543,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             @Override
             public void onRewardedVideoAdOpened() {
                 App.v(TAG, "ads:event:rv:preroll:onRewardedVideoAdOpened");
-                notifyAdsLoaded();
                 onContentPauseRequested(AdSource.REWARDED_VIDEO);
             }
 
@@ -5479,8 +5554,18 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             @Override
             public void onRewardedVideoAdClosed() {
                 App.v(TAG, "ads:event:rv:preroll:onRewardedVideoAdClosed: finishing=" + isFinishing());
-                if(!isFinishing()) {
-                    onContentResumeRequested(AdSource.REWARDED_VIDEO);
+                if (!isFinishing() && mAdsWaterfall != null) {
+                    String placement = mAdsWaterfall.getPlacement();
+                    boolean resume = true;
+                    if(TextUtils.equals(placement, AdsWaterfall.Placement.PREROLL)) {
+                        // Try to show VAST on preroll
+                        if(requestNextAds(true, true, true)) {
+                            resume = false;
+                        }
+                    }
+                    if(resume) {
+                        onContentResumeRequested(AdSource.REWARDED_VIDEO);
+                    }
                 }
             }
 
@@ -5498,6 +5583,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                         AdsWaterfall.Placement.PREROLL,
                         AdsWaterfall.AdType.REWARDED_VIDEO,
                         params);
+
+                AceStreamEngineBaseApplication.getInstance().logAdImpressionPreroll(
+                        AdManager.ADS_PROVIDER_ADMOB,
+                        AdsWaterfall.AdType.REWARDED_VIDEO);
             }
 
             @Override
@@ -5589,7 +5678,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             boolean resume = true;
             if(TextUtils.equals(placement, AdsWaterfall.Placement.PAUSE)) {
                 if(mIsStarted && !mIsInBackground) {
-                    resume = onContentUnpaused();
+                    resume = !onContentUnpaused();
                 }
                 else {
                     mShowUnpauseAdsOnResume = true;
@@ -5617,7 +5706,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         Log.v(TAG, "skipBonusAds");
         boolean show = false;
         if(!hasNoAds()) {
-            show = requestNextAds(true);
+            show = requestNextAds(true, false, true);
         }
         hideCustomAds(!show);
     }
@@ -5628,10 +5717,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
      * @return boolean True if ads will be shown immediately
      */
     private boolean requestNextAds() {
-        return requestNextAds(false);
+        return requestNextAds(false, false, false);
     }
 
-    private boolean requestNextAds(boolean skipFrequencyCapping) {
+    private boolean requestNextAds(boolean skipFrequencyCapping, boolean onlyVast, boolean skipStatistics) {
         if(!shouldShowAds()) {
             return false;
         }
@@ -5643,6 +5732,12 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
         boolean hasNoads = hasNoAds();
         boolean showAds = true;
+
+        if(TextUtils.equals(mAdsWaterfall.getPlacement(), "preroll")
+                && mAdsWaterfall.getVastAdsCount() >= 2) {
+            Logger.v(TAG, "requestNextAds: force only vast");
+            onlyVast = true;
+        }
 
         if(hasNoads) {
             if(TextUtils.equals(mAdsWaterfall.getPlacement(), "preroll")) {
@@ -5675,7 +5770,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             }
 
             params.putBoolean("show_ads", true);
-            return mAdsWaterfall.showNext(skipFrequencyCapping);
+            return mAdsWaterfall.showNext(skipFrequencyCapping, onlyVast);
         }
         catch(AdsWaterfall.FrequencyCapError e) {
             params.putBoolean("show_ads", false);
@@ -5684,9 +5779,11 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
         finally {
             params.putBoolean("has_noads", hasNoads);
-            AceStreamEngineBaseApplication.getInstance().logAdRequest(
-                    mAdsWaterfall.getPlacement(),
-                    params);
+            if(!skipStatistics) {
+                AceStreamEngineBaseApplication.getInstance().logAdRequest(
+                        mAdsWaterfall.getPlacement(),
+                        params);
+            }
         }
     }
 
@@ -6352,15 +6449,28 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             public void onInterstitialShown() {
                 String placement = mAdsWaterfall.getPlacement();
                 App.v(TAG, "ads:appodeal:onInterstitialShown: placement=" + placement);
-                if(!TextUtils.equals(placement, AdsWaterfall.Placement.PAUSE)) {
-                    notifyAdsLoaded();
-                }
                 onContentPauseRequested(AdSource.INTERSTITIAL_AD);
                 addCoins("interstitial:player", 0, true);
                 AceStreamEngineBaseApplication.getInstance().logAdImpression(
                         AdManager.ADS_PROVIDER_APPODEAL,
                         placement,
                         AdsWaterfall.AdType.INTERSTITIAL);
+
+                if(TextUtils.equals(placement, "preroll")) {
+                    AceStreamEngineBaseApplication.getInstance().logAdImpressionPreroll(
+                            AdManager.ADS_PROVIDER_APPODEAL,
+                            AdsWaterfall.AdType.INTERSTITIAL);
+                }
+                else if(TextUtils.equals(placement, "pause")) {
+                    AceStreamEngineBaseApplication.getInstance().logAdImpressionPause(
+                            AdManager.ADS_PROVIDER_APPODEAL,
+                            AdsWaterfall.AdType.INTERSTITIAL);
+                }
+                else if(TextUtils.equals(placement, "close")) {
+                    AceStreamEngineBaseApplication.getInstance().logAdImpressionClose(
+                            AdManager.ADS_PROVIDER_APPODEAL,
+                            AdsWaterfall.AdType.INTERSTITIAL);
+                }
             }
             @Override
             public void onInterstitialClicked() {
@@ -6374,7 +6484,16 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                     onExitAdClosed();
                 }
                 else if (!isFinishing()) {
-                    onContentResumeRequested(AdSource.INTERSTITIAL_AD);
+                    boolean resume = true;
+                    if(TextUtils.equals(placement, AdsWaterfall.Placement.PREROLL)) {
+                        // Try to show VAST on preroll
+                        if(requestNextAds(true, true, true)) {
+                            resume = false;
+                        }
+                    }
+                    if(resume) {
+                        onContentResumeRequested(AdSource.INTERSTITIAL_AD);
+                    }
                 }
 
             }
@@ -6403,7 +6522,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             @Override
             public void onRewardedVideoShown() {
                 Log.d(TAG, "appodeal:onRewardedVideoShown");
-                notifyAdsLoaded();
                 onContentPauseRequested(AdSource.REWARDED_VIDEO);
             }
 
@@ -6421,13 +6539,27 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                         AdsWaterfall.Placement.PREROLL,
                         AdsWaterfall.AdType.REWARDED_VIDEO,
                         params);
+
+                AceStreamEngineBaseApplication.getInstance().logAdImpressionPreroll(
+                        AdManager.ADS_PROVIDER_APPODEAL,
+                        AdsWaterfall.AdType.REWARDED_VIDEO);
             }
 
             @Override
             public void onRewardedVideoClosed(boolean finished) {
                 Log.d(TAG, "appodeal:onRewardedVideoClosed");
-                if (!isFinishing()) {
-                    onContentResumeRequested(AdSource.REWARDED_VIDEO);
+                if (!isFinishing() && mAdsWaterfall != null) {
+                    String placement = mAdsWaterfall.getPlacement();
+                    boolean resume = true;
+                    if(TextUtils.equals(placement, AdsWaterfall.Placement.PREROLL)) {
+                        // Try to show VAST on preroll
+                        if(requestNextAds(true, true, true)) {
+                            resume = false;
+                        }
+                    }
+                    if(resume) {
+                        onContentResumeRequested(AdSource.REWARDED_VIDEO);
+                    }
                 }
             }
 
@@ -6551,6 +6683,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                         mAdsWaterfall.setPlacement(AdsWaterfall.Placement.PREROLL, true);
                         mAdsWaterfall.resetInventoryStatus(AdsWaterfall.Inventory.VAST);
                     }
+                    AceStreamEngineBaseApplication.getInstance().logAdRequestPreroll();
                     requestNextAds();
                 }
             }
@@ -7058,5 +7191,20 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         if (mPlaybackManager != null) {
             mPlaybackManager.addCoins(source, amount, needNoAds);
         }
+    }
+
+    protected Runnable mGoingToShowAdsTask = new Runnable() {
+        @Override
+        public void run() {
+            if(mIsStarted) {
+                mGoingToShowAds = false;
+            }
+        }
+    };
+
+    protected void goingToShowAds() {
+        mGoingToShowAds = true;
+        mHandler.removeCallbacks(mGoingToShowAdsTask);
+        mHandler.postDelayed(mGoingToShowAdsTask, 5000);
     }
 }

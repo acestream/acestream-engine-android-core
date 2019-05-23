@@ -165,6 +165,10 @@ public class MainFragment extends Fragment implements OnClickListener
                     AdsWaterfall.Placement.MAIN_SCREEN,
                     AdsWaterfall.AdType.REWARDED_VIDEO,
                     params);
+
+            AceStreamEngineBaseApplication.getInstance().logAdImpressionBonusesScreen(
+                    AdManager.ADS_PROVIDER_ADMOB,
+                    AdsWaterfall.AdType.REWARDED_VIDEO);
         }
 
         @Override
@@ -917,6 +921,10 @@ public class MainFragment extends Fragment implements OnClickListener
                         AdsWaterfall.Placement.MAIN_SCREEN,
                         AdsWaterfall.AdType.REWARDED_VIDEO,
                         params);
+
+                AceStreamEngineBaseApplication.getInstance().logAdImpressionBonusesScreen(
+                        AdManager.ADS_PROVIDER_APPODEAL,
+                        AdsWaterfall.AdType.REWARDED_VIDEO);
             }
 
             @Override

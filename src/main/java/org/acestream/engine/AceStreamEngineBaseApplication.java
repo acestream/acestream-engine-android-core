@@ -110,6 +110,17 @@ public class AceStreamEngineBaseApplication {
 	public final static String ANALYTICS_EVENT_AD_IMPRESSION = "custom_ad_impression";
 	public final static String ANALYTICS_EVENT_AD_REQUEST = "custom_ad_request";
 
+	public final static String ANALYTICS_EVENT_AD_IMPRESSION_BONUSES_SCREEN = "as_ad_impression_bonuses_screen";
+	public final static String ANALYTICS_EVENT_AD_IMPRESSION_PREROLL = "as_ad_impression_preroll";
+	public final static String ANALYTICS_EVENT_AD_IMPRESSION_PAUSE = "as_ad_impression_pause";
+	public final static String ANALYTICS_EVENT_AD_IMPRESSION_UNPAUSE = "as_ad_impression_unpause";
+	public final static String ANALYTICS_EVENT_AD_IMPRESSION_CLOSE = "as_ad_impression_close";
+
+	public final static String ANALYTICS_EVENT_AD_REQUEST_PREROLL = "as_ad_request_preroll";
+	public final static String ANALYTICS_EVENT_AD_REQUEST_PAUSE = "as_ad_request_pause";
+	public final static String ANALYTICS_EVENT_AD_REQUEST_UNPAUSE = "as_ad_request_unpause";
+	public final static String ANALYTICS_EVENT_AD_REQUEST_CLOSE = "as_ad_request_close";
+
 	public final static String BROADCAST_DO_INTERNAL_MAINTAIN = "do_internal_maintain";
 
 	private static Context appContext = null;
@@ -1013,7 +1024,13 @@ public class AceStreamEngineBaseApplication {
 
 		Appodeal.setAutoCache(adTypes, autoCache);
 		Appodeal.disableLocationPermissionCheck();
-		Appodeal.setSegmentFilter("user_segment", segment);
+		if(BuildConfig.DEBUG && BuildConfig.appodealUseTestAds) {
+			// Use segment without price floor (because test ads have eCPM=0)
+			Appodeal.setSegmentFilter("user_segment", 1001);
+		}
+		else {
+			Appodeal.setSegmentFilter("user_segment", segment);
+		}
 		Appodeal.initialize(activity, appKey, adTypes, gdprConsent);
 	}
 
@@ -1491,6 +1508,41 @@ public class AceStreamEngineBaseApplication {
 		logEvent(ANALYTICS_EVENT_AD_IMPRESSION, params);
 	}
 
+	public void logAdImpressionBonusesScreen(String provider, String type) {
+		Bundle params = new Bundle();
+		params.putString("provider", provider);
+		params.putString("type", type);
+		logEvent(ANALYTICS_EVENT_AD_IMPRESSION_BONUSES_SCREEN, params);
+	}
+
+	public void logAdImpressionPreroll(String provider, String type) {
+		Bundle params = new Bundle();
+		params.putString("provider", provider);
+		params.putString("type", type);
+		logEvent(ANALYTICS_EVENT_AD_IMPRESSION_PREROLL, params);
+	}
+
+	public void logAdImpressionPause(String provider, String type) {
+		Bundle params = new Bundle();
+		params.putString("provider", provider);
+		params.putString("type", type);
+		logEvent(ANALYTICS_EVENT_AD_IMPRESSION_PAUSE, params);
+	}
+
+	public void logAdImpressionUnpause(String provider, String type) {
+		Bundle params = new Bundle();
+		params.putString("provider", provider);
+		params.putString("type", type);
+		logEvent(ANALYTICS_EVENT_AD_IMPRESSION_UNPAUSE, params);
+	}
+
+	public void logAdImpressionClose(String provider, String type) {
+		Bundle params = new Bundle();
+		params.putString("provider", provider);
+		params.putString("type", type);
+		logEvent(ANALYTICS_EVENT_AD_IMPRESSION_CLOSE, params);
+	}
+
 	public void logPlayRequest(SelectedPlayer player) {
 		logPlayRequest(player.getTypeName(), player.id1);
 	}
@@ -1519,6 +1571,22 @@ public class AceStreamEngineBaseApplication {
 		}
 		params.putString("placement", placement);
 		logEvent(ANALYTICS_EVENT_AD_REQUEST, params);
+	}
+
+	public void logAdRequestPreroll() {
+		logEvent(ANALYTICS_EVENT_AD_REQUEST_PREROLL, null);
+	}
+
+	public void logAdRequestPause() {
+		logEvent(ANALYTICS_EVENT_AD_REQUEST_PAUSE, null);
+	}
+
+	public void logAdRequestUnpause() {
+		logEvent(ANALYTICS_EVENT_AD_REQUEST_UNPAUSE, null);
+	}
+
+	public void logAdRequestClose() {
+		logEvent(ANALYTICS_EVENT_AD_REQUEST_CLOSE, null);
 	}
 
 	public static void setWebViewAvailable(boolean available) {

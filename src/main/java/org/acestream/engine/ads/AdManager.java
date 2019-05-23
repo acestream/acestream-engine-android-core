@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class AdManager {
     private final static String TAG = "AS/AdManager";
@@ -184,7 +185,7 @@ public class AdManager {
         initRewardedVideo(activity, -1, listener);
     }
 
-    public void initRewardedVideo(final @NonNull Activity activity, int segmentId, @NonNull final RewardedVideoAdListener listener) {
+    public void initRewardedVideo(final @NonNull Activity activity, int segmentId, @Nullable final RewardedVideoAdListener listener) {
         mRewardedVideoAdListener = listener;
         mRewardedVideoSegmentId = segmentId;
 
@@ -358,16 +359,17 @@ public class AdManager {
         return mRewardedVideoAd != null && mRewardedVideoAd.isLoaded();
     }
 
-    public void showRewardedVideo() {
+    public boolean showRewardedVideo() {
         if(mRewardedVideoAd == null) {
             Logger.v(TAG, "showRewardedVideo: not initialized");
-            return;
+            return false;
         }
         if(!mRewardedVideoAd.isLoaded()) {
             Logger.v(TAG, "showRewardedVideo: not loaded");
-            return;
+            return false;
         }
         mRewardedVideoAd.show();
+        return true;
     }
 
     private static boolean gotRewardedVideoListeners() {

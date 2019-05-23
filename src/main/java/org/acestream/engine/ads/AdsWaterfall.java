@@ -8,8 +8,10 @@ import android.util.Pair;
 import org.acestream.engine.AceStreamEngineBaseApplication;
 import org.acestream.engine.aliases.App;
 import org.acestream.sdk.controller.api.response.AdConfig;
+import org.acestream.sdk.utils.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -101,6 +103,7 @@ public class AdsWaterfall {
     private boolean mDone;
     private Handler mHandler;
     private InventoryHolder mInventoryHolder;
+    private int mVastAdsCount = 0;
 
     private class LoadTimeoutTask implements Runnable {
         private String mInventory;
@@ -135,6 +138,15 @@ public class AdsWaterfall {
         if(mCustomAdsRvProviders == null) {
             mCustomAdsRvProviders = new ArrayList<>();
         }
+    }
+
+    public void setVastAdsCount(int count) {
+        Logger.v(TAG, "setVastAdsCount: " + count);
+        mVastAdsCount = count;
+    }
+
+    public int getVastAdsCount() {
+        return mVastAdsCount;
     }
 
     public String getPlacement() {
@@ -181,11 +193,11 @@ public class AdsWaterfall {
     }
 
     public boolean showNext() throws FrequencyCapError {
-        return showNext(false);
+        return showNext(false, false);
     }
 
-    public boolean showNext(boolean skipFrequencyCapping) throws FrequencyCapError {
-        List<String> inventoryList = next(skipFrequencyCapping);
+    public boolean showNext(boolean skipFrequencyCapping, boolean onlyVast) throws FrequencyCapError {
+        List<String> inventoryList = next(skipFrequencyCapping, onlyVast);
         if(inventoryList == null) {
             App.v(TAG, "showNext: no next inventory");
             return false;
@@ -218,7 +230,7 @@ public class AdsWaterfall {
 
         if(!wait) {
             // no ads or all failed
-            return showNext();
+            return showNext(true, onlyVast);
         }
 
         return false;
@@ -310,7 +322,7 @@ public class AdsWaterfall {
         mInventoryWait.put(inventory, System.currentTimeMillis());
     }
 
-    public List<String> next(boolean skipFrequencyCapping) throws FrequencyCapError {
+    public List<String> next(boolean skipFrequencyCapping, boolean onlyVast) throws FrequencyCapError {
         ++mIndex;
         List<List<String>> list = getList(mPlacement);
 
@@ -334,7 +346,16 @@ public class AdsWaterfall {
         }
 
         List<String> nextInventory = list.get(mIndex);
-        App.v(TAG, "next: placement=" + mPlacement + " next=" + TextUtils.join(",", nextInventory));
+        App.v(TAG, "next: placement=" + mPlacement + " onlyVast=" + onlyVast + " next=" + TextUtils.join(",", nextInventory));
+
+        if(onlyVast) {
+            if(nextInventory.contains(Inventory.VAST)) {
+                return Collections.singletonList(Inventory.VAST);
+            }
+            else {
+                return next(skipFrequencyCapping, onlyVast);
+            }
+        }
 
         return nextInventory;
     }
@@ -437,6 +458,15 @@ public class AdsWaterfall {
 
     private int getLoadTimeout(String inventory) {
         int timeout = 10000;
+
+        if(TextUtils.equals(mPlacement, Placement.PREROLL) && getVastAdsCount() > 0) {
+            if(TextUtils.equals(inventory, Inventory.APPODEAL_INTERSTITIAL)
+                    || TextUtils.equals(inventory, Inventory.ADMOB_INTERSTITIAL_PREROLL)
+                    || TextUtils.equals(inventory, Inventory.APPODEAL_REWARDED_VIDEO)
+                    ||TextUtils.equals(inventory, Inventory.ADMOB_REWARDED_VIDEO)) {
+                inventory = "preroll_interstitial_with_vast";
+            }
+        }
 
         if(mLoadTimeout != null && mLoadTimeout.containsKey(inventory)) {
             timeout = mLoadTimeout.get(inventory);

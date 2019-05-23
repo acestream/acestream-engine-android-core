@@ -2,6 +2,7 @@ package org.acestream.engine;
 
 import java.io.IOException;
 
+import org.acestream.engine.ads.AdManager;
 import org.acestream.engine.aliases.App;
 import org.acestream.engine.controller.Callback;
 import org.acestream.engine.controller.ExtendedEngineApi;
@@ -34,7 +35,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appodeal.ads.Appodeal;
 import com.connectsdk.device.ConnectableDevice;
+import com.google.android.gms.ads.AdListener;
 
 import org.acestream.sdk.AceStream;
 import org.acestream.sdk.Constants;
@@ -44,17 +47,21 @@ import org.acestream.sdk.EngineStatus;
 import org.acestream.sdk.SelectedPlayer;
 import org.acestream.engine.acecast.client.AceStreamRemoteDevice;
 import org.acestream.sdk.controller.api.TransportFileDescriptor;
+import org.acestream.sdk.controller.api.response.AdConfig;
 import org.acestream.sdk.controller.api.response.MediaFilesResponse;
 import org.acestream.sdk.errors.GenericValidationException;
 import org.acestream.sdk.errors.TransportFileParsingException;
 import org.acestream.sdk.interfaces.EngineStatusListener;
 import org.acestream.sdk.interfaces.IRemoteDevice;
 import org.acestream.sdk.player.api.AceStreamPlayer;
+import org.acestream.sdk.utils.AuthUtils;
 import org.acestream.sdk.utils.Logger;
 import org.acestream.sdk.utils.MiscUtils;
 import org.acestream.sdk.utils.PermissionUtils;
 import org.acestream.sdk.utils.VlcBridge;
 import org.acestream.sdk.utils.Workers;
+
+import static org.acestream.engine.Constants.ADMOB_TEST_INTERSTITIAL;
 
 public class ContentStartActivity
     extends
@@ -347,6 +354,26 @@ public class ContentStartActivity
         }
         mPlaybackManager.addEngineStatusListener(this);
         mPlaybackManager.addPlaybackStateCallback(mPlaybackStateCallback);
+
+        if(AceStreamEngineBaseApplication.shouldShowAdMobAds()) {
+            mPlaybackManager.getAdConfigAsync(new AceStreamManagerImpl.AdConfigCallback() {
+                @Override
+                public void onSuccess(AdConfig adConfig) {
+                    if (!mRunning) return;
+                    AdManager adManager = mPlaybackManager.getAdManager();
+                    if (adConfig != null && adManager != null) {
+                        adManager.init(ContentStartActivity.this);
+                        if(adConfig.isProviderEnabled(AdManager.ADS_PROVIDER_ADMOB)) {
+                            initInterstitialAd(adManager);
+                        }
+
+                        if(adConfig.isProviderEnabled(AdManager.ADS_PROVIDER_APPODEAL)) {
+                            initAppodeal(adConfig);
+                        }
+                    }
+                }
+            });
+        }
     }
 
 	@Override
@@ -1180,5 +1207,112 @@ public class ContentStartActivity
                 mGotStorageAccess = 0;
             }
         }
+    }
+
+    private void initInterstitialAd(@NonNull AdManager adManager) {
+        final boolean loadPreroll;
+        final boolean loadPause;
+        final boolean loadClose;
+        boolean useTestAds = BuildConfig.admobUseTestAds;
+
+        if(hasNoAds()) {
+            // Users with NoAds can control ad placement
+            loadPreroll = AceStreamEngineBaseApplication.showAdsOnPreroll();
+            loadPause = AceStreamEngineBaseApplication.showAdsOnPause();
+            loadClose = AceStreamEngineBaseApplication.showAdsOnClose();
+        }
+        else {
+            loadPreroll = true;
+            loadPause = true;
+            loadClose = true;
+        }
+
+        App.v(TAG, "ads:initInterstitialAd:"
+                + " preroll=" + loadPreroll
+                + " pause=" + loadPause
+                + " close=" + loadClose
+        );
+
+        if(loadPreroll) {
+            adManager.initInterstitial(
+                this,
+                "preroll",
+                useTestAds
+                    ? ADMOB_TEST_INTERSTITIAL
+                    : AceStreamEngineBaseApplication.getStringAppMetadata("adMobInterstitialPrerollId"),
+                null
+                );
+            adManager.loadInterstitial("preroll");
+        }
+
+        if(loadPause) {
+            adManager.initInterstitial(
+                this,
+                "pause",
+                BuildConfig.admobUseTestAds
+                    ? ADMOB_TEST_INTERSTITIAL
+                    : AceStreamEngineBaseApplication.getStringAppMetadata("adMobInterstitialPauseId"),
+                null);
+            adManager.loadInterstitial("pause");
+        }
+
+        if(loadClose) {
+            adManager.initInterstitial(
+                this,
+                "close",
+                BuildConfig.admobUseTestAds
+                    ? ADMOB_TEST_INTERSTITIAL
+                    : AceStreamEngineBaseApplication.getStringAppMetadata("adMobInterstitialCloseId"),
+                null);
+            adManager.loadInterstitial("close");
+        }
+    }
+
+    private void initAppodeal(@NonNull AdConfig adConfig) {
+        boolean loadInterstitial = true;
+        boolean loadRv = isUserLoggedIn();
+
+        if(hasNoAds()) {
+            // Users with NoAds can control ad placement
+            loadRv = AceStreamEngineBaseApplication.showAdsOnPreroll();
+            loadInterstitial = AceStreamEngineBaseApplication.showAdsOnPreroll()
+                    || AceStreamEngineBaseApplication.showAdsOnPause()
+                    || AceStreamEngineBaseApplication.showAdsOnClose();
+        }
+
+        int adTypes = 0;
+        if(loadInterstitial) {
+            adTypes |= Appodeal.INTERSTITIAL;
+        }
+        if(loadRv) {
+            adTypes |= Appodeal.REWARDED_VIDEO;
+        }
+
+        App.v(TAG, "initAppodeal: interstitial=" + loadInterstitial + " rv=" + loadRv);
+
+        if(adTypes > 0) {
+            AceStreamEngineBaseApplication.initAppodeal(
+                    -1,
+                    this,
+                    adTypes,
+                    true,
+                    adConfig);
+        }
+    }
+
+    private boolean isUserLoggedIn() {
+        if(mPlaybackManager == null) {
+            return false;
+        }
+
+        return mPlaybackManager.getAuthLevel() > 0;
+    }
+
+    private boolean hasNoAds() {
+        if(mPlaybackManager == null) {
+            return false;
+        }
+
+        return AuthUtils.hasNoAds(mPlaybackManager.getAuthLevel());
     }
 }
