@@ -11,6 +11,7 @@
     <string name="ads_are_requested">Виконується запит реклами…</string>
     <string name="ads_are_loaded">Завантаження реклами…</string>
     <string name="ads_are_missing_please_wait">Реклама відсутня. Спробуйте пізніше.</string>
+    <string name="start_survey">Start survey</string>
     <string name="survey_is_requested">Виконується запит опитування…</string>
     <string name="survey_is_loaded">Завантаження опитування…</string>
     <string name="survey_is_missing_please_wait">Опитування відсутнє. Спробуйте пізніше.</string>

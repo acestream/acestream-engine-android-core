@@ -11,6 +11,7 @@
     <string name="ads_are_requested">Идет запрос рекламы…</string>
     <string name="ads_are_loaded">Загрузка рекламы…</string>
     <string name="ads_are_missing_please_wait">Реклама отсутствует. Попробуйте позже.</string>
+    <string name="start_survey">Start survey</string>
     <string name="survey_is_requested">Идет запрос опроса…</string>
     <string name="survey_is_loaded">Загрузка опроса…</string>
     <string name="survey_is_missing_please_wait">Опрос отсутствует. Попробуйте позже.</string>

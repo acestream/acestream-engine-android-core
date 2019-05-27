@@ -78,6 +78,7 @@
     <string name="ads_are_missing_please_wait">There is no ads. Try later.</string>
     <string name="set_ads_price">Set price for watching ads</string>
     <string name="license">License</string>
+    <string name="start_survey">Начать опрос</string>
     <string name="survey_is_requested">Survey is requested…</string>
     <string name="survey_is_loaded">Loading survey…</string>
     <string name="survey_is_missing_please_wait">There is no survey. Try later.</string>
