@@ -32,12 +32,31 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.pollfish.classes.SurveyInfo;
+import com.pollfish.interfaces.PollfishClosedListener;
+import com.pollfish.interfaces.PollfishCompletedSurveyListener;
+import com.pollfish.interfaces.PollfishOpenedListener;
+import com.pollfish.interfaces.PollfishReceivedSurveyListener;
+import com.pollfish.interfaces.PollfishSurveyNotAvailableListener;
+import com.pollfish.interfaces.PollfishUserNotEligibleListener;
+import com.pollfish.interfaces.PollfishUserRejectedSurveyListener;
+import com.pollfish.main.PollFish;
+import com.pollfish.main.PollFish.ParamsBuilder;
+import com.pollfish.constants.Position;
+
 public class BonusAdsActivity
     extends
         PlaybackManagerAppCompatActivity
     implements
         OnClickListener,
-        PlaybackManager.AuthCallback
+        PlaybackManager.AuthCallback,
+        PollfishCompletedSurveyListener,
+        PollfishReceivedSurveyListener,
+        PollfishOpenedListener,
+        PollfishClosedListener,
+        PollfishSurveyNotAvailableListener,
+        PollfishUserNotEligibleListener,
+        PollfishUserRejectedSurveyListener
 {
 
     private final static String TAG = "AS/BonusAds";
@@ -56,6 +75,7 @@ public class BonusAdsActivity
     private Button mNoBonusAdsButton;
     private Button mBonusesButton;
     private Button mSelectSegmentButton;
+    private Button mStartSurveyButton;
     private TextView mBonusesLabel;
     private Handler mHandler = new Handler();
     private BonusAdsStatus mBonusAdsStatus = BonusAdsStatus.REQUESTING;
@@ -171,11 +191,13 @@ public class BonusAdsActivity
         mBonusesButton = findViewById(R.id.btn_bonuses);
         mBonusesLabel = findViewById(R.id.lbl_bonuses);
         mSelectSegmentButton = findViewById(R.id.btn_select_segment);
+        mStartSurveyButton = findViewById(R.id.btn_start_survey);
 
         mShowBonusAdsButton.setOnClickListener(this);
         mNoBonusAdsButton.setOnClickListener(this);
         mBonusesButton.setOnClickListener(this);
         mSelectSegmentButton.setOnClickListener(this);
+        mStartSurveyButton.setOnClickListener(this);
     }
 
     @Override
@@ -200,6 +222,7 @@ public class BonusAdsActivity
     protected void onResume() {
         super.onResume();
         updateUserSegment();
+        initPollfish();
     }
 
     @Override
@@ -403,6 +426,14 @@ public class BonusAdsActivity
         else if (i == R.id.btn_select_segment) {
             selectSegment();
         }
+        else if (i == R.id.btn_start_survey) {
+            if(PollFish.isPollfishPresent()) {
+                PollFish.show();
+            }
+            else {
+                mStartSurveyButton.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
@@ -539,4 +570,90 @@ public class BonusAdsActivity
     private AdManager getAdManager() {
         return mPlaybackManager == null ? null : mPlaybackManager.getAdManager();
     }
+
+    // BEGIN pollfish
+    private void initPollfish() {
+        String pollfishApiKey = AceStreamEngineBaseApplication.getStringAppMetadata("pollfishApiKey");
+        if(!TextUtils.isEmpty(pollfishApiKey)) {
+            ParamsBuilder paramsBuilder = new ParamsBuilder(pollfishApiKey)
+                    .rewardMode(true)
+                    .build();
+            PollFish.initWith(this, paramsBuilder);
+        }
+    }
+
+    @Override
+    public void onPollfishClosed() {
+        Log.d(TAG, "onPollfishClosed");
+    }
+
+    @Override
+    public void onPollfishOpened() {
+        Log.d(TAG, "onPollfishOpened");
+
+    }
+
+    @Override
+    public void onPollfishSurveyNotAvailable() {
+        Log.d(TAG, "onPollfishSurveyNotAvailable");
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+            }
+        });
+    }
+
+    @Override
+    public void onUserNotEligible() {
+        Log.d(TAG, "onUserNotEligible");
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mStartSurveyButton.setVisibility(View.INVISIBLE);
+                //TODO: implement user notification
+            }
+        });
+
+    }
+
+    @Override
+    public void onUserRejectedSurvey() {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mStartSurveyButton.setVisibility(View.INVISIBLE);
+                //TODO: request next poll
+            }
+        });
+    }
+
+    @Override
+    public void onPollfishSurveyCompleted(final SurveyInfo surveyInfo) {
+        Log.v(TAG, "onPollfishSurveyCompleted: " + surveyInfo.toString());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mStartSurveyButton.setVisibility(View.INVISIBLE);
+                int amount = surveyInfo.getRewardValue() * 1000;
+                if(amount > 0) {
+                    addCoins("pollfish", amount, false);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onPollfishSurveyReceived(SurveyInfo surveyInfo) {
+        Log.v(TAG, "onPollfishSurveyReceived");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mStartSurveyButton.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+    // END pollfish
 }

@@ -390,3 +390,7 @@
 #MultiDex
 -keepnames class android.support.multidex.MultiDex
 ## END Appodeal
+
+# pollfish
+-dontwarn com.pollfish.**
+-keep class com.pollfish.** { *; }

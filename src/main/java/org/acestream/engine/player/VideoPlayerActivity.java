@@ -331,14 +331,25 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             }
         }
         else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL)) {
-            if(Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
+            if(mAdManager != null && mAdManager.isProviderEnabled(AdManager.ADS_PROVIDER_APPODEAL)) {
+                if (Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
+                                App.v(TAG, "loadInventory: interstitial was loaded");
+                                mAdsWaterfall.onLoaded(AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL);
+                            }
+                        }
+                    });
+                }
+            }
+            else {
+                Logger.v(TAG, "ads:loadInventory: appodeal disabled: inventory=" + inventory);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
-                            App.v(TAG, "loadInventory: interstitial was loaded");
-                            mAdsWaterfall.onLoaded(AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL);
-                        }
+                        mAdsWaterfall.onFailed(inventory);
                     }
                 });
             }
@@ -5532,8 +5543,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         // Use an activity context to get the rewarded video instance.
-        mAdsWaterfall.onLoading(AdsWaterfall.Inventory.ADMOB_REWARDED_VIDEO);
-        mAdManager.initRewardedVideo(this, mAdManager.getAutoAdSegment(), new RewardedVideoAdListener() {
+        boolean isLoaded = mAdManager.initRewardedVideo(this, mAdManager.getAutoAdSegment(), new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
                 App.v(TAG, "ads:event:rv:preroll:onRewardedVideoAdLoaded");
@@ -5609,6 +5619,13 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 App.v(TAG, "ads:event:rv:preroll:onRewardedVideoCompleted");
             }
         });
+
+        if(isLoaded) {
+            mAdsWaterfall.onLoaded(AdsWaterfall.Inventory.ADMOB_REWARDED_VIDEO);
+        }
+        else {
+            mAdsWaterfall.onLoading(AdsWaterfall.Inventory.ADMOB_REWARDED_VIDEO);
+        }
     }
 
     private boolean showCustomAds() {

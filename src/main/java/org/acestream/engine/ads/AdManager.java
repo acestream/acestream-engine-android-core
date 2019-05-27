@@ -2,6 +2,7 @@ package org.acestream.engine.ads;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.adcolony.sdk.AdColonyAppOptions;
@@ -13,6 +14,8 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.mopub.common.MoPub;
+import com.mopub.common.SdkConfiguration;
 import com.tapjoy.Tapjoy;
 
 import org.acestream.engine.AceStreamEngineBaseApplication;
@@ -68,15 +71,25 @@ public class AdManager {
 
         mActivity = activity;
         if(mAdConfig != null && mAdConfig.isProviderEnabled("admob")) {
+            // TapJoy
             Tapjoy.setUserConsent(AceStreamEngineBaseApplication.getGdprConsent()
                     ? "1"
                     : "0");
 
+            // AdColony
             AdColonyAppOptions appOptions = AdColonyMediationAdapter.getAppOptions();
             appOptions.setGDPRConsentString(AceStreamEngineBaseApplication.getGdprConsent()
                     ? "1"
                     : "0");
             appOptions.setGDPRRequired(true);
+
+            // MoPub
+            String moPubAdUnitId = AceStreamEngineBaseApplication.getStringAppMetadata("moPubAdUnitId");
+            if(!TextUtils.isEmpty(moPubAdUnitId)) {
+                SdkConfiguration sdkConfiguration =
+                        new SdkConfiguration.Builder(moPubAdUnitId).build();
+                MoPub.initializeSdk(activity, sdkConfiguration, null);
+            }
 
             // AdMob
             MobileAds.initialize(mActivity,
@@ -185,7 +198,15 @@ public class AdManager {
         initRewardedVideo(activity, -1, listener);
     }
 
-    public void initRewardedVideo(final @NonNull Activity activity, int segmentId, @Nullable final RewardedVideoAdListener listener) {
+    /**
+     * Init RV
+     *
+     * @param activity
+     * @param segmentId
+     * @param listener
+     * @return true if already loaded
+     */
+    public boolean initRewardedVideo(final @NonNull Activity activity, int segmentId, @Nullable final RewardedVideoAdListener listener) {
         mRewardedVideoAdListener = listener;
         mRewardedVideoSegmentId = segmentId;
 
@@ -287,6 +308,11 @@ public class AdManager {
 
         if(!isRewardedVideoLoaded()) {
             loadRewardedVideoAd(true);
+            return false;
+        }
+        else {
+            Logger.v(TAG, "initRewardedVideo: already loaded");
+            return true;
         }
     }
 

@@ -27,7 +27,6 @@ rm retrofit-2.2.0.jar
 
 # Remove SDKs for which we use newew versions
 rm adcolony-3.3.4.aar
-rm inmobi-7.1.1.jar
 
 # Copy to libs folder
 mkdir -p $LIBS_DIR

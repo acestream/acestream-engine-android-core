@@ -162,10 +162,6 @@ dependencies {
     implementation name: 'ogury-3.0.13', ext: 'aar'
     // END Appodeal
 
-    // InMobi
-    implementation 'com.inmobi.monetization:inmobi-ads:7.2.7'
-    implementation 'com.google.ads.mediation:inmobi:7.2.7.0'
-
     // MoPub
     implementation 'com.google.ads.mediation:mopub:5.1.0.0'
 
@@ -175,6 +171,9 @@ dependencies {
 
     // Tapjoy
     implementation 'com.google.ads.mediation:tapjoy:11.12.2.0'
+
+    // Pollfish
+    implementation 'com.pollfish:pollfish:5.0.2:googleplayRelease@aar'
 
     // Tests
     androidTestImplementation 'com.google.truth:truth:0.42'

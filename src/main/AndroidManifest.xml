@@ -84,6 +84,12 @@
         <meta-data
             android:name="org.acestream.appodealAppKey"
             android:value="${appodealAppKey}"/>
+        <meta-data
+            android:name="org.acestream.moPubAdUnitId"
+            android:value="${moPubAdUnitId}"/>
+        <meta-data
+            android:name="org.acestream.pollfishApiKey"
+            android:value="${pollfishApiKey}"/>
 
         <!-- Required by Appodeal for targetSdkVersion >= 28 -->
         <uses-library
