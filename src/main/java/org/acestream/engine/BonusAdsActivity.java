@@ -42,7 +42,6 @@ import com.pollfish.interfaces.PollfishUserNotEligibleListener;
 import com.pollfish.interfaces.PollfishUserRejectedSurveyListener;
 import com.pollfish.main.PollFish;
 import com.pollfish.main.PollFish.ParamsBuilder;
-import com.pollfish.constants.Position;
 
 public class BonusAdsActivity
     extends
@@ -76,11 +75,15 @@ public class BonusAdsActivity
     private Button mBonusesButton;
     private Button mSelectSegmentButton;
     private Button mStartSurveyButton;
+    private Button mNoSurveyButton;
     private TextView mBonusesLabel;
     private Handler mHandler = new Handler();
     private BonusAdsStatus mBonusAdsStatus = BonusAdsStatus.REQUESTING;
+    private BonusAdsStatus mSurveyStatus = BonusAdsStatus.REQUESTING;
     private double mLastLoadedAppodealRewardedVideoCpm = 0;
     private double mLastStartedAppodealRewardedVideoCpm = 0;
+    private boolean mSurveyCached = false;
+    private boolean mPollfishEnabled = true;
 
     private Runnable mUpdateAuthTask = new Runnable() {
         @Override
@@ -192,12 +195,14 @@ public class BonusAdsActivity
         mBonusesLabel = findViewById(R.id.lbl_bonuses);
         mSelectSegmentButton = findViewById(R.id.btn_select_segment);
         mStartSurveyButton = findViewById(R.id.btn_start_survey);
+        mNoSurveyButton = findViewById(R.id.btn_no_survey);
 
         mShowBonusAdsButton.setOnClickListener(this);
         mNoBonusAdsButton.setOnClickListener(this);
         mBonusesButton.setOnClickListener(this);
         mSelectSegmentButton.setOnClickListener(this);
         mStartSurveyButton.setOnClickListener(this);
+        mNoSurveyButton.setOnClickListener(this);
     }
 
     @Override
@@ -222,7 +227,10 @@ public class BonusAdsActivity
     protected void onResume() {
         super.onResume();
         updateUserSegment();
-        initPollfish();
+
+        // Always request survey on resume.
+        // Cannot use previously cached survey, it just doesn't open.
+        requestSurvey();
     }
 
     @Override
@@ -234,6 +242,7 @@ public class BonusAdsActivity
                 .getPreferences()
                 .unregisterOnSharedPreferenceChangeListener(mPrefsListener);
         AdManager.unregisterRewardedVideoActivity(this);
+        PollFish.hide();
     }
 
     private void initAds() {
@@ -263,6 +272,10 @@ public class BonusAdsActivity
                             Appodeal.REWARDED_VIDEO,
                             true,
                             config);
+                }
+
+                if(!config.isProviderEnabled(AdManager.ADS_PROVIDER_POLLFISH)) {
+                    disablePollfish();
                 }
             }
         });
@@ -301,6 +314,32 @@ public class BonusAdsActivity
         }
         else {
             onBonusAdsAvailable(BonusAdsStatus.NOT_AVAILABLE);
+        }
+    }
+
+    private void updateSurveyStatus(boolean showLoading) {
+        if(!mPollfishEnabled) {
+            return;
+        }
+
+        Logger.v(TAG, "updateSurveyStatus: showLoading=" + showLoading + " cached=" + mSurveyCached);
+        if(mSurveyCached) {
+            setSurveyStatus(BonusAdsStatus.AVAILABLE);
+            return;
+        }
+
+        // Show "requesting" status for 5 seconds, than change it to "unavailable"
+        if(showLoading) {
+            setSurveyStatus(BonusAdsStatus.REQUESTING);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateSurveyStatus(false);
+                }
+            }, 5000);
+        }
+        else {
+            setSurveyStatus(BonusAdsStatus.NOT_AVAILABLE);
         }
     }
 
@@ -410,6 +449,53 @@ public class BonusAdsActivity
         }
     }
 
+    private void setSurveyStatus(BonusAdsStatus status) {
+        if(!mPollfishEnabled) {
+            return;
+        }
+
+        Logger.v(TAG, "setSurveyStatus: status=" + status + " started=" + mIsStarted);
+
+        mSurveyStatus = status;
+
+        // Do nothing is activity is stopped
+        if(!mIsStarted) return;
+
+        boolean available;
+        String reason;
+
+        switch(status) {
+            case REQUESTING:
+                available = false;
+                reason = getResources().getString(R.string.survey_is_requested);
+                break;
+            case LOADING:
+                available = false;
+                reason = getResources().getString(R.string.survey_is_loaded);
+                break;
+            case AVAILABLE:
+                available = true;
+                reason = "";
+                break;
+            case NOT_AVAILABLE:
+                available = false;
+                reason = getResources().getString(R.string.survey_is_missing_please_wait);
+                break;
+            default:
+                throw new IllegalStateException("unknown status: " + status);
+        }
+
+        mStartSurveyButton.setVisibility(available ? View.VISIBLE : View.GONE);
+        mNoSurveyButton.setVisibility(available ? View.GONE : View.VISIBLE);
+        mNoSurveyButton.setText(reason);
+
+        mNoSurveyButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        if(mNoSurveyButton.getLineCount() > 1) {
+            // Use smaller text if doesn't fit into one line.
+            mNoSurveyButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -427,12 +513,10 @@ public class BonusAdsActivity
             selectSegment();
         }
         else if (i == R.id.btn_start_survey) {
-            if(PollFish.isPollfishPresent()) {
-                PollFish.show();
-            }
-            else {
-                mStartSurveyButton.setVisibility(View.GONE);
-            }
+            showSurvey();
+        }
+        else if (i == R.id.btn_no_survey) {
+            requestSurvey();
         }
     }
 
@@ -573,13 +657,20 @@ public class BonusAdsActivity
 
     // BEGIN pollfish
     private void initPollfish() {
-        String pollfishApiKey = AceStreamEngineBaseApplication.getStringAppMetadata("pollfishApiKey");
-        if(!TextUtils.isEmpty(pollfishApiKey)) {
-            ParamsBuilder paramsBuilder = new ParamsBuilder(pollfishApiKey)
-                    .rewardMode(true)
-                    .build();
-            PollFish.initWith(this, paramsBuilder);
+        if(!mPollfishEnabled) {
+            return;
         }
+
+        String pollfishApiKey = AceStreamEngineBaseApplication.getStringAppMetadata("pollfishApiKey");
+        if(TextUtils.isEmpty(pollfishApiKey)) {
+            disablePollfish();
+            return;
+        }
+
+        ParamsBuilder paramsBuilder = new ParamsBuilder(pollfishApiKey)
+                .rewardMode(true)
+                .build();
+        PollFish.initWith(this, paramsBuilder);
     }
 
     @Override
@@ -590,16 +681,21 @@ public class BonusAdsActivity
     @Override
     public void onPollfishOpened() {
         Log.d(TAG, "onPollfishOpened");
-
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateSurveyStatus(true);
+            }
+        }, 1000);
     }
 
     @Override
     public void onPollfishSurveyNotAvailable() {
         Log.d(TAG, "onPollfishSurveyNotAvailable");
-
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                setSurveyStatus(BonusAdsStatus.NOT_AVAILABLE);
             }
         });
     }
@@ -611,7 +707,7 @@ public class BonusAdsActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mStartSurveyButton.setVisibility(View.INVISIBLE);
+                requestSurvey();
                 //TODO: implement user notification
             }
         });
@@ -624,8 +720,7 @@ public class BonusAdsActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mStartSurveyButton.setVisibility(View.INVISIBLE);
-                //TODO: request next poll
+                requestSurvey();
             }
         });
     }
@@ -636,11 +731,12 @@ public class BonusAdsActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mStartSurveyButton.setVisibility(View.INVISIBLE);
                 int amount = surveyInfo.getRewardValue() * 1000;
                 if(amount > 0) {
                     addCoins("pollfish", amount, false);
                 }
+
+                requestSurvey();
             }
         });
     }
@@ -648,12 +744,48 @@ public class BonusAdsActivity
     @Override
     public void onPollfishSurveyReceived(SurveyInfo surveyInfo) {
         Log.v(TAG, "onPollfishSurveyReceived");
+        mSurveyCached = true;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mStartSurveyButton.setVisibility(View.VISIBLE);
+                setSurveyStatus(BonusAdsStatus.AVAILABLE);
             }
         });
+    }
+
+    private void showSurvey() {
+        Logger.v(TAG, "showSurvey: present=" + PollFish.isPollfishPresent());
+        if(PollFish.isPollfishPresent()) {
+            setSurveyStatus(BonusAdsStatus.LOADING);
+            PollFish.show();
+            mSurveyCached = false;
+        }
+        else {
+            setSurveyStatus(BonusAdsStatus.NOT_AVAILABLE);
+        }
+    }
+
+    private void requestSurvey() {
+        Logger.v(TAG, "requestSurvey");
+        mSurveyCached = false;
+        updateSurveyStatus(true);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mIsStarted) {
+                    initPollfish();
+                }
+            }
+        }, 100);
+
+    }
+
+    private void disablePollfish() {
+        Logger.v(TAG, "disablePollfish");
+
+        mPollfishEnabled = false;
+        mStartSurveyButton.setVisibility(View.GONE);
+        mNoSurveyButton.setVisibility(View.GONE);
     }
     // END pollfish
 }

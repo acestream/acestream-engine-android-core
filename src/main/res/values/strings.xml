@@ -71,11 +71,14 @@
     <string name="current_bonuses_amount">Current amount of bonuses</string>
     <string name="you_have_earned_bonuses">You have earned bonuses</string>
     <string name="bonus_ads_info">
-        Earn bonuses for viewing ads and use them to buy premium options
+        Earn bonuses for viewing ads and finishing surveys, and use them to pump your account
     </string>
     <string name="ads_are_requested">Ads are requested…</string>
     <string name="ads_are_loaded">Loading ads…</string>
     <string name="ads_are_missing_please_wait">There is no ads. Try later.</string>
     <string name="set_ads_price">Set price for watching ads</string>
     <string name="license">License</string>
+    <string name="survey_is_requested">Survey is requested…</string>
+    <string name="survey_is_loaded">Loading survey…</string>
+    <string name="survey_is_missing_please_wait">There is no survey. Try later.</string>
 </resources>

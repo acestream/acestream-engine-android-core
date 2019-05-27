@@ -89,6 +89,19 @@
                     android:text="Start survey"
                     android:visibility="gone" />
 
+                <Button
+                    android:id="@+id/btn_no_survey"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:minWidth="@dimen/signin_button_width"
+                    android:maxWidth="@dimen/signin_button_width"
+                    android:layout_height="@dimen/signin_button_height"
+                    android:background="@drawable/button_border_solid_white"
+                    android:textColor="@color/bluegrey800"
+                    android:textAllCaps="false"
+                    android:maxLines="2"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/lbl_bonuses"
                     android:layout_width="wrap_content"

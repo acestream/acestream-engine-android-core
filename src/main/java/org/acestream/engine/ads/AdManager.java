@@ -42,6 +42,7 @@ public class AdManager {
     public final static String ADS_PROVIDER_ADMOB = "admob";
     public final static String ADS_PROVIDER_APPODEAL = "appodeal";
     public final static String ADS_PROVIDER_VAST = "vast";
+    public final static String ADS_PROVIDER_POLLFISH = "pollfish";
 
     private Activity mActivity = null;
     private Map<String, InterstitialAd> mInterstitialAd;
