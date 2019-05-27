@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">пачаць апытанне</string>
+    <string name="survey_is_requested" source="google_translate">Абследаванне прапануецца ...</string>
+    <string name="survey_is_loaded" source="google_translate">Загрузка апытання ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Там няма абследавання. Паспрабуйце пазней.</string>
+    <string name="get_bonuses" source="google_translate">атрымаць бонусы</string>
+    <string name="bonuses" source="google_translate">бонусы</string>
+    <string name="show_bonus_ads" source="google_translate">Паказаць бонусныя аб\'явы</string>
+    <string name="current_bonuses_amount" source="google_translate">Бягучае колькасць бонусаў</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Вы зарабілі бонусы</string>
+    <string name="bonus_ads_info" source="google_translate">Зарабіць бонусы за прагляд рэкламы і заканчваючы апытанні, і выкарыстоўваць іх, каб прапампаваць свой рахунак</string>
+    <string name="ads_are_requested" source="google_translate">Аб\'явы просяць ...</string>
+    <string name="ads_are_loaded" source="google_translate">Загрузка аб\'яў ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Там няма аб\'яваў. Паспрабуйце пазней.</string>
+    <string name="set_ads_price" source="google_translate">Ўстанавіць цану для прагляду аб\'явы</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Bắt đầu cuộc thăm dò ý kiến</string>
+    <string name="survey_is_requested" source="google_translate">Khảo sát được yêu cầu</string>
+    <string name="survey_is_loaded" source="google_translate">Đang tải khảo sát</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Không có khảo sát. Thử lại sau.</string>
+    <string name="get_bonuses" source="google_translate">Nhận tiền thưởng</string>
+    <string name="bonuses" source="google_translate">Tiền thưởng</string>
+    <string name="show_bonus_ads" source="google_translate">Hiển thị quảng cáo tiền thưởng</string>
+    <string name="current_bonuses_amount" source="google_translate">Số tiền thưởng hiện tại</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Bạn đã kiếm được tiền thưởng</string>
+    <string name="bonus_ads_info" source="google_translate">Kiếm tiền thưởng khi xem quảng cáo và hoàn thành khảo sát và sử dụng chúng để bơm tài khoản của bạn</string>
+    <string name="ads_are_requested" source="google_translate">Quảng cáo được yêu cầu</string>
+    <string name="ads_are_loaded" source="google_translate">Đang tải quảng cáo</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Không có quảng cáo. Thử lại sau.</string>
+    <string name="set_ads_price" source="google_translate">Đặt giá để xem quảng cáo</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Umfrage starten</string>
+    <string name="survey_is_requested" source="google_translate">Umfrage wird angefordert ...</string>
+    <string name="survey_is_loaded" source="google_translate">Umfrage wird geladen ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Es gibt keine Umfrage. Versuche es später.</string>
+    <string name="get_bonuses" source="google_translate">Holen Sie sich Boni</string>
+    <string name="bonuses" source="google_translate">Boni</string>
+    <string name="show_bonus_ads" source="google_translate">Bonusanzeigen anzeigen</string>
+    <string name="current_bonuses_amount" source="google_translate">Aktuelle Höhe der Boni</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Sie haben Boni verdient</string>
+    <string name="bonus_ads_info" source="google_translate">Verdienen Sie Prämien für das Anzeigen und Abschließen von Umfragen und verwenden Sie diese, um Ihr Konto aufzuladen</string>
+    <string name="ads_are_requested" source="google_translate">Anzeigen werden angefordert ...</string>
+    <string name="ads_are_loaded" source="google_translate">Anzeigen werden geladen ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Es gibt keine Anzeigen. Versuche es später.</string>
+    <string name="set_ads_price" source="google_translate">Legen Sie den Preis für das Anzeigenschauen fest</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Pôl dechrau</string>
+    <string name="survey_is_requested" source="google_translate">Gofynnir am arolwg ...</string>
+    <string name="survey_is_loaded" source="google_translate">Arolwg llwytho ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Nid oes arolwg. Ceisiwch yn ddiweddarach.</string>
+    <string name="get_bonuses" source="google_translate">Cael bonysau</string>
+    <string name="bonuses" source="google_translate">Bonysau</string>
+    <string name="show_bonus_ads" source="google_translate">Dangoswch hysbysebion bonws</string>
+    <string name="current_bonuses_amount" source="google_translate">Swm presennol y taliadau bonws</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Rydych chi wedi ennill bonysau</string>
+    <string name="bonus_ads_info" source="google_translate">Ennill bonysau ar gyfer gwylio hysbysebion a gorffen arolygon, a\'u defnyddio i bwmpio\'ch cyfrif</string>
+    <string name="ads_are_requested" source="google_translate">Gofynnir am hysbysebion…</string>
+    <string name="ads_are_loaded" source="google_translate">Llwytho hysbysebion…</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Nid oes hysbysebion. Ceisiwch yn ddiweddarach.</string>
+    <string name="set_ads_price" source="google_translate">Gosod pris ar gyfer gwylio hysbysebion</string>
+</resources>

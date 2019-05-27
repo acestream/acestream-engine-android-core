@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Hasi inkesta</string>
+    <string name="survey_is_requested" source="google_translate">Inkesta eskatu da ...</string>
+    <string name="survey_is_loaded" source="google_translate">Inkesta kargatzen ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Inkesta ez da. Saiatu geroago.</string>
+    <string name="get_bonuses" source="google_translate">Lortu hobariak</string>
+    <string name="bonuses" source="google_translate">hobariak</string>
+    <string name="show_bonus_ads" source="google_translate">Erakutsi bonus iragarkiak</string>
+    <string name="current_bonuses_amount" source="google_translate">Hobariak uneko zenbatekoa</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Hobariak lortu dituzu</string>
+    <string name="bonus_ads_info" source="google_translate">Irabazi hobariak iragarkiak ikustea eta inkestak bukatzea, eta erabili itzazu zure kontua ponpa egiteko</string>
+    <string name="ads_are_requested" source="google_translate">Iragarkiak eskatu dira ...</string>
+    <string name="ads_are_loaded" source="google_translate">Iragarkiak kargatzen ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Ez dago iragarkirik. Saiatu geroago.</string>
+    <string name="set_ads_price" source="google_translate">Ezarri iragarkiak ikusteko prezioa</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">설문 조사 시작</string>
+    <string name="survey_is_requested" source="google_translate">설문 조사가 요청되었습니다 ...</string>
+    <string name="survey_is_loaded" source="google_translate">설문 조사로드 중 ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">설문 조사가 없습니다. 나중에 시도하십시오.</string>
+    <string name="get_bonuses" source="google_translate">보너스 받기</string>
+    <string name="bonuses" source="google_translate">보너스</string>
+    <string name="show_bonus_ads" source="google_translate">보너스 광고 표시</string>
+    <string name="current_bonuses_amount" source="google_translate">현재 상여금</string>
+    <string name="you_have_earned_bonuses" source="google_translate">당신은 보너스를 받았습니다.</string>
+    <string name="bonus_ads_info" source="google_translate">광고 시청 및 보완 조사에 대한 보너스를 획득하고이를 사용하여 계정을 양수하십시오.</string>
+    <string name="ads_are_requested" source="google_translate">광고 요청이 ...</string>
+    <string name="ads_are_loaded" source="google_translate">광고로드 중 ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">광고가 없습니다. 나중에 시도하십시오.</string>
+    <string name="set_ads_price" source="google_translate">시청중인 광고 가격 설정</string>
+</resources>

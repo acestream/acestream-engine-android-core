@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Старт полл</string>
+    <string name="survey_is_requested" source="google_translate">Затражено је истраживање ...</string>
+    <string name="survey_is_loaded" source="google_translate">Учитавање анкете ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Нема истраживања. Пробајте касније.</string>
+    <string name="get_bonuses" source="google_translate">Гет бонусес</string>
+    <string name="bonuses" source="google_translate">Бонуси</string>
+    <string name="show_bonus_ads" source="google_translate">Прикажи бонус огласе</string>
+    <string name="current_bonuses_amount" source="google_translate">Тренутни износ бонуса</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Заслужили сте бонусе</string>
+    <string name="bonus_ads_info" source="google_translate">Зарадите бонусе за гледање огласа и завршавање анкета, и користите их да напумпате свој рачун</string>
+    <string name="ads_are_requested" source="google_translate">Траже се огласи ...</string>
+    <string name="ads_are_loaded" source="google_translate">Учитавање огласа ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Нема огласа. Пробајте касније.</string>
+    <string name="set_ads_price" source="google_translate">Поставите цену за гледање огласа</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Începeți sondajul</string>
+    <string name="survey_is_requested" source="google_translate">Ancheta este solicitată ...</string>
+    <string name="survey_is_loaded" source="google_translate">Se încarcă sondajul ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Nu există sondaj. Încercați mai târziu.</string>
+    <string name="get_bonuses" source="google_translate">Obțineți bonusuri</string>
+    <string name="bonuses" source="google_translate">Bonusuri</string>
+    <string name="show_bonus_ads" source="google_translate">Afișați anunțuri bonus</string>
+    <string name="current_bonuses_amount" source="google_translate">Valoarea curentă a bonusurilor</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Ai câștigat bonusuri</string>
+    <string name="bonus_ads_info" source="google_translate">Câștigați bonusuri pentru vizualizarea anunțurilor și finalizarea studiilor și folosiți-le pentru a vă pompa contul</string>
+    <string name="ads_are_requested" source="google_translate">Anunțurile sunt solicitate ...</string>
+    <string name="ads_are_loaded" source="google_translate">Încărcarea anunțurilor ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Nu există anunțuri. Încercați mai târziu.</string>
+    <string name="set_ads_price" source="google_translate">Setați prețul pentru vizionarea anunțurilor</string>
+</resources>

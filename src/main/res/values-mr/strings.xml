@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">मतदान सुरू करा</string>
+    <string name="survey_is_requested" source="google_translate">सर्वेक्षण विनंती केली आहे ...</string>
+    <string name="survey_is_loaded" source="google_translate">सर्वेक्षण लोड करीत आहे ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">एकही सर्वेक्षण नाही. नंतर प्रयत्न करा</string>
+    <string name="get_bonuses" source="google_translate">बोनस मिळवा</string>
+    <string name="bonuses" source="google_translate">बोनस</string>
+    <string name="show_bonus_ads" source="google_translate">बोनस जाहिराती दर्शवा</string>
+    <string name="current_bonuses_amount" source="google_translate">बोनसची सध्याची रक्कम</string>
+    <string name="you_have_earned_bonuses" source="google_translate">आपण बोनस अर्जित केले आहेत</string>
+    <string name="bonus_ads_info" source="google_translate">जाहिराती पहाण्यासाठी आणि परिष्कृत सर्वेक्षणासाठी बोनस मिळवा आणि आपले खाते पंप करण्यासाठी त्यांचा वापर करा</string>
+    <string name="ads_are_requested" source="google_translate">जाहिरातींची विनंती केली जात आहे ...</string>
+    <string name="ads_are_loaded" source="google_translate">जाहिराती लोड करीत आहे ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">तेथे जाहिराती नाहीत. नंतर प्रयत्न करा</string>
+    <string name="set_ads_price" source="google_translate">जाहिराती पहाण्यासाठी किंमत सेट करा</string>
+</resources>

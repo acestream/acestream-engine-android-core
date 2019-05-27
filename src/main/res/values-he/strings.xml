@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">התחל סקר</string>
+    <string name="survey_is_requested" source="google_translate">הסקר מתבקש ...</string>
+    <string name="survey_is_loaded" source="google_translate">טוען סקר ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">אין סקר. נסה מאוחר יותר.</string>
+    <string name="get_bonuses" source="google_translate">קבל בונוסים</string>
+    <string name="bonuses" source="google_translate">בונוסים</string>
+    <string name="show_bonus_ads" source="google_translate">הצג מודעות בונוס</string>
+    <string name="current_bonuses_amount" source="google_translate">הסכום הנוכחי של בונוסים</string>
+    <string name="you_have_earned_bonuses" source="google_translate">הרווחת בונוסים</string>
+    <string name="bonus_ads_info" source="google_translate">קבל בונוסים להצגת מודעות וסקרי גמר, והשתמש בהם כדי לשאוב את חשבונך</string>
+    <string name="ads_are_requested" source="google_translate">מודעות מתבקשות ...</string>
+    <string name="ads_are_loaded" source="google_translate">טוען מודעות ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">אין מודעות. נסה מאוחר יותר.</string>
+    <string name="set_ads_price" source="google_translate">הגדר מחיר לצפייה במודעות</string>
+</resources>

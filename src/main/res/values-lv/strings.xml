@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Sāciet aptauju</string>
+    <string name="survey_is_requested" source="google_translate">Aptauju pieprasa…</string>
+    <string name="survey_is_loaded" source="google_translate">Notiek apsekojuma ielāde ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Nav aptaujas. Mēģiniet vēlāk.</string>
+    <string name="get_bonuses" source="google_translate">Saņemt prēmijas</string>
+    <string name="bonuses" source="google_translate">Bonusi</string>
+    <string name="show_bonus_ads" source="google_translate">Rādīt bonusa reklāmas</string>
+    <string name="current_bonuses_amount" source="google_translate">Pašreizējā prēmiju summa</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Jūs esat nopelnījis prēmijas</string>
+    <string name="bonus_ads_info" source="google_translate">Nopelniet prēmijas, lai skatītu reklāmas un pabeigtu apsekojumus, un izmantojiet tos, lai sūknētu kontu</string>
+    <string name="ads_are_requested" source="google_translate">Reklāmas tiek pieprasītas ...</string>
+    <string name="ads_are_loaded" source="google_translate">Notiek reklāmu ielāde ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Nav reklāmu. Mēģiniet vēlāk.</string>
+    <string name="set_ads_price" source="google_translate">Iestatīt cenu reklāmu skatīšanai</string>
+</resources>

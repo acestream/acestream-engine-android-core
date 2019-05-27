@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Commencer un sondage</string>
+    <string name="survey_is_requested" source="google_translate">Un sondage est demandé…</string>
+    <string name="survey_is_loaded" source="google_translate">Chargement de l\'enquête…</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Il n\'y a pas d\'enquête. Essayer plus tard.</string>
+    <string name="get_bonuses" source="google_translate">Obtenez des bonus</string>
+    <string name="bonuses" source="google_translate">Bonus</string>
+    <string name="show_bonus_ads" source="google_translate">Afficher les annonces bonus</string>
+    <string name="current_bonuses_amount" source="google_translate">Montant actuel des bonus</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Vous avez gagné des bonus</string>
+    <string name="bonus_ads_info" source="google_translate">Gagnez des bonus pour visionner des annonces et terminer des sondages et utilisez-les pour pomper votre compte</string>
+    <string name="ads_are_requested" source="google_translate">Les annonces sont demandées…</string>
+    <string name="ads_are_loaded" source="google_translate">Chargement des annonces…</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Il n\'y a pas d\'annonces. Essayer plus tard.</string>
+    <string name="set_ads_price" source="google_translate">Prix fixe pour regarder des annonces</string>
+</resources>

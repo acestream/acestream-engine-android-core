@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">စတင်စစ်တမ်းကောက်ယူ</string>
+    <string name="survey_is_requested" source="google_translate">စစ်တမ်းမေတ္တာရပ်ခံတာဖြစ်ပါတယ် ...</string>
+    <string name="survey_is_loaded" source="google_translate">loading စစ်တမ်း ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">အဘယ်သူမျှမစစ်တမ်းရှိပါသည်။ နောက်ပိုင်းမှာကြိုးစားပါ။</string>
+    <string name="get_bonuses" source="google_translate">ဆုကြေးငွေကိုရယူပါ</string>
+    <string name="bonuses" source="google_translate">ဆုကြေးငွေ</string>
+    <string name="show_bonus_ads" source="google_translate">ဆုကြေးငွေကြော်ငြာတွေပြရန်</string>
+    <string name="current_bonuses_amount" source="google_translate">ဆုကြေးငွေ၏လက်ရှိငွေပမာဏ</string>
+    <string name="you_have_earned_bonuses" source="google_translate">သငျသညျအပိုဆုကြေးငွေရရှိခဲ့ပါပြီ</string>
+    <string name="bonus_ads_info" source="google_translate">ကြော်ငြာတွေများနှင့်ပြီးစစ်တမ်းများကြည့်ရှုဘို့ဆုကြေးငွေဝင်ငွေနှင့်သင့်အကောင့်စုပ်ဖို့သူတို့ကိုအသုံးချ</string>
+    <string name="ads_are_requested" source="google_translate">ကြော်ငြာတွေကိုမေတ္တာရပ်ခံနေကြပါတယ် ...</string>
+    <string name="ads_are_loaded" source="google_translate">ကြော်ငြာတွေကို Loading ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">ကြော်ငြာမပါရှိပါသည်။ နောက်ပိုင်းမှာကြိုးစားပါ။</string>
+    <string name="set_ads_price" source="google_translate">ကြော်ငြာတွေကိုစောင့်ကြည့်ဘို့ရာခန့်ထားသောစျေးနှုန်း</string>
+</resources>

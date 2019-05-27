@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Begjin poll</string>
+    <string name="survey_is_requested" source="google_translate">Untfang wurdt frege ...</string>
+    <string name="survey_is_loaded" source="google_translate">Loading survey ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Der is gjin survey. Besykje letter.</string>
+    <string name="get_bonuses" source="google_translate">Get bonuses</string>
+    <string name="bonuses" source="google_translate">Bonussen</string>
+    <string name="show_bonus_ads" source="google_translate">Lit advertinsjes sjen litte</string>
+    <string name="current_bonuses_amount" source="google_translate">Hjoeddedei fan bonussen</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Jo hawwe bonussen fertsjinne</string>
+    <string name="bonus_ads_info" source="google_translate">Besykje bonussen foar werjefte fan advertinsjes en oanbefelling fan surveys, en brûke se om jo akkount te pummeljen</string>
+    <string name="ads_are_requested" source="google_translate">Berjochten wurde frege ...</string>
+    <string name="ads_are_loaded" source="google_translate">Oanmeitsje advertinsjes ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Der is gjin advertinsjes. Besykje letter.</string>
+    <string name="set_ads_price" source="google_translate">Set priis foar bepaalde advertinsjes</string>
+</resources>

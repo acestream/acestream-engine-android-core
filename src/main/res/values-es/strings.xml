@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Iniciar encuesta</string>
+    <string name="survey_is_requested" source="google_translate">Se solicita encuesta ...</string>
+    <string name="survey_is_loaded" source="google_translate">Cargando encuesta ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">No hay encuesta. Intenta más tarde.</string>
+    <string name="get_bonuses" source="google_translate">Obtener bonificaciones</string>
+    <string name="bonuses" source="google_translate">Bonificaciones</string>
+    <string name="show_bonus_ads" source="google_translate">Mostrar anuncios extra</string>
+    <string name="current_bonuses_amount" source="google_translate">Cantidad actual de bonificaciones</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Has ganado bonificaciones</string>
+    <string name="bonus_ads_info" source="google_translate">Gane bonificaciones por ver anuncios y finalizar encuestas, y úselas para inyectar su cuenta</string>
+    <string name="ads_are_requested" source="google_translate">Se solicitan anuncios ...</string>
+    <string name="ads_are_loaded" source="google_translate">Cargando anuncios ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">No hay anuncios. Intenta más tarde.</string>
+    <string name="set_ads_price" source="google_translate">Establecer precio para ver anuncios</string>
+</resources>

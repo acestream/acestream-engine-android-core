@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Start avstemning</string>
+    <string name="survey_is_requested" source="google_translate">Undersøkelse er forespurt ...</string>
+    <string name="survey_is_loaded" source="google_translate">Laster inn undersøkelse ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Det er ingen undersøkelse. Prøv senere.</string>
+    <string name="get_bonuses" source="google_translate">Få bonuser</string>
+    <string name="bonuses" source="google_translate">bonuser</string>
+    <string name="show_bonus_ads" source="google_translate">Vis bonusannonser</string>
+    <string name="current_bonuses_amount" source="google_translate">Nåværende beløp av bonuser</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Du har tjent bonuser</string>
+    <string name="bonus_ads_info" source="google_translate">Tjen bonuser for visning av annonser og etterbehandling av undersøkelser, og bruk dem til å pumpe kontoen din</string>
+    <string name="ads_are_requested" source="google_translate">Annonser blir forespurt ...</string>
+    <string name="ads_are_loaded" source="google_translate">Laster inn annonser ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Det er ingen annonser. Prøv senere.</string>
+    <string name="set_ads_price" source="google_translate">Angi pris for å se annonser</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Alusta küsitlust</string>
+    <string name="survey_is_requested" source="google_translate">Küsitlust taotletakse…</string>
+    <string name="survey_is_loaded" source="google_translate">Küsitluse laadimine ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Uuringut ei ole. Proovi hiljem.</string>
+    <string name="get_bonuses" source="google_translate">Saa boonuseid</string>
+    <string name="bonuses" source="google_translate">Boonused</string>
+    <string name="show_bonus_ads" source="google_translate">Näita boonusreklaame</string>
+    <string name="current_bonuses_amount" source="google_translate">Praeguse boonuste summa</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Te olete teeninud boonuseid</string>
+    <string name="bonus_ads_info" source="google_translate">Teeni reklaamide vaatamise ja uuringute lõpetamise eest boonuseid ning kasutage neid oma konto pumpamiseks</string>
+    <string name="ads_are_requested" source="google_translate">Reklaame küsitakse ...</string>
+    <string name="ads_are_loaded" source="google_translate">Reklaamide laadimine ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Reklaame pole. Proovi hiljem.</string>
+    <string name="set_ads_price" source="google_translate">Määrake reklaamide vaatamise hind</string>
+</resources>

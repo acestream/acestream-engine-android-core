@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">เริ่มการสำรวจความคิดเห็น</string>
+    <string name="survey_is_requested" source="google_translate">ขอแบบสำรวจ ...</string>
+    <string name="survey_is_loaded" source="google_translate">กำลังโหลดแบบสำรวจ ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">ไม่มีการสำรวจ ลองใหม่ภายหลัง</string>
+    <string name="get_bonuses" source="google_translate">รับโบนัส</string>
+    <string name="bonuses" source="google_translate">โบนัส</string>
+    <string name="show_bonus_ads" source="google_translate">แสดงโฆษณาโบนัส</string>
+    <string name="current_bonuses_amount" source="google_translate">จำนวนโบนัสปัจจุบัน</string>
+    <string name="you_have_earned_bonuses" source="google_translate">คุณได้รับโบนัส</string>
+    <string name="bonus_ads_info" source="google_translate">รับโบนัสสำหรับการดูโฆษณาและทำแบบสำรวจเสร็จสิ้นและใช้เพื่อปั๊มบัญชีของคุณ</string>
+    <string name="ads_are_requested" source="google_translate">ขอโฆษณา ...</string>
+    <string name="ads_are_loaded" source="google_translate">กำลังโหลดโฆษณา ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">ไม่มีโฆษณา ลองใหม่ภายหลัง</string>
+    <string name="set_ads_price" source="google_translate">กำหนดราคาสำหรับการดูโฆษณา</string>
+</resources>

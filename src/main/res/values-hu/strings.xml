@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Indítsa el a szavazást</string>
+    <string name="survey_is_requested" source="google_translate">A felmérés kérése…</string>
+    <string name="survey_is_loaded" source="google_translate">Felmérés betöltése ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Nincs felmérés. Próbáld később.</string>
+    <string name="get_bonuses" source="google_translate">Kapjon bónuszokat</string>
+    <string name="bonuses" source="google_translate">Bónuszok</string>
+    <string name="show_bonus_ads" source="google_translate">Bónusz hirdetések megjelenítése</string>
+    <string name="current_bonuses_amount" source="google_translate">A bónuszok aktuális összege</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Bónuszokat szereztél</string>
+    <string name="bonus_ads_info" source="google_translate">Keress bónuszokat a hirdetések és a felmérések befejezéséhez, és használd őket a fiókod pumpálására</string>
+    <string name="ads_are_requested" source="google_translate">A hirdetések kérése ...</string>
+    <string name="ads_are_loaded" source="google_translate">Hirdetések betöltése ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Nincsenek hirdetések. Próbáld később.</string>
+    <string name="set_ads_price" source="google_translate">A hirdetések megtekintésének ára</string>
+</resources>

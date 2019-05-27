@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">سروے شروع کریں</string>
+    <string name="survey_is_requested" source="google_translate">سروے کی درخواست کی گئی ہے ...</string>
+    <string name="survey_is_loaded" source="google_translate">سروے لوڈ کر رہا ہے ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">کوئی سروے نہیں ہے. بعد میں کوشسش کریں.</string>
+    <string name="get_bonuses" source="google_translate">بونس حاصل کریں</string>
+    <string name="bonuses" source="google_translate">بونس</string>
+    <string name="show_bonus_ads" source="google_translate">بونس اشتھارات دکھائیں</string>
+    <string name="current_bonuses_amount" source="google_translate">بونس کی موجودہ رقم</string>
+    <string name="you_have_earned_bonuses" source="google_translate">آپ نے بونس حاصل کیے ہیں</string>
+    <string name="bonus_ads_info" source="google_translate">اشتھارات اور ختم کرنے کے سروے دیکھنے کے لئے بونس کمائیں، اور اپنے اکاؤنٹ کو پمپ کرنے کے لۓ ان کا استعمال کریں</string>
+    <string name="ads_are_requested" source="google_translate">اشتھارات کی درخواست کی جاتی ہے ...</string>
+    <string name="ads_are_loaded" source="google_translate">اشتہارات لوڈ کر رہے ہیں ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">کوئی اشتہار نہیں ہے. بعد میں کوشسش کریں.</string>
+    <string name="set_ads_price" source="google_translate">اشتھارات دیکھنے کیلئے قیمت مقرر کریں</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Ankete başla</string>
+    <string name="survey_is_requested" source="google_translate">Anket isteniyor…</string>
+    <string name="survey_is_loaded" source="google_translate">Anket yükleniyor…</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Anket yok. Daha sonra tekrar deneyin.</string>
+    <string name="get_bonuses" source="google_translate">İkramiye alın</string>
+    <string name="bonuses" source="google_translate">Bonuslar</string>
+    <string name="show_bonus_ads" source="google_translate">Bonus reklamları göster</string>
+    <string name="current_bonuses_amount" source="google_translate">Mevcut bonus miktarı</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Bonus kazandınız</string>
+    <string name="bonus_ads_info" source="google_translate">Reklamları görüntülemek ve anketleri bitirmek için bonus kazanın ve hesabınızı pompalamak için bunları kullanın</string>
+    <string name="ads_are_requested" source="google_translate">Reklamlar isteniyor…</string>
+    <string name="ads_are_loaded" source="google_translate">Reklamlar yükleniyor ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Reklam yok. Daha sonra tekrar deneyin.</string>
+    <string name="set_ads_price" source="google_translate">Reklamları izlemek için fiyat belirleyin</string>
+</resources>

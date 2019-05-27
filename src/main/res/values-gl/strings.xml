@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_survey" source="google_translate">Inicia a enquisa</string>
+    <string name="survey_is_requested" source="google_translate">Pídese a investigación ...</string>
+    <string name="survey_is_loaded" source="google_translate">Carga da enquisa ...</string>
+    <string name="survey_is_missing_please_wait" source="google_translate">Non hai ningunha enquisa. Tente máis tarde.</string>
+    <string name="get_bonuses" source="google_translate">Obter bonos</string>
+    <string name="bonuses" source="google_translate">Bonos</string>
+    <string name="show_bonus_ads" source="google_translate">Amosar anuncios de bonos</string>
+    <string name="current_bonuses_amount" source="google_translate">Importe actual de bonos</string>
+    <string name="you_have_earned_bonuses" source="google_translate">Gañaches bonos</string>
+    <string name="bonus_ads_info" source="google_translate">Aforra bonos para ver anuncios e terminar as enquisas e usalos para bombear a túa conta</string>
+    <string name="ads_are_requested" source="google_translate">Solicítanse anuncios ...</string>
+    <string name="ads_are_loaded" source="google_translate">Cargando anuncios ...</string>
+    <string name="ads_are_missing_please_wait" source="google_translate">Non hai anuncios. Tente máis tarde.</string>
+    <string name="set_ads_price" source="google_translate">Establecer o prezo para ver os anuncios</string>
+</resources>
