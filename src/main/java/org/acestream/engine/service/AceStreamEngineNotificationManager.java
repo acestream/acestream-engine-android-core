@@ -9,6 +9,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -32,6 +34,7 @@ public class AceStreamEngineNotificationManager {
 	private Context mContext;
 	private final NotificationManagerCompat mNotificationManager;
 	private final NotificationCompat.Builder mBuilder;
+	private Notification mLastNotification = null;
 
 	public static void createNotificationChannels(Context ctx) {
 		// Create the NotificationChannel, but only on API 26+ because
@@ -117,7 +120,7 @@ public class AceStreamEngineNotificationManager {
 		}
 		mBuilder.setProgress(0, 0, false);
 		mBuilder.setTicker(text);
-		return mBuilder.build();
+		return buildNotification();
 	}
 	
 	private Notification progressNotification(int strRes, int progress, int max) {
@@ -126,7 +129,7 @@ public class AceStreamEngineNotificationManager {
 		mBuilder.setContentText(text);
 		mBuilder.setProgress(max, progress, false);
 		mBuilder.setTicker(text);
-		return mBuilder.build();
+		return buildNotification();
 	}
 
 	private Notification indeterminateNotification(int strRes, boolean start) {
@@ -135,7 +138,7 @@ public class AceStreamEngineNotificationManager {
 		mBuilder.setContentText(text);
 		mBuilder.setProgress(0, 0, start);
 		mBuilder.setTicker(text);
-		return mBuilder.build();
+		return buildNotification();
 	}
 
 	public void notifySimple(int resourceId) {
@@ -148,5 +151,15 @@ public class AceStreamEngineNotificationManager {
 	
 	public void notifyIndeterminate(int strRes, boolean start) {
 		notify(indeterminateNotification(strRes, start));
+	}
+
+	private Notification buildNotification() {
+		mLastNotification = mBuilder.build();
+		return mLastNotification;
+	}
+
+	@Nullable
+	protected Notification getLastNotification() {
+		return mLastNotification;
 	}
 }

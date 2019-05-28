@@ -28,7 +28,7 @@ public abstract class ForegroundService extends BaseService {
     private Object[] mStopForegroundArgs = new Object[1];
     
     private AceStreamEngineNotificationManager mNotificationManager;
-    
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -79,7 +79,7 @@ public abstract class ForegroundService extends BaseService {
         }
     }
     
-    private void startForegroundCompat(Notification notification) {
+    protected void startForegroundCompat(Notification notification) {
         if (mStartForeground != null) {
         	mStartForegroundArgs[0] = Integer.valueOf(AceStreamEngineNotificationManager.NOTIFICATION_ID);
             mStartForegroundArgs[1] = notification;

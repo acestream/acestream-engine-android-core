@@ -20,6 +20,7 @@ import org.acestream.engine.Constants;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -887,6 +888,15 @@ public class AceStreamEngineService extends ForegroundService
 			return START_NOT_STICKY;
 		}
 
+		// Restore last notification via calling Service.startForeground()
+		// The point is to call startForeground() and avoid this error:
+		// "Context.startForegroundService() did not then call Service.startForeground()"
+		// Problem was not reproduced, but it seems that on some devices Service.startForeground()
+		// must be called within 5 seconds after Context.startForegroundService() event if the
+		// service was already started. In such case onStartCommand() is called, but onCreate()
+		// doesn't, so we need to call Service.startForeground() here.
+		restoreLastNotification();
+
 		if(!mStarted) {
 			Log.d(TAG, "onStartCommand: start service");
 			startEngineService();
@@ -1340,5 +1350,17 @@ public class AceStreamEngineService extends ForegroundService
 
 	public String getCallingApp() {
 		return getPackageManager().getNameForUid(Binder.getCallingUid());
+	}
+
+	private void restoreLastNotification() {
+		AceStreamEngineNotificationManager manager = getNotificationManager();
+		if(manager != null) {
+			Notification notification = manager.getLastNotification();
+			// for testing
+			Log.v(TAG, "ASDEBUG:restoreLastNotification: notification=" + notification);
+			if(notification != null) {
+				startForegroundCompat(notification);
+			}
+		}
 	}
 }
