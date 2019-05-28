@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.content.Context;
 
@@ -49,7 +50,7 @@ public class PyRpcProxy {
 				mContext = context;
 				mCallback = callback;
 			    mClassList = classList;
-			    mRpcRecManagers = new ArrayList<RpcReceiverManager>();
+			    mRpcRecManagers = new CopyOnWriteArrayList<>();
 		}
 		@Override
 		public PyRpcManager create() {
