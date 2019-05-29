@@ -669,6 +669,7 @@ public class BonusAdsActivity
 
         ParamsBuilder paramsBuilder = new ParamsBuilder(pollfishApiKey)
                 .rewardMode(true)
+                .offerWallMode(true)
                 .build();
         PollFish.initWith(this, paramsBuilder);
     }
