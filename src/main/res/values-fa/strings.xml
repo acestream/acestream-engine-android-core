@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">بارگیری تبلیغات ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">هیچ تبلیغی وجود ندارد بعدا امتحان کنید</string>
     <string name="set_ads_price" source="google_translate">تنظیم قیمت برای تماشای تبلیغات</string>
+    <string name="open_in_ace_player" source="google_translate">باز در Ace Player</string>
 </resources>

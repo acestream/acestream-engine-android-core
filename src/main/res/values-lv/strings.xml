@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">Notiek reklāmu ielāde ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Nav reklāmu. Mēģiniet vēlāk.</string>
     <string name="set_ads_price" source="google_translate">Iestatīt cenu reklāmu skatīšanai</string>
+    <string name="open_in_ace_player" source="google_translate">Atvērt Ace Player</string>
 </resources>

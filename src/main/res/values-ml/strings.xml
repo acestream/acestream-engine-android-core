@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">പരസ്യങ്ങൾ ലോഡുചെയ്യുന്നു ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">പരസ്യങ്ങളില്ല. പിന്നീട് ശ്രമിക്കുക.</string>
     <string name="set_ads_price" source="google_translate">പരസ്യങ്ങൾ കാണുന്നതിന് വില സജ്ജീകരിക്കുക</string>
+    <string name="open_in_ace_player" source="google_translate">എയ്സ് പ്ലെയറിൽ തുറക്കുക</string>
 </resources>

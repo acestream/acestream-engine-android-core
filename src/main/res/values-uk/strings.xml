@@ -78,4 +78,5 @@
     <string name="plugins">Модулі</string>
     <string name="directories">Каталоги</string>
     <string name="network_browsing">Локальна мережа</string>
+    <string name="open_in_ace_player">Перегляд у Ace Player</string>
 </resources>

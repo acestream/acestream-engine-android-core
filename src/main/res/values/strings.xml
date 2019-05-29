@@ -82,4 +82,5 @@
     <string name="survey_is_requested">Survey is requested…</string>
     <string name="survey_is_loaded">Loading survey…</string>
     <string name="survey_is_missing_please_wait">There is no survey. Try later.</string>
+    <string name="open_in_ace_player">Open in Ace Player</string>
 </resources>

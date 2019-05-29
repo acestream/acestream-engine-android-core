@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">Încărcarea anunțurilor ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Nu există anunțuri. Încercați mai târziu.</string>
     <string name="set_ads_price" source="google_translate">Setați prețul pentru vizionarea anunțurilor</string>
+    <string name="open_in_ace_player" source="google_translate">Deschideți în Ace Player</string>
 </resources>

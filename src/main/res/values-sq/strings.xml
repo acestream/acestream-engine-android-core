@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">Po ngarkon reklama ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Nuk ka reklama. Provo me vone.</string>
     <string name="set_ads_price" source="google_translate">Vendosni çmimin për shikimin e reklamave</string>
+    <string name="open_in_ace_player" source="google_translate">Hapur në Ace Player</string>
 </resources>

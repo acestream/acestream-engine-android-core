@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">Загрузка аб\'яў ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Там няма аб\'яваў. Паспрабуйце пазней.</string>
     <string name="set_ads_price" source="google_translate">Ўстанавіць цану для прагляду аб\'явы</string>
+    <string name="open_in_ace_player" source="google_translate">Адкрыць у Ace-плэер</string>
 </resources>

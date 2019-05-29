@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">Loading annunci ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Ùn ci hè micca annunci. Prova più tardi.</string>
     <string name="set_ads_price" source="google_translate">Premete u prezzo per guardà annunci</string>
+    <string name="open_in_ace_player" source="google_translate">Apertu in Ace Player</string>
 </resources>

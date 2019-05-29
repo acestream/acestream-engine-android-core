@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">Chargement des annonces…</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Il n\'y a pas d\'annonces. Essayer plus tard.</string>
     <string name="set_ads_price" source="google_translate">Prix fixe pour regarder des annonces</string>
+    <string name="open_in_ace_player" source="google_translate">Ouvrir dans Ace Player</string>
 </resources>

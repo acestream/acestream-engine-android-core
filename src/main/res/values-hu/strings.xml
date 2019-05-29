@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">Hirdetések betöltése ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Nincsenek hirdetések. Próbáld később.</string>
     <string name="set_ads_price" source="google_translate">A hirdetések megtekintésének ára</string>
+    <string name="open_in_ace_player" source="google_translate">Nyissa meg az Ace Player-ben</string>
 </resources>

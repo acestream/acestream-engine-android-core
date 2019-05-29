@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">Mainosten lataaminen ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Mainoksia ei ole. Yritä myöhemmin.</string>
     <string name="set_ads_price" source="google_translate">Aseta hinta mainosten katseluun</string>
+    <string name="open_in_ace_player" source="google_translate">Avaa Ace Playerissa</string>
 </resources>

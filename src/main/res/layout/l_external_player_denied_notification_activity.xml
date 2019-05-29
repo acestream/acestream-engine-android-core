@@ -49,7 +49,7 @@
         android:textColor="@color/white"
         android:textAllCaps="false"
         android:visibility="gone"
-        android:text="Open in Ace Player" />
+        android:text="@string/open_in_ace_player" />
 
     <Button
         android:id="@+id/button_upgrade"

@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">Carregant anuncis ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">No hi ha anuncis. Intenta més tard.</string>
     <string name="set_ads_price" source="google_translate">Estableix el preu per veure anuncis</string>
+    <string name="open_in_ace_player" source="google_translate">Obre en Ace Player</string>
 </resources>

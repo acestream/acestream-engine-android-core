@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">Reklamlar yükleniyor ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Reklam yok. Daha sonra tekrar deneyin.</string>
     <string name="set_ads_price" source="google_translate">Reklamları izlemek için fiyat belirleyin</string>
+    <string name="open_in_ace_player" source="google_translate">Ace Player\'da aç</string>
 </resources>

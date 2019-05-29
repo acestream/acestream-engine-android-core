@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">កំពុងផ្ទុកពាណិជ្ជកម្ម ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">មិនមានពាណិជ្ជកម្ម។ សាកល្បងពេលក្រោយ។</string>
     <string name="set_ads_price" source="google_translate">កំណត់តម្លៃសម្រាប់ការមើលពាណិជ្ជកម្ម</string>
+    <string name="open_in_ace_player" source="google_translate">បើកជាអ្នកលេងអាត់</string>
 </resources>

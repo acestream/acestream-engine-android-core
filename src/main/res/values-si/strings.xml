@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">දැන්වීම් Loading ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">දැන්වීම් නොමැත. පසුව උත්සාහ කරන්න.</string>
     <string name="set_ads_price" source="google_translate">දැන්වීම් නැරඹීම සඳහා මිල නියම කරන්න</string>
+    <string name="open_in_ace_player" source="google_translate">Ace ක්රීඩකය තුළ විවෘත කරන්න</string>
 </resources>

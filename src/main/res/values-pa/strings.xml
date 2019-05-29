@@ -14,4 +14,5 @@
     <string name="ads_are_loaded" source="google_translate">ਵਿਗਿਆਪਨ ਲੋਡ ਕਰ ਰਿਹਾ ਹੈ ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">ਕੋਈ ਵੀ ਵਿਗਿਆਪਨ ਨਹੀਂ ਹੈ ਬਾਅਦ ਵਿੱਚ ਕੋਸ਼ਿਸ਼ ਕਰੋ.</string>
     <string name="set_ads_price" source="google_translate">ਵਿਗਿਆਪਨ ਦੇਖਣ ਲਈ ਕੀਮਤ ਨਿਰਧਾਰਤ ਕਰੋ</string>
+    <string name="open_in_ace_player" source="google_translate">ਏਸ ਪਲੇਅਰ ਵਿੱਚ ਖੋਲ੍ਹੋ</string>
 </resources>
