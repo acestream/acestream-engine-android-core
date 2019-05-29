@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.Keep;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -97,6 +98,7 @@ import static org.acestream.sdk.Constants.PREFS_DEFAULT_OUTPUT_FORMAT_VOD;
 import static org.acestream.sdk.Constants.PREF_KEY_SHOW_DEBUG_INFO;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
+@Keep
 public class AceStreamEngineBaseApplication {
 
 	protected static AceStreamEngineBaseApplication sInstance = null;
@@ -576,6 +578,7 @@ public class AceStreamEngineBaseApplication {
 		return AceStream.isAndroidTv();
 	}
 
+	@Keep
 	public static UUID getDeviceUuid() {
 		if(mUuidFactory == null) {
 			return null;

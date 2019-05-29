@@ -1,7 +1,9 @@
 package org.acestream.engine.notification;
 
 import java.util.Map;
+import androidx.annotation.Keep;
 
+@Keep
 public class NotificationData {
     public String action;
     public int flags;
