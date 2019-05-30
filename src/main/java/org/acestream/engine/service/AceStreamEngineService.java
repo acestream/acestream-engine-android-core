@@ -1356,8 +1356,6 @@ public class AceStreamEngineService extends ForegroundService
 		AceStreamEngineNotificationManager manager = getNotificationManager();
 		if(manager != null) {
 			Notification notification = manager.getLastNotification();
-			// for testing
-			Log.v(TAG, "ASDEBUG:restoreLastNotification: notification=" + notification);
 			if(notification != null) {
 				startForegroundCompat(notification);
 			}
