@@ -441,6 +441,9 @@ public class AceStreamEngineBaseApplication {
 					toast("No internet connection");
 					return;
 				}
+				if(!(context instanceof Activity)) {
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				}
 				context.startActivity(intent);
 			}
 			catch(Throwable e) {
@@ -449,7 +452,11 @@ public class AceStreamEngineBaseApplication {
 					// last chance
 					// this can fail on amazon tv
 					// see: https://fabric.io/ace-stream/android/apps/org.acestream.media/issues/570d2069ffcdc04250a5a47e
-					context.startActivity(new Intent(Intent.ACTION_VIEW, intent.getData()));
+					Intent intent2 = new Intent(Intent.ACTION_VIEW, intent.getData());
+					if(!(context instanceof Activity)) {
+						intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					}
+					context.startActivity(intent2);
 				}
 				catch(Throwable e2) {
 					Log.e(TAG, "startBrowserIntent", e2);
