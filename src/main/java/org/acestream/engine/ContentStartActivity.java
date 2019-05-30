@@ -1125,6 +1125,9 @@ public class ContentStartActivity
         if(player != null) {
             intent.putExtra(Constants.EXTRA_SELECTED_PLAYER, player.toJson());
         }
+        if(!(context instanceof Activity)) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
         return intent;
     }
 
