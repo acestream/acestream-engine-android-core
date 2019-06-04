@@ -2829,20 +2829,27 @@ public abstract class AceStreamManagerImpl
         requestUrl += "&manifest_p2p_wait_timeout=10";
         requestUrl += "&proxy_vast_response=1";
         requestUrl += "&force_ads=" + (AceStreamEngineBaseApplication.showAdsOnPreroll() ? 1 : 0);
-        String productKey = AceStream.getHttpApiProductKey();
+        String productKey = playbackData.productKey;
+        if(TextUtils.isEmpty(productKey)) {
+            productKey = AceStream.getHttpApiProductKey();
+        }
         if(!TextUtils.isEmpty(productKey)) {
-            requestUrl += "&product_key=" + productKey;
+            if(playbackData.keepOriginalSessionInitiator) {
+                requestUrl += "&secondary_product_key=" + productKey;
+                requestUrl += "&is_restarted_session=1";
+            }
+            else {
+                requestUrl += "&product_key=" + productKey;
+            }
         }
         requestUrl += "&gdpr_consent=" + (AceStreamEngineBaseApplication.getGdprConsent() ? 1 : 0);
 
         if(playbackData.allowMultipleThreadsReading != -1) {
             requestUrl += "&allow_multiple_threads_reading=" + playbackData.allowMultipleThreadsReading;
         }
-
         if(playbackData.stopPrevReadThread != -1) {
             requestUrl += "&stop_prev_read_thread=" + playbackData.stopPrevReadThread;
         }
-
         if(playbackData.disableP2P) {
             requestUrl += "&disable_p2p=1";
         }
@@ -3603,7 +3610,8 @@ public abstract class AceStreamManagerImpl
             final int streamIndex,
             final CastResultListener castResultListener,
             final EngineSessionStartListener engineSessionStartListener,
-            final int forceResume) {
+            final int forceResume,
+            final String productKey) {
 
         TransportFileDescriptor descriptor;
         try {
@@ -3637,7 +3645,7 @@ public abstract class AceStreamManagerImpl
                         fDescriptor.setTransportFileData(result.first);
                         startPlayer(context, player, fDescriptor, result.second, streamIndex,
                                 castResultListener, engineSessionStartListener, forceResume,
-                                savedTime);
+                                savedTime, productKey);
                     }
 
                     @Override
@@ -3655,7 +3663,7 @@ public abstract class AceStreamManagerImpl
 
         // Got descriptor and media file. Start now.
         startPlayer(context, player, descriptor, mediaFile, streamIndex, castResultListener,
-                engineSessionStartListener, forceResume, savedTime);
+                engineSessionStartListener, forceResume, savedTime, productKey);
     }
 
     public void startPlayer(
@@ -3667,17 +3675,20 @@ public abstract class AceStreamManagerImpl
             final CastResultListener castResultListener,
             final EngineSessionStartListener sessionStartListener,
             int forceResume,
-            long savedTime) {
+            long savedTime,
+            String productKey) {
         Logger.v(TAG, "startPlayer: player=" + player
                 + " descriptor=" + descriptor
                 + " mediaFile=" + mediaFile
                 + " forceResume=" + forceResume
                 + " savedTime=" + savedTime
+                + " productKey=" + productKey
         );
         final PlaybackData playbackData = new PlaybackData();
         playbackData.descriptor = descriptor;
         playbackData.mediaFile = mediaFile;
         playbackData.streamIndex = streamIndex;
+        playbackData.productKey = productKey;
 
         setCastResultListener(castResultListener);
 

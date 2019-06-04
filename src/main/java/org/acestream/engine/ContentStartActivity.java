@@ -91,6 +91,7 @@ public class ContentStartActivity
     private int mGotStorageAccess = -1;
     private Button mButtonGrantPermissions;
     private boolean mShowingNotification = false;
+    private String mProductKey = null;
 
     private MediaFilesResponse mMediaFiles = null;
     private SelectedPlayer mSelectedPlayer = null;
@@ -327,6 +328,7 @@ public class ContentStartActivity
         mActive = true;
         mStartedFromExternalRequest = getIntent().getBooleanExtra(Constants.EXTRA_STARTED_FROM_EXTERNAL_REQUEST, true);
         mSkipRememberedPlayer = getIntent().getBooleanExtra(Constants.EXTRA_SKIP_REMEMBERED_PLAYER, false);
+        mProductKey = getIntent().getStringExtra(Constants.EXTRA_PRODUCT_KEY);
 
         if(mGotStorageAccess != 1 && PermissionUtils.hasStorageAccess()) {
             onStorageAccessGranted();
@@ -599,10 +601,6 @@ public class ContentStartActivity
             throw new GenericValidationException("Missing URI");
         }
 
-        if(!TextUtils.equals(action, Intent.ACTION_VIEW)) {
-            throw new GenericValidationException("Bad action");
-        }
-
         TransportFileDescriptor.Builder builder = new TransportFileDescriptor.Builder();
         Log.v(TAG, "initTransportFileDescriptorFromIntent: got uri: uri=" + uri.toString());
 
@@ -808,7 +806,8 @@ public class ContentStartActivity
                     }
                 },
                 -1,
-                0
+                0,
+                mProductKey
         );
     }
 
@@ -966,7 +965,11 @@ public class ContentStartActivity
             }
         }
 
-        if(AceStreamEngineBaseApplication.useVlcBridge()) {
+        //NOTE: currently we don't use VLC bridge when got product key (which means that
+        // playback was initiated by third-party app which passed this key).
+        // Reason: there are no methods to pass product key through the bridge.
+        // This is a fast temporary workaround.
+        if(AceStreamEngineBaseApplication.useVlcBridge() && TextUtils.isEmpty(mProductKey)) {
             //TODO: how to pass mStartedFromExternalRequest?
             new VlcBridge.LoadP2PPlaylistIntentBuilder(mDescriptor)
                     .setPlayer(player)
@@ -992,6 +995,9 @@ public class ContentStartActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(AceStreamPlayer.EXTRA_PLAYLIST, AceStreamPlayer.Playlist.toJson(playlist));
             intent.putExtra(AceStreamPlayer.EXTRA_PLAYLIST_POSITION, playlistPosition);
+            if(!TextUtils.isEmpty(mProductKey)) {
+                intent.putExtra(AceStreamPlayer.EXTRA_PRODUCT_KEY, mProductKey);
+            }
             startActivity(intent);
         }
 

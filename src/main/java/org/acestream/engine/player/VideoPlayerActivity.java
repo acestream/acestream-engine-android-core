@@ -305,6 +305,9 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
     protected int mCurrentSize;
 
+    // Product key of third-party app which initiated playback session
+    protected String mProductKey = null;
+
     protected MediaSessionCompat mMediaSession = null;
     protected MediaSessionService.Client mMediaSessionServiceClient = null;
 
@@ -7029,6 +7032,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         mPlayFromStart = intent.getBooleanExtra(AceStreamPlayer.EXTRA_PLAY_FROM_START, false);
         mSeekOnStart = intent.getLongExtra(AceStreamPlayer.EXTRA_PLAY_FROM_TIME, -1);
         mBroadcastAction = intent.getStringExtra(AceStreamPlayer.EXTRA_BROADCAST_ACTION);
+        mProductKey = intent.getStringExtra(AceStreamPlayer.EXTRA_PRODUCT_KEY);
         if(AceStreamEngineBaseApplication.useVlcBridge()) {
             mAskResume = intent.getBooleanExtra(AceStreamPlayer.EXTRA_ASK_RESUME, false);
             mAudioDigitalOutputEnabled = intent.getBooleanExtra(AceStreamPlayer.EXTRA_AUDIO_DIGITAL_OUTPUT_ENABLED, false);
@@ -7061,6 +7065,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             Log.v(TAG, "parseIntent: mBroadcastAction=" + mBroadcastAction);
             Log.v(TAG, "parseIntent: remoteClientId=" + intent.getStringExtra(AceStreamPlayer.EXTRA_REMOTE_CLIENT_ID));
             Log.v(TAG, "parseIntent: screenOrientation=" + screenOrientation);
+            Log.v(TAG, "parseIntent: mProductKey=" + mProductKey);
         }
     }
 
@@ -7223,5 +7228,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         mGoingToShowAds = true;
         mHandler.removeCallbacks(mGoingToShowAdsTask);
         mHandler.postDelayed(mGoingToShowAdsTask, 5000);
+    }
+
+    @Override
+    public String getProductKey() {
+        return mProductKey;
     }
 }

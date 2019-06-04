@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,7 +11,7 @@ import android.util.Log;
 import org.acestream.engine.AceStreamEngineBaseApplication;
 import org.acestream.engine.PlaybackManager;
 import org.acestream.engine.aliases.App;
-import org.acestream.sdk.AceStreamManager;
+import org.acestream.sdk.AceStream;
 import org.acestream.sdk.EngineSession;
 import org.acestream.sdk.EngineStatus;
 import org.acestream.sdk.MediaItem;
@@ -21,7 +20,6 @@ import org.acestream.sdk.controller.EngineApi;
 import org.acestream.sdk.controller.api.response.VastTag;
 import org.acestream.sdk.interfaces.IAceStreamManager;
 import org.acestream.sdk.player.api.AceStreamPlayer;
-import org.acestream.sdk.player.api.AceStreamPlayer.Playlist;
 import org.acestream.sdk.player.api.AceStreamPlayer.PlaylistItem;
 import org.acestream.sdk.utils.MiscUtils;
 
@@ -61,6 +59,7 @@ public class PlaylistManager {
         void onCurrentItemChanged(int position);
         void onBeforePlaylistPositionChanged(int newPosition);
         void onPlaylistUpdated();
+        String getProductKey();
     }
 
     private MediaItem.UpdateListener mMediaUpdateListener = new MediaItem.UpdateListener() {
@@ -206,6 +205,21 @@ public class PlaylistManager {
         }
         setCurrentPosition(index);
 
+        // Handle situation when some external app started engine session and passed
+        // playback url to our app.
+        // In such case we parse infohash from playback url and create TFD from it.
+        boolean restartSessionWithOriginalInitiator = false;
+        if(!media.isP2PItem()) {
+            String infohash = AceStream.parseAceStreamContentUrl(media.getUri());
+            if(infohash != null) {
+                Uri newUri = Uri.parse("acestream:?infohash=" + infohash);
+                Log.v(TAG, "playIndex: update uri: " + media.getUri() + "->" + newUri);
+                media.setUri(newUri);
+                restartSessionWithOriginalInitiator = true;
+            }
+        }
+        final boolean fRestartSessionWithOriginalInitiator = restartSessionWithOriginalInitiator;
+
         if(media.isP2PItem() && media.getPlaybackUri() == null) {
             //TODO: handle stream index
             final int streamIndex = 0;
@@ -242,7 +256,7 @@ public class PlaylistManager {
                         next[i] = nextFileIndexes.get(i);
                     }
 
-                    media.startP2P(pm, next, streamIndex, new P2PItemStartListener() {
+                    media.startP2P(pm, next, streamIndex, fRestartSessionWithOriginalInitiator, mPlayer.getProductKey(), new P2PItemStartListener() {
                         @Override
                         public void onSessionStarted(EngineSession session) {
                             mPlayer.onP2PSessionStarted(session.vastTags);
