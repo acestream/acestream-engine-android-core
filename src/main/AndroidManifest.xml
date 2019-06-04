@@ -294,19 +294,50 @@
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.DeviceDefault.Dialog">
 
-            <!-- explicit intent -->
+            <!-- explicit intent without data -->
             <intent-filter>
                 <action android:name="org.acestream.action.start_content" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
-            <!-- acestream:// and magnet:// -->
+            <!-- explicit intent with data and mime -->
+            <intent-filter>
+                <action android:name="org.acestream.action.start_content" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="acestream" />
+                <data android:scheme="http" />
+                <data android:scheme="magnet" />
+            </intent-filter>
+
+            <!-- explicit intent with data and mime -->
+            <intent-filter>
+                <action android:name="org.acestream.action.start_content" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+                <data android:scheme="acestream" />
+                <data android:scheme="http" />
+                <data android:scheme="magnet" />
+            </intent-filter>
+
+            <!-- acestream:// and magnet:// without data type -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
+                <data android:scheme="acestream" />
+                <data android:scheme="magnet" />
+            </intent-filter>
+
+            <!-- acestream:// and magnet:// with data type -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:mimeType="*/*" />
                 <data android:scheme="acestream" />
                 <data android:scheme="magnet" />
             </intent-filter>
