@@ -682,6 +682,9 @@ public class BonusAdsActivity
     @Override
     public void onPollfishOpened() {
         Log.d(TAG, "onPollfishOpened");
+        AceStreamEngineBaseApplication.getInstance().logEvent(
+                AceStreamEngineBaseApplication.ANALYTICS_EVENT_POLLFISH_OPENED,
+                null);
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -704,7 +707,9 @@ public class BonusAdsActivity
     @Override
     public void onUserNotEligible() {
         Log.d(TAG, "onUserNotEligible");
-
+        AceStreamEngineBaseApplication.getInstance().logEvent(
+                AceStreamEngineBaseApplication.ANALYTICS_EVENT_POLLFISH_NOT_ELIGIBLE,
+                null);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -717,7 +722,9 @@ public class BonusAdsActivity
 
     @Override
     public void onUserRejectedSurvey() {
-
+        AceStreamEngineBaseApplication.getInstance().logEvent(
+                AceStreamEngineBaseApplication.ANALYTICS_EVENT_POLLFISH_RECEIVED,
+                null);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -729,6 +736,9 @@ public class BonusAdsActivity
     @Override
     public void onPollfishSurveyCompleted(final SurveyInfo surveyInfo) {
         Log.v(TAG, "onPollfishSurveyCompleted: " + surveyInfo.toString());
+        AceStreamEngineBaseApplication.getInstance().logEvent(
+                AceStreamEngineBaseApplication.ANALYTICS_EVENT_POLLFISH_COMPLETED,
+                null);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -745,6 +755,9 @@ public class BonusAdsActivity
     @Override
     public void onPollfishSurveyReceived(SurveyInfo surveyInfo) {
         Log.v(TAG, "onPollfishSurveyReceived");
+        AceStreamEngineBaseApplication.getInstance().logEvent(
+                AceStreamEngineBaseApplication.ANALYTICS_EVENT_POLLFISH_RECEIVED,
+                null);
         mSurveyCached = true;
         runOnUiThread(new Runnable() {
             @Override

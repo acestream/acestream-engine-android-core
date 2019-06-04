@@ -123,6 +123,12 @@ public class AceStreamEngineBaseApplication {
 	public final static String ANALYTICS_EVENT_AD_REQUEST_UNPAUSE = "as_ad_request_unpause";
 	public final static String ANALYTICS_EVENT_AD_REQUEST_CLOSE = "as_ad_request_close";
 
+	public final static String ANALYTICS_EVENT_POLLFISH_OPENED = "as_pollfish_opened";
+	public final static String ANALYTICS_EVENT_POLLFISH_NOT_ELIGIBLE = "as_pollfish_not_eligible";
+	public final static String ANALYTICS_EVENT_POLLFISH_REJECTED = "as_pollfish_rejected";
+	public final static String ANALYTICS_EVENT_POLLFISH_COMPLETED = "as_pollfish_completed";
+	public final static String ANALYTICS_EVENT_POLLFISH_RECEIVED = "as_pollfish_received";
+
 	public final static String BROADCAST_DO_INTERNAL_MAINTAIN = "do_internal_maintain";
 
 	private static Context appContext = null;
