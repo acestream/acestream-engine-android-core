@@ -2203,6 +2203,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         if(getIntent().hasExtra(AceStreamPlayer.EXTRA_PLAYLIST)) {
             mPlaylist.loadPlaylistFromIntent(getIntent(), true);
         }
+        else if(TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)
+                && getIntent().getData() != null) {
+            mPlaylist.loadPlaybackIntent(getIntent(), true);
+        }
         else {
             // Never ask user when loading last playlist.
             // Usually this happens when activity is recreated, not started explicitly.

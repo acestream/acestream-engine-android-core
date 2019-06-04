@@ -115,6 +115,17 @@ public class PlaylistManager {
         mPlayer.onPlaylistUpdated();
     }
 
+    public void loadPlaybackIntent(@NonNull final Intent intent, final boolean autoPlay) {
+        Uri uri = intent.getData();
+        if(uri == null) {
+            Log.e(TAG, "loadPlaybackIntent: empty uri");
+            return;
+        }
+
+        String jsonData =  AceStreamPlayer.Playlist.fromSingleItem(uri.toString(), uri.toString(), 0);
+        loadPlaylistFromJson(jsonData, 0, autoPlay, true);
+    }
+
     public void loadPlaylistFromIntent(final Intent intent, final boolean autoPlay) {
         int pos = 0;
         String jsonData = null;
