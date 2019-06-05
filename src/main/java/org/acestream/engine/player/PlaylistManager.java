@@ -217,13 +217,20 @@ public class PlaylistManager {
         setCurrentPosition(index);
 
         // Handle situation when some external app started engine session and passed
-        // playback url to our app.
+        // playback url to our app or when direct HTTP API url is passed.
         // In such case we parse infohash from playback url and create TFD from it.
         boolean restartSessionWithOriginalInitiator = false;
         if(!media.isP2PItem()) {
-            String infohash = AceStream.parseAceStreamContentUrl(media.getUri());
-            if(infohash != null) {
-                Uri newUri = Uri.parse("acestream:?infohash=" + infohash);
+            String acestreamLink = AceStream.parseAceStreamHttpApiUrl(media.getUri());
+            if(acestreamLink == null) {
+                String infohash = AceStream.parseAceStreamPlaybackUrl(media.getUri());
+                if (infohash != null) {
+                    acestreamLink = "acestream:?infohash=" + infohash;
+                }
+            }
+
+            if(acestreamLink != null) {
+                Uri newUri = Uri.parse(acestreamLink);
                 Log.v(TAG, "playIndex: update uri: " + media.getUri() + "->" + newUri);
                 media.setUri(newUri);
                 restartSessionWithOriginalInitiator = true;
