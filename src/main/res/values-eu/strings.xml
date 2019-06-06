@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Iragarkiak eskatu dira ...</string>
     <string name="ads_are_loaded" source="google_translate">Iragarkiak kargatzen ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Ez dago iragarkirik. Saiatu geroago.</string>
-    <string name="set_ads_price" source="google_translate">Ezarri iragarkiak ikusteko prezioa</string>
+    <string name="set_ads_price" source="google_translate">Iragarkiak ikusteagatik hobari kopurua</string>
     <string name="open_in_ace_player" source="google_translate">Ireki Ace Player-en</string>
 </resources>

@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Reklamy są wymagane ...</string>
     <string name="ads_are_loaded" source="google_translate">Ładowanie reklam…</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Brak reklam. Spróbuj później.</string>
-    <string name="set_ads_price" source="google_translate">Ustaw cenę za oglądanie reklam</string>
+    <string name="set_ads_price" source="google_translate">Ilość premii za oglądanie reklam</string>
     <string name="open_in_ace_player" source="google_translate">Otwórz w Ace Player</string>
 </resources>

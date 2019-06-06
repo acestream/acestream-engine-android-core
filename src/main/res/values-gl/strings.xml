@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Solicítanse anuncios ...</string>
     <string name="ads_are_loaded" source="google_translate">Cargando anuncios ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Non hai anuncios. Tente máis tarde.</string>
-    <string name="set_ads_price" source="google_translate">Establecer o prezo para ver os anuncios</string>
+    <string name="set_ads_price" source="google_translate">Cantidade de bonos para ver anuncios</string>
     <string name="open_in_ace_player" source="google_translate">Abrir en Ace Player</string>
 </resources>

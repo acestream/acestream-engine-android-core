@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Quảng cáo được yêu cầu</string>
     <string name="ads_are_loaded" source="google_translate">Đang tải quảng cáo</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Không có quảng cáo. Thử lại sau.</string>
-    <string name="set_ads_price" source="google_translate">Đặt giá để xem quảng cáo</string>
+    <string name="set_ads_price" source="google_translate">Số tiền thưởng khi xem quảng cáo</string>
     <string name="open_in_ace_player" source="google_translate">Mở trong Ace Player</string>
 </resources>

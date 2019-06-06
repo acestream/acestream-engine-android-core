@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Advertenties worden aangevraagd ...</string>
     <string name="ads_are_loaded" source="google_translate">Advertenties laden ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Er zijn geen advertenties. Probeer later.</string>
-    <string name="set_ads_price" source="google_translate">Prijs instellen voor het bekijken van advertenties</string>
+    <string name="set_ads_price" source="google_translate">Aantal bonussen voor het bekijken van advertenties</string>
     <string name="open_in_ace_player" source="google_translate">Openen in Ace Player</string>
 </resources>

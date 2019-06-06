@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Thathar a ’faighneachd gum faigh sinn…</string>
     <string name="ads_are_loaded" source="google_translate">Luchdachadh shanasan…</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Chan eil sanasan ann. Feuch ris a-rithist.</string>
-    <string name="set_ads_price" source="google_translate">Prìsean suidhichte airson a bhith a ’coimhead sanasachd</string>
+    <string name="set_ads_price" source="google_translate">An àireamh de bhònasan airson a bhith a ’coimhead sanasachd</string>
     <string name="open_in_ace_player" source="google_translate">Fosgailte ann an Ace Player</string>
 </resources>

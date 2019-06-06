@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Απαιτούνται διαφημίσεις ...</string>
     <string name="ads_are_loaded" source="google_translate">Φόρτωση διαφημίσεων ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Δεν υπάρχουν διαφημίσεις. Προσπαθησε αργοτερα.</string>
-    <string name="set_ads_price" source="google_translate">Ορίστε τιμή για την προβολή διαφημίσεων</string>
+    <string name="set_ads_price" source="google_translate">Ποσό των μπόνους για την προβολή διαφημίσεων</string>
     <string name="open_in_ace_player" source="google_translate">Άνοιγμα στο Ace Player</string>
 </resources>

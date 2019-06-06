@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Annoncer anmodes om ...</string>
     <string name="ads_are_loaded" source="google_translate">Indlæser annoncer ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Der er ingen annoncer. Prøv senere.</string>
-    <string name="set_ads_price" source="google_translate">Angiv pris for at se annoncer</string>
+    <string name="set_ads_price" source="google_translate">Antal bonusser til at se annoncer</string>
     <string name="open_in_ace_player" source="google_translate">Åben i Ace Player</string>
 </resources>

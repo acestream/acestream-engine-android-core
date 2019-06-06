@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">ప్రకటనలు అభ్యర్థించబడుతున్నాయి ...</string>
     <string name="ads_are_loaded" source="google_translate">ప్రకటనలు లోడ్ అవుతున్నాయి ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">ప్రకటనలు లేవు. తర్వాత ప్రయత్నించండి.</string>
-    <string name="set_ads_price" source="google_translate">ప్రకటనలను చూడడానికి ధరను సెట్ చేయండి</string>
+    <string name="set_ads_price" source="google_translate">ప్రకటనలను చూడడానికి బోనస్ మొత్తం</string>
     <string name="open_in_ace_player" source="google_translate">ఏస్ ప్లేయర్లో తెరవండి</string>
 </resources>

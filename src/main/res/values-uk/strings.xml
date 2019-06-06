@@ -7,7 +7,7 @@
     <string name="you_have_earned_bonuses">Вам нараховані бонуси</string>
     <string name="bonus_ads_info">
         Отримуйте бонуси за перегляд реклами або за проходження опитувань, та використовуйте їх для прокачки свого аккаунта
-    </string>
+        </string>
     <string name="ads_are_requested">Виконується запит реклами…</string>
     <string name="ads_are_loaded">Завантаження реклами…</string>
     <string name="ads_are_missing_please_wait">Реклама відсутня. Спробуйте пізніше.</string>
@@ -16,7 +16,7 @@
     <string name="survey_is_loaded">Завантаження опитування…</string>
     <string name="survey_is_missing_please_wait">Опитування відсутнє. Спробуйте пізніше.</string>
     <string name="open_link">Відкрити посилання</string>
-    <string name="set_ads_price">Встановити ціну за показ реклами</string>
+    <string name="set_ads_price">Кількість бонусів за перегляд реклами</string>
     <string name="license">Ліцензія</string>
     <string name="drawer_open">Відкрити меню навігації</string>
     <string name="drawer_close">Закрити меню навігації</string>

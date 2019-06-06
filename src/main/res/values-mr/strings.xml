@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">जाहिरातींची विनंती केली जात आहे ...</string>
     <string name="ads_are_loaded" source="google_translate">जाहिराती लोड करीत आहे ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">तेथे जाहिराती नाहीत. नंतर प्रयत्न करा</string>
-    <string name="set_ads_price" source="google_translate">जाहिराती पहाण्यासाठी किंमत सेट करा</string>
+    <string name="set_ads_price" source="google_translate">जाहिराती पहाण्यासाठी बोनसची रक्कम</string>
     <string name="open_in_ace_player" source="google_translate">एस् प्लेयरमध्ये उघडा</string>
 </resources>

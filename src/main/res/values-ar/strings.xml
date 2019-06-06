@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">الإعلانات مطلوبة ...</string>
     <string name="ads_are_loaded" source="google_translate">جارٍ تحميل الإعلانات ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">لا يوجد إعلانات. حاول لاحقا.</string>
-    <string name="set_ads_price" source="google_translate">حدد السعر لمشاهدة الإعلانات</string>
+    <string name="set_ads_price" source="google_translate">مقدار المكافآت لمشاهدة الإعلانات</string>
     <string name="open_in_ace_player" source="google_translate">فتح في ايس لاعب</string>
 </resources>

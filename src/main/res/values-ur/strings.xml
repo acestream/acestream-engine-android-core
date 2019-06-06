@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">اشتھارات کی درخواست کی جاتی ہے ...</string>
     <string name="ads_are_loaded" source="google_translate">اشتہارات لوڈ کر رہے ہیں ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">کوئی اشتہار نہیں ہے. بعد میں کوشسش کریں.</string>
-    <string name="set_ads_price" source="google_translate">اشتھارات دیکھنے کیلئے قیمت مقرر کریں</string>
+    <string name="set_ads_price" source="google_translate">اشتھارات کو دیکھنے کے لئے بونس کی رقم</string>
     <string name="open_in_ace_player" source="google_translate">Ace پلیئر میں کھولیں</string>
 </resources>

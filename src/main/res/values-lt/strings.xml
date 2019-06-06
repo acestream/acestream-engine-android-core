@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Skelbimai yra prašomi ...</string>
     <string name="ads_are_loaded" source="google_translate">Įkeliami skelbimai ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Nėra skelbimų. Pabandyk vėliau.</string>
-    <string name="set_ads_price" source="google_translate">Nustatykite skelbimų žiūrėti kainą</string>
+    <string name="set_ads_price" source="google_translate">Premijų už skelbimų žiūrėjimą suma</string>
     <string name="open_in_ace_player" source="google_translate">Atidaryti „Ace Player“</string>
 </resources>

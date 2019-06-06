@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Reklamy sa požadujú…</string>
     <string name="ads_are_loaded" source="google_translate">Prebieha načítavanie reklám ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Neexistujú žiadne reklamy. Vyskúšaj neskôr.</string>
-    <string name="set_ads_price" source="google_translate">Nastaviť cenu za sledovanie reklám</string>
+    <string name="set_ads_price" source="google_translate">Výška bonusov za sledovanie reklám</string>
     <string name="open_in_ace_player" source="google_translate">Otvoriť v Ace Player</string>
 </resources>

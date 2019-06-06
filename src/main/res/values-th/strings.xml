@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">ขอโฆษณา ...</string>
     <string name="ads_are_loaded" source="google_translate">กำลังโหลดโฆษณา ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">ไม่มีโฆษณา ลองใหม่ภายหลัง</string>
-    <string name="set_ads_price" source="google_translate">กำหนดราคาสำหรับการดูโฆษณา</string>
+    <string name="set_ads_price" source="google_translate">จำนวนโบนัสสำหรับการดูโฆษณา</string>
     <string name="open_in_ace_player" source="google_translate">เปิดใน Ace Player</string>
 </resources>

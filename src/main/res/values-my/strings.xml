@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">ကြော်ငြာတွေကိုမေတ္တာရပ်ခံနေကြပါတယ် ...</string>
     <string name="ads_are_loaded" source="google_translate">ကြော်ငြာတွေကို Loading ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">ကြော်ငြာမပါရှိပါသည်။ နောက်ပိုင်းမှာကြိုးစားပါ။</string>
-    <string name="set_ads_price" source="google_translate">ကြော်ငြာတွေကိုစောင့်ကြည့်ဘို့ရာခန့်ထားသောစျေးနှုန်း</string>
+    <string name="set_ads_price" source="google_translate">ကြော်ငြာတွေကိုစောင့်ကြည့်ဘို့ဆုကြေးငွေပမာဏ</string>
     <string name="open_in_ace_player" source="google_translate">Ace ကို Player ကိုအတွက်ပွင့်လင်း</string>
 </resources>

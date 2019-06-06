@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Iklan diminta ...</string>
     <string name="ads_are_loaded" source="google_translate">Memuat iklan ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Tidak ada iklan. Coba lagi nanti.</string>
-    <string name="set_ads_price" source="google_translate">Tetapkan harga untuk menonton iklan</string>
+    <string name="set_ads_price" source="google_translate">Jumlah bonus untuk menonton iklan</string>
     <string name="open_in_ace_player" source="google_translate">Buka di Ace Player</string>
 </resources>

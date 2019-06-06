@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Zatraženi su oglasi ...</string>
     <string name="ads_are_loaded" source="google_translate">Učitavanje oglasa ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Nema oglasa. Pokušaj kasnije.</string>
-    <string name="set_ads_price" source="google_translate">Postavite cijenu za gledanje oglasa</string>
+    <string name="set_ads_price" source="google_translate">Iznos bonusa za gledanje oglasa</string>
     <string name="open_in_ace_player" source="google_translate">Otvori u Ace Playeru</string>
 </resources>

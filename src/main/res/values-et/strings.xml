@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Reklaame küsitakse ...</string>
     <string name="ads_are_loaded" source="google_translate">Reklaamide laadimine ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Reklaame pole. Proovi hiljem.</string>
-    <string name="set_ads_price" source="google_translate">Määrake reklaamide vaatamise hind</string>
+    <string name="set_ads_price" source="google_translate">Reklaamide vaatamise boonuste summa</string>
     <string name="open_in_ace_player" source="google_translate">Ace mängija</string>
 </resources>

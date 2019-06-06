@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">विज्ञापनों का अनुरोध किया जाता है ...</string>
     <string name="ads_are_loaded" source="google_translate">विज्ञापन लोड हो रहे हैं ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">कोई विज्ञापन नहीं है। बाद में कोशिश करें।</string>
-    <string name="set_ads_price" source="google_translate">विज्ञापन देखने के लिए मूल्य निर्धारित करें</string>
+    <string name="set_ads_price" source="google_translate">विज्ञापन देखने के लिए बोनस की राशि</string>
     <string name="open_in_ace_player" source="google_translate">ऐस प्लेयर में खोलें</string>
 </resources>

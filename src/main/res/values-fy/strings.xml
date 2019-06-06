@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Berjochten wurde frege ...</string>
     <string name="ads_are_loaded" source="google_translate">Oanmeitsje advertinsjes ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Der is gjin advertinsjes. Besykje letter.</string>
-    <string name="set_ads_price" source="google_translate">Set priis foar bepaalde advertinsjes</string>
+    <string name="set_ads_price" source="google_translate">Bûn fan bonussen foar bepaalde advertinsjes</string>
     <string name="open_in_ace_player" source="google_translate">Iepenje yn Ace-spiler</string>
 </resources>

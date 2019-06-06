@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">விளம்பரங்கள் கோரப்படுகின்றன ...</string>
     <string name="ads_are_loaded" source="google_translate">விளம்பரங்களை ஏற்றுகிறது ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">விளம்பரங்கள் இல்லை. சிறிது நேரம் கழித்து முயலுங்கள்.</string>
-    <string name="set_ads_price" source="google_translate">விளம்பரங்களைக் காண விலை அமைக்கவும்</string>
+    <string name="set_ads_price" source="google_translate">விளம்பரங்கள் பார்க்க போனஸ் தொகை</string>
     <string name="open_in_ace_player" source="google_translate">ஏஸ் பிளேயரில் திறக்க</string>
 </resources>

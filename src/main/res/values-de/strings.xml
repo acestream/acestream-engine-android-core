@@ -13,6 +13,6 @@
     <string name="ads_are_requested" source="google_translate">Anzeigen werden angefordert ...</string>
     <string name="ads_are_loaded" source="google_translate">Anzeigen werden geladen ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Es gibt keine Anzeigen. Versuche es später.</string>
-    <string name="set_ads_price" source="google_translate">Legen Sie den Preis für das Anzeigenschauen fest</string>
+    <string name="set_ads_price" source="google_translate">Anzahl der Boni für das Ansehen von Anzeigen</string>
     <string name="open_in_ace_player" source="google_translate">In Ace Player öffnen</string>
 </resources>
