@@ -21,6 +21,7 @@ import org.acestream.sdk.controller.api.response.VastTag;
 import org.acestream.sdk.interfaces.IAceStreamManager;
 import org.acestream.sdk.player.api.AceStreamPlayer;
 import org.acestream.sdk.player.api.AceStreamPlayer.PlaylistItem;
+import org.acestream.sdk.utils.Logger;
 import org.acestream.sdk.utils.MiscUtils;
 
 import java.util.ArrayList;
@@ -89,6 +90,10 @@ public class PlaylistManager {
 
         AceStreamPlayer.PlaylistItem[] playlist = AceStreamPlayer.Playlist.fromJson(jsonData);
         for(int i = 0; i < playlist.length; i++) {
+            if(TextUtils.isEmpty(playlist[i].uri)) {
+                Logger.e(TAG, "loadPlaylistFromJson: skip item with empty URI: idx=" + i + " title=" + playlist[i].title + " id=" + playlist[i].id);
+                continue;
+            }
             addItem(Uri.parse(playlist[i].uri), playlist[i].title, playlist[i].id);
         }
 
