@@ -1603,7 +1603,8 @@ public class RemoteControlActivity
                 },
                 fromStart ? 0 : 1,
                 savedTime,
-                null
+                null,
+                false
         );
 
         if(AceStreamEngineBaseApplication.useVlcBridge() && player.isRemote()) {

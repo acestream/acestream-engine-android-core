@@ -3611,7 +3611,8 @@ public abstract class AceStreamManagerImpl
             final CastResultListener castResultListener,
             final EngineSessionStartListener engineSessionStartListener,
             final int forceResume,
-            final String productKey) {
+            final String productKey,
+            final boolean keepOriginalSessionInitiator) {
 
         TransportFileDescriptor descriptor;
         try {
@@ -3645,7 +3646,7 @@ public abstract class AceStreamManagerImpl
                         fDescriptor.setTransportFileData(result.first);
                         startPlayer(context, player, fDescriptor, result.second, streamIndex,
                                 castResultListener, engineSessionStartListener, forceResume,
-                                savedTime, productKey);
+                                savedTime, productKey, keepOriginalSessionInitiator);
                     }
 
                     @Override
@@ -3663,7 +3664,7 @@ public abstract class AceStreamManagerImpl
 
         // Got descriptor and media file. Start now.
         startPlayer(context, player, descriptor, mediaFile, streamIndex, castResultListener,
-                engineSessionStartListener, forceResume, savedTime, productKey);
+                engineSessionStartListener, forceResume, savedTime, productKey, keepOriginalSessionInitiator);
     }
 
     public void startPlayer(
@@ -3676,19 +3677,22 @@ public abstract class AceStreamManagerImpl
             final EngineSessionStartListener sessionStartListener,
             int forceResume,
             long savedTime,
-            String productKey) {
+            String productKey,
+            boolean keepOriginalSessionInitiator) {
         Logger.v(TAG, "startPlayer: player=" + player
                 + " descriptor=" + descriptor
                 + " mediaFile=" + mediaFile
                 + " forceResume=" + forceResume
                 + " savedTime=" + savedTime
                 + " productKey=" + productKey
+                + " keepOriginalSessionInitiator=" + keepOriginalSessionInitiator
         );
         final PlaybackData playbackData = new PlaybackData();
         playbackData.descriptor = descriptor;
         playbackData.mediaFile = mediaFile;
         playbackData.streamIndex = streamIndex;
         playbackData.productKey = productKey;
+        playbackData.keepOriginalSessionInitiator = keepOriginalSessionInitiator;
 
         setCastResultListener(castResultListener);
 

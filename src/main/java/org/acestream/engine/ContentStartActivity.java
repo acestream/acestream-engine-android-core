@@ -92,6 +92,7 @@ public class ContentStartActivity
     private Button mButtonGrantPermissions;
     private boolean mShowingNotification = false;
     private String mProductKey = null;
+    private boolean mKeepOriginalSessionInitiator = false;
 
     private MediaFilesResponse mMediaFiles = null;
     private SelectedPlayer mSelectedPlayer = null;
@@ -594,7 +595,6 @@ public class ContentStartActivity
             return;
         }
 
-        String action = intent.getAction();
         Uri uri = intent.getData();
 
         if(uri == null) {
@@ -607,10 +607,28 @@ public class ContentStartActivity
         mSelectedFileIndex = MiscUtils.getIntQueryParameter(uri, "index", -1);
         Logger.v(TAG, "initTransportFileDescriptorFromIntent: fileIndex=" + mSelectedFileIndex);
 
+        if(TextUtils.equals(uri.getScheme(), "http")) {
+            String acestreamLink = AceStream.parseAceStreamHttpApiUrl(uri);
+            if(acestreamLink == null) {
+                String infohash = AceStream.parseAceStreamPlaybackUrl(uri);
+                if (infohash != null) {
+                    acestreamLink = "acestream:?infohash=" + infohash;
+                }
+            }
+
+            if(acestreamLink != null) {
+                Uri newUri = Uri.parse(acestreamLink);
+                Log.v(TAG, "initTransportFileDescriptorFromIntent: update uri: " + uri + "->" + newUri);
+                uri = newUri;
+                mKeepOriginalSessionInitiator = true;
+            }
+        }
+
         String scheme = uri.getScheme();
         if(scheme == null) {
             scheme = "";
         }
+
         switch(scheme) {
             case "content":
                 try {
@@ -807,7 +825,8 @@ public class ContentStartActivity
                 },
                 -1,
                 0,
-                mProductKey
+                mProductKey,
+                mKeepOriginalSessionInitiator
         );
     }
 
