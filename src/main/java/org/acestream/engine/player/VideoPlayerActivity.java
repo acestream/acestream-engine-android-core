@@ -1741,13 +1741,20 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                     if (mPlaylist.isSamePlaylist(intent.getStringExtra(AceStreamPlayer.EXTRA_PLAYLIST))) {
                         int pos = intent.getIntExtra(AceStreamPlayer.EXTRA_PLAYLIST_POSITION, 0);
                         if (pos != mPlaylist.getCurrentMediaPosition()) {
-                            App.v(TAG, "onNewIntent: chane pos in current playlist: newpos=" + pos);
+                            App.v(TAG, "onNewIntent: change pos in current playlist: newpos=" + pos);
                             mPlaylist.playIndex(pos);
                         }
                     } else {
-                        App.v(TAG, "onNewIntent: load new playlist");
-                        stopPlayback(true);
-                        initPlayback();
+                        if(mPlaybackManager != null) {
+                            App.v(TAG, "onNewIntent: load new playlist");
+                            stopPlayback(true);
+                            initPlayback();
+                        }
+                        else {
+                            // This means that new intent is received before PM was connected.
+                            // Just need to wait for connect in such situation.
+                            App.v(TAG, "onNewIntent: wait pm");
+                        }
                     }
                 }
             }
