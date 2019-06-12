@@ -229,12 +229,6 @@ public class AdManager {
                     if(mRewardedVideoAdListener != null) {
                         mRewardedVideoAdListener.onRewardedVideoAdOpened();
                     }
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadRewardedVideoAd(true);
-                        }
-                    }, 1000);
                 }
 
                 @Override
@@ -252,6 +246,13 @@ public class AdManager {
                     if(mRewardedVideoAdListener != null) {
                         mRewardedVideoAdListener.onRewardedVideoAdClosed();
                     }
+
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadRewardedVideoAd(true);
+                        }
+                    }, 5000);
                 }
 
                 @Override
@@ -275,10 +276,10 @@ public class AdManager {
                     boolean retry = gotRewardedVideoListeners();
                     int interval;
                     if(mNextAdSegment == -1) {
-                        interval = MiscUtils.randomIntRange(5000, 10000);
+                        interval = MiscUtils.randomIntRange(7500, 15000);
                     }
                     else {
-                        interval = MiscUtils.randomIntRange(500, 1500);
+                        interval = MiscUtils.randomIntRange(1500, 3500);
                     }
 
                     Log.v(TAG, "adevent:rv:onRewardedVideoAdFailedToLoad: retry=" + retry + " interval=" + interval);
