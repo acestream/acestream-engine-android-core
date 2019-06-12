@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Δεν υπάρχει έρευνα. Προσπαθησε αργοτερα.</string>
     <string name="get_bonuses" source="google_translate">Αποκτήστε μπόνους</string>
     <string name="bonuses" source="google_translate">Μπόνους</string>
-    <string name="show_bonus_ads" source="google_translate">Εμφάνιση διαφημίσεων μπόνους</string>
+    <string name="show_bonus_ads" source="google_translate">Προβολή διαφήμισης για να λάβετε ανταμοιβή</string>
     <string name="current_bonuses_amount" source="google_translate">Τρέχον ποσό μπόνους</string>
     <string name="you_have_earned_bonuses" source="google_translate">Έχετε κερδίσει μπόνους</string>
-    <string name="bonus_ads_info" source="google_translate">Κερδίστε επιδόματα για την προβολή διαφημίσεων και την ολοκλήρωση των ερευνών και χρησιμοποιήστε τα για να αντλήσετε το λογαριασμό σας</string>
+    <string name="bonus_ads_info" source="google_translate">Λάβετε ανταμοιβή για την προβολή διαφημίσεων και την ολοκλήρωση των ερευνών</string>
     <string name="ads_are_requested" source="google_translate">Απαιτούνται διαφημίσεις ...</string>
     <string name="ads_are_loaded" source="google_translate">Φόρτωση διαφημίσεων ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Δεν υπάρχουν διαφημίσεις. Προσπαθησε αργοτερα.</string>

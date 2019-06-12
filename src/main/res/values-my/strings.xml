@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">အဘယ်သူမျှမစစ်တမ်းရှိပါသည်။ နောက်ပိုင်းမှာကြိုးစားပါ။</string>
     <string name="get_bonuses" source="google_translate">ဆုကြေးငွေကိုရယူပါ</string>
     <string name="bonuses" source="google_translate">ဆုကြေးငွေ</string>
-    <string name="show_bonus_ads" source="google_translate">ဆုကြေးငွေကြော်ငြာတွေပြရန်</string>
+    <string name="show_bonus_ads" source="google_translate">အကျိုးကိုခံရဖို့ကြည့်ရန်ကြော်ငြာ</string>
     <string name="current_bonuses_amount" source="google_translate">ဆုကြေးငွေ၏လက်ရှိငွေပမာဏ</string>
     <string name="you_have_earned_bonuses" source="google_translate">သငျသညျအပိုဆုကြေးငွေရရှိခဲ့ပါပြီ</string>
-    <string name="bonus_ads_info" source="google_translate">ကြော်ငြာတွေများနှင့်ပြီးစစ်တမ်းများကြည့်ရှုဘို့ဆုကြေးငွေဝင်ငွေနှင့်သင့်အကောင့်စုပ်ဖို့သူတို့ကိုအသုံးချ</string>
+    <string name="bonus_ads_info" source="google_translate">ကြော်ငြာတွေကိုကြည့်ရှုခြင်းနှင့်စစ်တမ်းများပြီးသွားများအတွက်အကျိုးကိုခံရ</string>
     <string name="ads_are_requested" source="google_translate">ကြော်ငြာတွေကိုမေတ္တာရပ်ခံနေကြပါတယ် ...</string>
     <string name="ads_are_loaded" source="google_translate">ကြော်ငြာတွေကို Loading ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">ကြော်ငြာမပါရှိပါသည်။ နောက်ပိုင်းမှာကြိုးစားပါ။</string>

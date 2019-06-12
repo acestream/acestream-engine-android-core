@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Tiada tinjauan. Cuba Kemudian.</string>
     <string name="get_bonuses" source="google_translate">Dapatkan bonus</string>
     <string name="bonuses" source="google_translate">Bonus</string>
-    <string name="show_bonus_ads" source="google_translate">Tunjukkan iklan bonus</string>
+    <string name="show_bonus_ads" source="google_translate">Lihat iklan untuk menerima ganjaran</string>
     <string name="current_bonuses_amount" source="google_translate">Jumlah bonus semasa</string>
     <string name="you_have_earned_bonuses" source="google_translate">Anda telah memperoleh bonus</string>
-    <string name="bonus_ads_info" source="google_translate">Dapatkan bonus untuk melihat iklan dan kaji selidik penamat, dan gunakannya untuk mengepam akaun anda</string>
+    <string name="bonus_ads_info" source="google_translate">Terima ganjaran untuk melihat iklan dan tinjauan tinjauan</string>
     <string name="ads_are_requested" source="google_translate">Iklan diminta ...</string>
     <string name="ads_are_loaded" source="google_translate">Memuat iklan ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Tiada iklan. Cuba Kemudian.</string>

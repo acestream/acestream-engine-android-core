@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">கணக்கெடுப்பு எதுவும் இல்லை. சிறிது நேரம் கழித்து முயலுங்கள்.</string>
     <string name="get_bonuses" source="google_translate">போனஸ் கிடைக்கும்</string>
     <string name="bonuses" source="google_translate">போனஸ்</string>
-    <string name="show_bonus_ads" source="google_translate">போனஸ் விளம்பரங்களைக் காண்பி</string>
+    <string name="show_bonus_ads" source="google_translate">வெகுமதியைப் பெற விளம்பரத்தைக் காண்க</string>
     <string name="current_bonuses_amount" source="google_translate">போனஸ் தற்போதைய அளவு</string>
     <string name="you_have_earned_bonuses" source="google_translate">நீங்கள் போனஸ் சம்பாதித்தீர்கள்</string>
-    <string name="bonus_ads_info" source="google_translate">விளம்பரங்களைப் பார்ப்பதற்கும், முடிவெடுக்கும் ஆய்வுகள் செய்வதற்கும் போனஸ் சம்பாதிக்கவும், உங்கள் கணக்கை பம்ப் செய்ய அவற்றைப் பயன்படுத்தவும்</string>
+    <string name="bonus_ads_info" source="google_translate">விளம்பரங்களைக் காண்பிப்பதற்கான வெகுமதிகளைப் பெறுதல் மற்றும் இறுதி ஆய்வுகள்</string>
     <string name="ads_are_requested" source="google_translate">விளம்பரங்கள் கோரப்படுகின்றன ...</string>
     <string name="ads_are_loaded" source="google_translate">விளம்பரங்களை ஏற்றுகிறது ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">விளம்பரங்கள் இல்லை. சிறிது நேரம் கழித்து முயலுங்கள்.</string>

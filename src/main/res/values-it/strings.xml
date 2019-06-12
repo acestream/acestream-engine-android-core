@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Non c\'è sondaggio. Prova più tardi.</string>
     <string name="get_bonuses" source="google_translate">Ottieni bonus</string>
     <string name="bonuses" source="google_translate">bonus</string>
-    <string name="show_bonus_ads" source="google_translate">Mostra annunci bonus</string>
+    <string name="show_bonus_ads" source="google_translate">Visualizza l\'annuncio per ricevere la ricompensa</string>
     <string name="current_bonuses_amount" source="google_translate">Quantità attuale di bonus</string>
     <string name="you_have_earned_bonuses" source="google_translate">Hai guadagnato dei bonus</string>
-    <string name="bonus_ads_info" source="google_translate">Guadagna premi per visualizzare annunci e finire sondaggi e usali per pompare il tuo account</string>
+    <string name="bonus_ads_info" source="google_translate">Ricevi un premio per la visualizzazione di annunci e i sondaggi di finitura</string>
     <string name="ads_are_requested" source="google_translate">Gli annunci sono richiesti ...</string>
     <string name="ads_are_loaded" source="google_translate">Caricamento annunci ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Non ci sono pubblicità Prova più tardi.</string>

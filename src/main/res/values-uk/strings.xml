@@ -2,12 +2,10 @@
 <resources>
     <string name="get_bonuses">Отримати бонуси</string>
     <string name="bonuses">Бонуси</string>
-    <string name="show_bonus_ads">Показати бонусну рекламу</string>
+    <string name="show_bonus_ads">Переглянути рекламу за винагороду</string>
     <string name="current_bonuses_amount">Поточна кількість бонусів</string>
     <string name="you_have_earned_bonuses">Вам нараховані бонуси</string>
-    <string name="bonus_ads_info">
-        Отримуйте бонуси за перегляд реклами або за проходження опитувань, та використовуйте їх для прокачки свого аккаунта
-        </string>
+    <string name="bonus_ads_info">Отримуйте нагороду за перегляд реклами і проходження опитувань</string>
     <string name="ads_are_requested">Виконується запит реклами…</string>
     <string name="ads_are_loaded">Завантаження реклами…</string>
     <string name="ads_are_missing_please_wait">Реклама відсутня. Спробуйте пізніше.</string>

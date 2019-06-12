@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Er is geen enquête. Probeer later.</string>
     <string name="get_bonuses" source="google_translate">Ontvang bonussen</string>
     <string name="bonuses" source="google_translate">bonussen</string>
-    <string name="show_bonus_ads" source="google_translate">Toon bonusadvertenties</string>
+    <string name="show_bonus_ads" source="google_translate">Bekijk advertentie om beloning te ontvangen</string>
     <string name="current_bonuses_amount" source="google_translate">Huidig aantal bonussen</string>
     <string name="you_have_earned_bonuses" source="google_translate">Je hebt bonussen verdiend</string>
-    <string name="bonus_ads_info" source="google_translate">Verdien bonussen voor het bekijken van advertenties en het afmaken van enquêtes en gebruik ze om uw account te pompen</string>
+    <string name="bonus_ads_info" source="google_translate">Ontvang een beloning voor het bekijken van advertenties en het afmaken van enquêtes</string>
     <string name="ads_are_requested" source="google_translate">Advertenties worden aangevraagd ...</string>
     <string name="ads_are_loaded" source="google_translate">Advertenties laden ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Er zijn geen advertenties. Probeer later.</string>

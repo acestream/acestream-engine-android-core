@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Nėra apklausos. Pabandyk vėliau.</string>
     <string name="get_bonuses" source="google_translate">Gaukite premijas</string>
     <string name="bonuses" source="google_translate">Premijos</string>
-    <string name="show_bonus_ads" source="google_translate">Rodyti bonusinius skelbimus</string>
+    <string name="show_bonus_ads" source="google_translate">Peržiūrėkite skelbimą, kad gautumėte atlygį</string>
     <string name="current_bonuses_amount" source="google_translate">Dabartinė premijų suma</string>
     <string name="you_have_earned_bonuses" source="google_translate">Jūs uždirbo premijas</string>
-    <string name="bonus_ads_info" source="google_translate">Uždirbkite premijas, kad peržiūrėtumėte skelbimus ir atliktumėte apklausas, ir naudokite jas paskyroje</string>
+    <string name="bonus_ads_info" source="google_translate">Gauti atlygį už skelbimų peržiūrą ir apklausų užbaigimą</string>
     <string name="ads_are_requested" source="google_translate">Skelbimai yra prašomi ...</string>
     <string name="ads_are_loaded" source="google_translate">Įkeliami skelbimai ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Nėra skelbimų. Pabandyk vėliau.</string>

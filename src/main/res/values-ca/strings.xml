@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">No hi ha cap enquesta. Intenta més tard.</string>
     <string name="get_bonuses" source="google_translate">Obteniu bonificacions</string>
     <string name="bonuses" source="google_translate">Bonificacions</string>
-    <string name="show_bonus_ads" source="google_translate">Mostra anuncis addicionals</string>
+    <string name="show_bonus_ads" source="google_translate">Mostra l\'anunci per rebre recompensa</string>
     <string name="current_bonuses_amount" source="google_translate">Import actual de les primes</string>
     <string name="you_have_earned_bonuses" source="google_translate">Heu obtingut bonificacions</string>
-    <string name="bonus_ads_info" source="google_translate">Guanya bonificacions per veure anuncis i acabar les enquestes i utilitzar-los per bombejar el vostre compte</string>
+    <string name="bonus_ads_info" source="google_translate">Rebre una recompensa per veure anuncis i acabar les enquestes</string>
     <string name="ads_are_requested" source="google_translate">Es demanen anuncis ...</string>
     <string name="ads_are_loaded" source="google_translate">Carregant anuncis ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">No hi ha anuncis. Intenta més tard.</string>

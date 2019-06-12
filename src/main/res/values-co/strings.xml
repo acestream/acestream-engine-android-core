@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Ùn ci hè nè sondatura. Prova più tardi.</string>
     <string name="get_bonuses" source="google_translate">Get bonuses</string>
     <string name="bonuses" source="google_translate">Bonus</string>
-    <string name="show_bonus_ads" source="google_translate">Mostra annunci bonus</string>
+    <string name="show_bonus_ads" source="google_translate">Vede l\'annunziu per riceve ricumpensa</string>
     <string name="current_bonuses_amount" source="google_translate">Quantità attuale di bonus</string>
     <string name="you_have_earned_bonuses" source="google_translate">Avete guadagnatu bonus</string>
-    <string name="bonus_ads_info" source="google_translate">Guadagnate bonifici per a visione di annunci è finitu di sondaggi, è aduprarli per pompà u vostru contu</string>
+    <string name="bonus_ads_info" source="google_translate">Ricevi ricompense per a visione di annunci è finendu sondaggi</string>
     <string name="ads_are_requested" source="google_translate">L\'annunci sò dumandati ...</string>
     <string name="ads_are_loaded" source="google_translate">Loading annunci ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Ùn ci hè micca annunci. Prova più tardi.</string>

@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Nuk ka studim. Provo me vone.</string>
     <string name="get_bonuses" source="google_translate">Merr bonuse</string>
     <string name="bonuses" source="google_translate">Bonuset</string>
-    <string name="show_bonus_ads" source="google_translate">Trego reklama bonus</string>
+    <string name="show_bonus_ads" source="google_translate">Shiko ad për të marrë shpërblim</string>
     <string name="current_bonuses_amount" source="google_translate">Shuma e tanishme e shpërblimeve</string>
     <string name="you_have_earned_bonuses" source="google_translate">Ju keni fituar bonuse</string>
-    <string name="bonus_ads_info" source="google_translate">Fitoni shpërblime për shikimin e reklamave dhe mbarimit të sondazheve, dhe përdorni ato për të pompuar llogarinë tuaj</string>
+    <string name="bonus_ads_info" source="google_translate">Merni shpërblim për shikimin e reklamave dhe përfundimin e sondazheve</string>
     <string name="ads_are_requested" source="google_translate">Reklama kërkohet ...</string>
     <string name="ads_are_loaded" source="google_translate">Po ngarkon reklama ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Nuk ka reklama. Provo me vone.</string>

@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">സർവേ ഇല്ല. പിന്നീട് ശ്രമിക്കുക.</string>
     <string name="get_bonuses" source="google_translate">ബോണസുകൾ നേടുക</string>
     <string name="bonuses" source="google_translate">ബോണസുകൾ</string>
-    <string name="show_bonus_ads" source="google_translate">ബോണസ് പരസ്യങ്ങൾ കാണിക്കുക</string>
+    <string name="show_bonus_ads" source="google_translate">റിവാർഡ് സ്വീകരിക്കാൻ പരസ്യം കാണുക</string>
     <string name="current_bonuses_amount" source="google_translate">നിലവിലുള്ള ബോണസ് തുക</string>
     <string name="you_have_earned_bonuses" source="google_translate">നിങ്ങൾ ബോണസ്സുകൾ നേടി</string>
-    <string name="bonus_ads_info" source="google_translate">പരസ്യങ്ങളും ഫിനിഷിംഗ് സർവേകളും കാണുന്നതിന് ബോണസുകൾ നേടി, നിങ്ങളുടെ അക്കൗണ്ട് പമ്പ് ചെയ്യാൻ ഉപയോഗിക്കുക</string>
+    <string name="bonus_ads_info" source="google_translate">പരസ്യങ്ങളും ഫൈനൽ സർവേകളും കാണുന്നതിന് പ്രതിഫലം നേടുക</string>
     <string name="ads_are_requested" source="google_translate">പരസ്യങ്ങൾ അഭ്യർത്ഥിക്കുന്നു ...</string>
     <string name="ads_are_loaded" source="google_translate">പരസ്യങ്ങൾ ലോഡുചെയ്യുന്നു ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">പരസ്യങ്ങളില്ല. പിന്നീട് ശ്രമിക്കുക.</string>

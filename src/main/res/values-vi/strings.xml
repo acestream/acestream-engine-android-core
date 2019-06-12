@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Không có khảo sát. Thử lại sau.</string>
     <string name="get_bonuses" source="google_translate">Nhận tiền thưởng</string>
     <string name="bonuses" source="google_translate">Tiền thưởng</string>
-    <string name="show_bonus_ads" source="google_translate">Hiển thị quảng cáo tiền thưởng</string>
+    <string name="show_bonus_ads" source="google_translate">Xem quảng cáo để nhận phần thưởng</string>
     <string name="current_bonuses_amount" source="google_translate">Số tiền thưởng hiện tại</string>
     <string name="you_have_earned_bonuses" source="google_translate">Bạn đã kiếm được tiền thưởng</string>
-    <string name="bonus_ads_info" source="google_translate">Kiếm tiền thưởng khi xem quảng cáo và hoàn thành khảo sát và sử dụng chúng để bơm tài khoản của bạn</string>
+    <string name="bonus_ads_info" source="google_translate">Nhận phần thưởng khi xem quảng cáo và kết thúc khảo sát</string>
     <string name="ads_are_requested" source="google_translate">Quảng cáo được yêu cầu</string>
     <string name="ads_are_loaded" source="google_translate">Đang tải quảng cáo</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Không có quảng cáo. Thử lại sau.</string>

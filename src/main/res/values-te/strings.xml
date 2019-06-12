@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">సర్వే లేదు. తర్వాత ప్రయత్నించండి.</string>
     <string name="get_bonuses" source="google_translate">బోనస్ పొందండి</string>
     <string name="bonuses" source="google_translate">బోనసెస్</string>
-    <string name="show_bonus_ads" source="google_translate">బోనస్ ప్రకటనలను చూపించు</string>
+    <string name="show_bonus_ads" source="google_translate">బహుమతిని పొందడానికి ప్రకటనను వీక్షించండి</string>
     <string name="current_bonuses_amount" source="google_translate">బోనస్ ప్రస్తుత మొత్తం</string>
     <string name="you_have_earned_bonuses" source="google_translate">మీరు బోనస్ సంపాదించారు</string>
-    <string name="bonus_ads_info" source="google_translate">ప్రకటనలను చూడటం మరియు పూర్తి సర్వేలను పొందడం కోసం బోనస్లను పొందండి మరియు మీ ఖాతాను పంపుటకు వాటిని ఉపయోగించండి</string>
+    <string name="bonus_ads_info" source="google_translate">ప్రకటనలను చూడటం మరియు ముగింపు సర్వేలు కోసం బహుమతిని స్వీకరించండి</string>
     <string name="ads_are_requested" source="google_translate">ప్రకటనలు అభ్యర్థించబడుతున్నాయి ...</string>
     <string name="ads_are_loaded" source="google_translate">ప్రకటనలు లోడ్ అవుతున్నాయి ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">ప్రకటనలు లేవు. తర్వాత ప్రయత్నించండి.</string>

@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Kyselyä ei ole. Yritä myöhemmin.</string>
     <string name="get_bonuses" source="google_translate">Hanki bonuksia</string>
     <string name="bonuses" source="google_translate">bonukset</string>
-    <string name="show_bonus_ads" source="google_translate">Näytä bonusmainokset</string>
+    <string name="show_bonus_ads" source="google_translate">Näytä mainos, jotta saat palkinnon</string>
     <string name="current_bonuses_amount" source="google_translate">Bonusten nykyinen määrä</string>
     <string name="you_have_earned_bonuses" source="google_translate">Olet ansainnut bonuksia</string>
-    <string name="bonus_ads_info" source="google_translate">Ansaitse bonuksia mainosten katsomisesta ja tutkimusten viimeistelystä ja käytä niitä pumpun pumppaamiseen</string>
+    <string name="bonus_ads_info" source="google_translate">Saat palkkion mainosten katsomisesta ja tutkimusten viimeistelystä</string>
     <string name="ads_are_requested" source="google_translate">Mainoksia pyydetään…</string>
     <string name="ads_are_loaded" source="google_translate">Mainosten lataaminen ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Mainoksia ei ole. Yritä myöhemmin.</string>

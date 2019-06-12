@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">មិនមានការស្ទង់មតិទេ។ សាកល្បងពេលក្រោយ។</string>
     <string name="get_bonuses" source="google_translate">ទទួលបានប្រាក់រង្វាន់</string>
     <string name="bonuses" source="google_translate">ប្រាក់រង្វាន់</string>
-    <string name="show_bonus_ads" source="google_translate">បង្ហាញការផ្សព្វផ្សាយពាណិជ្ជកម្មប្រាក់រង្វាន់</string>
+    <string name="show_bonus_ads" source="google_translate">មើលពាណិជ្ជកម្មដើម្បីទទួលរង្វាន់</string>
     <string name="current_bonuses_amount" source="google_translate">ចំនួនប្រាក់រង្វាន់បច្ចុប្បន្ន</string>
     <string name="you_have_earned_bonuses" source="google_translate">អ្នកបានទទួលប្រាក់រង្វាន់</string>
-    <string name="bonus_ads_info" source="google_translate">ទទួលបានប្រាក់រង្វាន់សម្រាប់ការមើលពាណិជ្ជកម្មនិងការបញ្ចប់ការស្ទង់មតិហើយប្រើពួកវាដើម្បីស្រូបគណនីរបស់អ្នក</string>
+    <string name="bonus_ads_info" source="google_translate">ទទួលបានរង្វាន់សម្រាប់ការមើលពាណិជ្ជកម្មនិងការបញ្ចប់ការស្ទង់មតិ</string>
     <string name="ads_are_requested" source="google_translate">ពាណិជ្ជកម្មត្រូវបានស្នើ ...</string>
     <string name="ads_are_loaded" source="google_translate">កំពុងផ្ទុកពាណិជ្ជកម្ម ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">មិនមានពាណិជ្ជកម្ម។ សាកល្បងពេលក្រោយ។</string>

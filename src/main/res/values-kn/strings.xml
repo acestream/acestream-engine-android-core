@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">ಯಾವುದೇ ಸಮೀಕ್ಷೆಯಿಲ್ಲ. ನಂತರ ಪ್ರಯತ್ನಿಸಿ.</string>
     <string name="get_bonuses" source="google_translate">ಬೋನಸ್ಗಳನ್ನು ಪಡೆಯಿರಿ</string>
     <string name="bonuses" source="google_translate">ಬೋನಸಸ್</string>
-    <string name="show_bonus_ads" source="google_translate">ಬೋನಸ್ ಜಾಹೀರಾತುಗಳನ್ನು ತೋರಿಸಿ</string>
+    <string name="show_bonus_ads" source="google_translate">ಪ್ರತಿಫಲವನ್ನು ಸ್ವೀಕರಿಸಲು ಜಾಹೀರಾತು ವೀಕ್ಷಿಸಿ</string>
     <string name="current_bonuses_amount" source="google_translate">ಬೋನಸ್ಗಳ ಪ್ರಸ್ತುತ ಮೊತ್ತ</string>
     <string name="you_have_earned_bonuses" source="google_translate">ನೀವು ಬೋನಸ್ಗಳನ್ನು ಗಳಿಸಿದ್ದೀರಿ</string>
-    <string name="bonus_ads_info" source="google_translate">ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಮತ್ತು ಸಮೀಕ್ಷೆಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ಬೋನಸ್ಗಳನ್ನು ಗಳಿಸಿ, ಮತ್ತು ನಿಮ್ಮ ಖಾತೆಯನ್ನು ತಳ್ಳಲು ಅವುಗಳನ್ನು ಬಳಸಿ</string>
+    <string name="bonus_ads_info" source="google_translate">ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವುದಕ್ಕಾಗಿ ಮತ್ತು ಸಮೀಕ್ಷೆಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸುವುದಕ್ಕಾಗಿ ಪ್ರತಿಫಲವನ್ನು ಸ್ವೀಕರಿಸಿ</string>
     <string name="ads_are_requested" source="google_translate">ಜಾಹೀರಾತುಗಳನ್ನು ವಿನಂತಿಸಲಾಗಿದೆ ...</string>
     <string name="ads_are_loaded" source="google_translate">ಜಾಹೀರಾತುಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">ಯಾವುದೇ ಜಾಹೀರಾತುಗಳಿಲ್ಲ. ನಂತರ ಪ್ರಯತ್ನಿಸಿ.</string>

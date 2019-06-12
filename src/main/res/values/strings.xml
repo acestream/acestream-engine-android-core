@@ -67,16 +67,16 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="get_bonuses">Get bonuses</string>
     <string name="bonuses">Bonuses</string>
-    <string name="show_bonus_ads">Show bonus ads</string>
+    <string name="show_bonus_ads">View ad to receive reward</string>
     <string name="current_bonuses_amount">Current amount of bonuses</string>
     <string name="you_have_earned_bonuses">You have earned bonuses</string>
     <string name="bonus_ads_info">
-        Earn bonuses for viewing ads and finishing surveys, and use them to pump your account
+        Receive reward for viewing ads and finishing surveys
     </string>
     <string name="ads_are_requested">Ads are requested…</string>
     <string name="ads_are_loaded">Loading ads…</string>
     <string name="ads_are_missing_please_wait">There is no ads. Try later.</string>
-    <string name="set_ads_price">Amount of bonuses for watching ads</string>
+    <string name="set_ads_price">Amount of bonuses for viewing ads</string>
     <string name="license">License</string>
     <string name="start_survey">Start survey</string>
     <string name="survey_is_requested">Survey is requested…</string>

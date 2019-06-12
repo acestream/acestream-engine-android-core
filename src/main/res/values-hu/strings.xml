@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Nincs felmérés. Próbáld később.</string>
     <string name="get_bonuses" source="google_translate">Kapjon bónuszokat</string>
     <string name="bonuses" source="google_translate">Bónuszok</string>
-    <string name="show_bonus_ads" source="google_translate">Bónusz hirdetések megjelenítése</string>
+    <string name="show_bonus_ads" source="google_translate">Hirdetés megtekintése jutalomért</string>
     <string name="current_bonuses_amount" source="google_translate">A bónuszok aktuális összege</string>
     <string name="you_have_earned_bonuses" source="google_translate">Bónuszokat szereztél</string>
-    <string name="bonus_ads_info" source="google_translate">Keress bónuszokat a hirdetések és a felmérések befejezéséhez, és használd őket a fiókod pumpálására</string>
+    <string name="bonus_ads_info" source="google_translate">Nyerjen jutalmat a hirdetések megtekintésére és a felmérések befejezésére</string>
     <string name="ads_are_requested" source="google_translate">A hirdetések kérése ...</string>
     <string name="ads_are_loaded" source="google_translate">Hirdetések betöltése ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Nincsenek hirdetések. Próbáld később.</string>

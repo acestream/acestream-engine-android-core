@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Der er ingen undersøgelse. Prøv senere.</string>
     <string name="get_bonuses" source="google_translate">Få bonusser</string>
     <string name="bonuses" source="google_translate">Bonusser</string>
-    <string name="show_bonus_ads" source="google_translate">Vis bonusannoncer</string>
+    <string name="show_bonus_ads" source="google_translate">Se annonce for at modtage belønning</string>
     <string name="current_bonuses_amount" source="google_translate">Nuværende beløb af bonusser</string>
     <string name="you_have_earned_bonuses" source="google_translate">Du har opnået bonusser</string>
-    <string name="bonus_ads_info" source="google_translate">Tjen bonusser til visning af annoncer og afslutningsundersøgelser, og brug dem til at pumpe din konto</string>
+    <string name="bonus_ads_info" source="google_translate">Modtag belønning for visning af annoncer og afslutningsundersøgelser</string>
     <string name="ads_are_requested" source="google_translate">Annoncer anmodes om ...</string>
     <string name="ads_are_loaded" source="google_translate">Indlæser annoncer ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Der er ingen annoncer. Prøv senere.</string>

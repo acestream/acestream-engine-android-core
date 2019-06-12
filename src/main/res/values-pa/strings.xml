@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">ਕੋਈ ਸਰਵੇਖਣ ਨਹੀਂ ਹੈ ਬਾਅਦ ਵਿੱਚ ਕੋਸ਼ਿਸ਼ ਕਰੋ.</string>
     <string name="get_bonuses" source="google_translate">ਬੋਨਸ ਪ੍ਰਾਪਤ ਕਰੋ</string>
     <string name="bonuses" source="google_translate">ਬੋਨਸ</string>
-    <string name="show_bonus_ads" source="google_translate">ਬੋਨਸ ਇਸ਼ਤਿਹਾਰ ਦਿਖਾਓ</string>
+    <string name="show_bonus_ads" source="google_translate">ਇਨਾਮ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਵਿਗਿਆਪਨ ਵੇਖੋ</string>
     <string name="current_bonuses_amount" source="google_translate">ਬੋਨਸ ਦੀ ਮੌਜੂਦਾ ਰਕਮ</string>
     <string name="you_have_earned_bonuses" source="google_translate">ਤੁਸੀਂ ਬੋਨਸ ਕਮਾਇਆ ਹੈ</string>
-    <string name="bonus_ads_info" source="google_translate">ਵਿਗਿਆਪਨਾਂ ਨੂੰ ਵੇਖਣ ਅਤੇ ਖ਼ਤਮ ਕਰਨ ਦੇ ਸਰਵੇਖਣਾਂ ਲਈ ਬੋਨਸ ਕਮਾਉ ਅਤੇ ਆਪਣੇ ਖਾਤੇ ਨੂੰ ਪੰਪ ਕਰਨ ਲਈ ਉਹਨਾਂ ਦਾ ਉਪਯੋਗ ਕਰੋ</string>
+    <string name="bonus_ads_info" source="google_translate">ਵਿਗਿਆਪਨਾਂ ਨੂੰ ਦੇਖਣ ਅਤੇ ਸਰਵੇਖਣਾਂ ਨੂੰ ਪੂਰਾ ਕਰਨ ਲਈ ਇਨਾਮ ਪ੍ਰਾਪਤ ਕਰੋ</string>
     <string name="ads_are_requested" source="google_translate">ਵਿਗਿਆਪਨ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ...</string>
     <string name="ads_are_loaded" source="google_translate">ਵਿਗਿਆਪਨ ਲੋਡ ਕਰ ਰਿਹਾ ਹੈ ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">ਕੋਈ ਵੀ ਵਿਗਿਆਪਨ ਨਹੀਂ ਹੈ ਬਾਅਦ ਵਿੱਚ ਕੋਸ਼ਿਸ਼ ਕਰੋ.</string>

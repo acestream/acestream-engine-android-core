@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">هیچ نظرسنجی وجود ندارد بعدا امتحان کنید</string>
     <string name="get_bonuses" source="google_translate">دریافت جوایز</string>
     <string name="bonuses" source="google_translate">جوایز</string>
-    <string name="show_bonus_ads" source="google_translate">نمایش تبلیغات جایزه</string>
+    <string name="show_bonus_ads" source="google_translate">مشاهده آگهی برای دریافت پاداش</string>
     <string name="current_bonuses_amount" source="google_translate">مقدار فعلی پاداش</string>
     <string name="you_have_earned_bonuses" source="google_translate">شما پاداش داده اید</string>
-    <string name="bonus_ads_info" source="google_translate">پاداش برای مشاهده تبلیغات و اتمام نظرسنجی ها را کسب کنید و از آنها برای پمپ کردن حساب خود استفاده کنید</string>
+    <string name="bonus_ads_info" source="google_translate">دریافت پاداش برای مشاهده تبلیغات و اتمام نظرسنجی</string>
     <string name="ads_are_requested" source="google_translate">تبلیغات درخواست می شود ...</string>
     <string name="ads_are_loaded" source="google_translate">بارگیری تبلیغات ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">هیچ تبلیغی وجود ندارد بعدا امتحان کنید</string>

@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Hech qanday so\'rov yo\'q. Keyinroq urinib ko\'ring.</string>
     <string name="get_bonuses" source="google_translate">Bonuslarni oling</string>
     <string name="bonuses" source="google_translate">Bonuslar</string>
-    <string name="show_bonus_ads" source="google_translate">Bonusli reklamalarni ko\'rsatish</string>
+    <string name="show_bonus_ads" source="google_translate">Reklama olish uchun reklamani ko\'ring</string>
     <string name="current_bonuses_amount" source="google_translate">Bonuslarning joriy miqdori</string>
     <string name="you_have_earned_bonuses" source="google_translate">Siz bonuslarni oldingiz</string>
-    <string name="bonus_ads_info" source="google_translate">E\'lonlarni ko\'rish va yakuniy so\'rovlarni ko\'rish uchun bonuslarni oling va ularni hisobingizni to\'ldirish uchun foydalaning</string>
+    <string name="bonus_ads_info" source="google_translate">E\'lonlarni ko\'rish va so\'rovlarni yakunlash uchun mukofot olish</string>
     <string name="ads_are_requested" source="google_translate">Reklamalar so\'ralmoqda ...</string>
     <string name="ads_are_loaded" source="google_translate">Reklama yuklanmoqda ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Reklama yo\'q. Keyinroq urinib ko\'ring.</string>

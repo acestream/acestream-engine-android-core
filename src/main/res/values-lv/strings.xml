@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Nav aptaujas. Mēģiniet vēlāk.</string>
     <string name="get_bonuses" source="google_translate">Saņemt prēmijas</string>
     <string name="bonuses" source="google_translate">Bonusi</string>
-    <string name="show_bonus_ads" source="google_translate">Rādīt bonusa reklāmas</string>
+    <string name="show_bonus_ads" source="google_translate">Skatīt reklāmu, lai saņemtu atlīdzību</string>
     <string name="current_bonuses_amount" source="google_translate">Pašreizējā prēmiju summa</string>
     <string name="you_have_earned_bonuses" source="google_translate">Jūs esat nopelnījis prēmijas</string>
-    <string name="bonus_ads_info" source="google_translate">Nopelniet prēmijas, lai skatītu reklāmas un pabeigtu apsekojumus, un izmantojiet tos, lai sūknētu kontu</string>
+    <string name="bonus_ads_info" source="google_translate">Saņemiet atlīdzību par reklāmu skatīšanu un aptauju pabeigšanu</string>
     <string name="ads_are_requested" source="google_translate">Reklāmas tiek pieprasītas ...</string>
     <string name="ads_are_loaded" source="google_translate">Notiek reklāmu ielāde ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Nav reklāmu. Mēģiniet vēlāk.</string>

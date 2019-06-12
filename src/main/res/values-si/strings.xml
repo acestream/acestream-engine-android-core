@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">සමීක්ෂණ නොමැත. පසුව උත්සාහ කරන්න.</string>
     <string name="get_bonuses" source="google_translate">බෝනස් ලබා ගන්න</string>
     <string name="bonuses" source="google_translate">බෝනස්</string>
-    <string name="show_bonus_ads" source="google_translate">බෝනස් දැන්වීම් පෙන්වන්න</string>
+    <string name="show_bonus_ads" source="google_translate">විපාක ලැබීමට දැන්වීම බලන්න</string>
     <string name="current_bonuses_amount" source="google_translate">වර්තමාන බෝනස් මුදල</string>
     <string name="you_have_earned_bonuses" source="google_translate">ඔබ බෝනස් උපයා ඇත</string>
-    <string name="bonus_ads_info" source="google_translate">දැන්වීම් බැලීම සහ සමීක්ෂණ සමීක්ෂණ සඳහා බෝනස් ලබා ගන්න, ඔබේ ගිණුම පොම්ප කිරීමට භාවිතා කරන්න</string>
+    <string name="bonus_ads_info" source="google_translate">දැන්වීම් නරඹමින් සහ සමීක්ෂණ සමීක්ෂණ සඳහා ප්රතිලාභ ලැබේ</string>
     <string name="ads_are_requested" source="google_translate">දැන්වීම් ඉල්ලා සිටි ...</string>
     <string name="ads_are_loaded" source="google_translate">දැන්වීම් Loading ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">දැන්වීම් නොමැත. පසුව උත්සාහ කරන්න.</string>

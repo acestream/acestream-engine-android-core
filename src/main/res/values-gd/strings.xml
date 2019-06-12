@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Chan eil sgrùdadh ann. Feuch ris a-rithist.</string>
     <string name="get_bonuses" source="google_translate">Faigh bònasan</string>
     <string name="bonuses" source="google_translate">Bònasan</string>
-    <string name="show_bonus_ads" source="google_translate">Seall na sanasan-reic</string>
+    <string name="show_bonus_ads" source="google_translate">Thoir sùil air ad gus duais fhaighinn</string>
     <string name="current_bonuses_amount" source="google_translate">Sùim an-dràsta de bhònasan</string>
     <string name="you_have_earned_bonuses" source="google_translate">Tha thu air bònasan a chosnadh</string>
-    <string name="bonus_ads_info" source="google_translate">A bhith a ’faighinn bònasan airson sealltainn air sanasan agus suirbhidhean crìochnachaidh, agus an cleachdadh gus do chunntas a phumpadh</string>
+    <string name="bonus_ads_info" source="google_translate">Gheibh thu duais airson sealltainn air sanasan agus sgrùdadh a thoirt gu crìch</string>
     <string name="ads_are_requested" source="google_translate">Thathar a ’faighneachd gum faigh sinn…</string>
     <string name="ads_are_loaded" source="google_translate">Luchdachadh shanasan…</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Chan eil sanasan ann. Feuch ris a-rithist.</string>

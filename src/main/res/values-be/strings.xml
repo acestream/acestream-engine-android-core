@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Там няма абследавання. Паспрабуйце пазней.</string>
     <string name="get_bonuses" source="google_translate">атрымаць бонусы</string>
     <string name="bonuses" source="google_translate">бонусы</string>
-    <string name="show_bonus_ads" source="google_translate">Паказаць бонусныя аб\'явы</string>
+    <string name="show_bonus_ads" source="google_translate">Прагляд аб\'явы, каб атрымаць узнагароду</string>
     <string name="current_bonuses_amount" source="google_translate">Бягучае колькасць бонусаў</string>
     <string name="you_have_earned_bonuses" source="google_translate">Вы зарабілі бонусы</string>
-    <string name="bonus_ads_info" source="google_translate">Зарабіць бонусы за прагляд рэкламы і заканчваючы апытанні, і выкарыстоўваць іх, каб прапампаваць свой рахунак</string>
+    <string name="bonus_ads_info" source="google_translate">Атрымайце ўзнагароду за прагляд рэкламы і заканчэнне апытанняў</string>
     <string name="ads_are_requested" source="google_translate">Аб\'явы просяць ...</string>
     <string name="ads_are_loaded" source="google_translate">Загрузка аб\'яў ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Там няма аб\'яваў. Паспрабуйце пазней.</string>

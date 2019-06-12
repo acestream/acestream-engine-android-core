@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Raziskave ni. Poskusite pozneje.</string>
     <string name="get_bonuses" source="google_translate">Pridobite bonuse</string>
     <string name="bonuses" source="google_translate">Bonusi</string>
-    <string name="show_bonus_ads" source="google_translate">Pokaži bonus oglase</string>
+    <string name="show_bonus_ads" source="google_translate">Ogled oglasa za prejemanje nagrad</string>
     <string name="current_bonuses_amount" source="google_translate">Trenutni znesek bonusov</string>
     <string name="you_have_earned_bonuses" source="google_translate">Zaslužili ste bonuse</string>
-    <string name="bonus_ads_info" source="google_translate">Zaslužite bonuse za ogled oglasov in dokončanje anket ter jih uporabite za črpanje računa</string>
+    <string name="bonus_ads_info" source="google_translate">Prejmite nagrado za ogled oglasov in zaključevanje anket</string>
     <string name="ads_are_requested" source="google_translate">Zahtevani so oglasi ...</string>
     <string name="ads_are_loaded" source="google_translate">Nalaganje oglasov ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Ni oglasov. Poskusite pozneje.</string>

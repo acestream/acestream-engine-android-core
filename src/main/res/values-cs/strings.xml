@@ -6,10 +6,10 @@
     <string name="survey_is_missing_please_wait" source="google_translate">Neexistuje žádný průzkum. Zkuste to později.</string>
     <string name="get_bonuses" source="google_translate">Získejte bonusy</string>
     <string name="bonuses" source="google_translate">Bonusy</string>
-    <string name="show_bonus_ads" source="google_translate">Zobrazit bonusové reklamy</string>
+    <string name="show_bonus_ads" source="google_translate">Zobrazte reklamu, abyste získali odměnu</string>
     <string name="current_bonuses_amount" source="google_translate">Aktuální výše bonusů</string>
     <string name="you_have_earned_bonuses" source="google_translate">Získali jste bonusy</string>
-    <string name="bonus_ads_info" source="google_translate">Získejte bonusy za zobrazování reklam a dokončování průzkumů a použijte je k čerpání účtu</string>
+    <string name="bonus_ads_info" source="google_translate">Získejte odměnu za zobrazování reklam a dokončování průzkumů</string>
     <string name="ads_are_requested" source="google_translate">Reklamy jsou požadovány ...</string>
     <string name="ads_are_loaded" source="google_translate">Načítání reklam ...</string>
     <string name="ads_are_missing_please_wait" source="google_translate">Neexistují žádné reklamy. Zkuste to později.</string>
