@@ -30,5 +30,5 @@ public abstract class Constants {
     public final static String ADMOB_TEST_INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712";
 
     public final static String PREF_KEY_AD_SEGMENT = "ad_segment";
-    public final static int PREF_DEFAULT_AD_SEGMENT = 0; // 0=auto
+    public final static int PREF_DEFAULT_AD_SEGMENT = 50; // 50=0.5
 }
