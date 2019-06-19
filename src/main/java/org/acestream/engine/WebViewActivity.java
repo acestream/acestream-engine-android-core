@@ -51,7 +51,11 @@ public class WebViewActivity
     {
 
 	private final static String TAG = "AS/WV";
-	private final static String USER_AGENT_SUFFIX = "AceStreamAndroid/" + AceStream.getApplicationVersionName() + "/" + AceStreamEngineBaseApplication.getStringAppMetadata("arch") + "/" + (AceStream.isAndroidTv() ? "ATV" : "R");
+	private final static String USER_AGENT_SUFFIX = "AceStreamAndroid"
+            + "/" + AceStream.getApplicationVersionName()
+            + "/" + AceStreamEngineBaseApplication.getStringAppMetadata("arch")
+            + "/" + (AceStream.isAndroidTv() ? "ATV" : "R")
+            + "/" + AceStream.getApplicationIdShort();
     protected WebView mWebView;
     private ProgressBar mProgressBar;
     private View mErrorOverlay;
@@ -427,6 +431,11 @@ public class WebViewActivity
         @JavascriptInterface
         public int getHostVersionCode() {
             return AceStream.getApplicationVersionCode();
+        }
+
+        @JavascriptInterface
+        public String getHostPackageId() {
+            return AceStream.getApplicationId();
         }
 
         @JavascriptInterface
