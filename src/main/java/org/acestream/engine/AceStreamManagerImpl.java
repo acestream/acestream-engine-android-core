@@ -2815,6 +2815,9 @@ public abstract class AceStreamManagerImpl
                     playbackData.descriptor.getQueryString());
             // override mime type in case if differs
             playbackData.mediaFile.mime = Constants.MIME_HLS;
+            // Never use timeshift for HLS output because players cannot handle missing pieces
+            // (engine redirects requests to missing pieces to "live" pieces)
+            playbackData.useTimeshift = false;
         }
         else {
             requestUrl = String.format(
