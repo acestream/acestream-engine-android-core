@@ -246,6 +246,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     protected boolean mWasStopped = false;
     protected TextView mEngineStatus;
     protected TextView mDebugInfo;
+    protected boolean mFixAudioVolume = true;
 
     protected boolean mIsStarted = false;
     protected boolean mIsPaused = true;
@@ -786,7 +787,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     }
 
     private void hideAds(AdSource source) {
-        Log.v(TAG, "ads:event:hideAds");
+        Log.v(TAG, "hideAds");
         mIsAdDisplayed = false;
         mAdSource = null;
         mGoingToShowAds = false;
@@ -799,6 +800,12 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 mAdUiContainer.setVisibility(View.GONE);
             }
             mSurfaceFrame.setPadding(0, 0, 0, 0);
+        }
+
+        // Restore volume if was muted
+        if (mMute && mMediaPlayer != null) {
+            Log.v(TAG, "hideAds: restore volume: " + mVolSave);
+            mute(false);
         }
     }
 
@@ -869,7 +876,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private AudioManager mAudioManager;
     private int mAudioMax;
     private boolean mMute = false;
-    private int mVolSave;
+    private int mVolSave = -1;
     private float mVol;
     private float mOriginalVol;
     private Toast warningToast;
@@ -1233,6 +1240,14 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
     };
 
+    private Runnable mRestorePlayerVolumeTask = new Runnable() {
+        @Override
+        public void run() {
+            restoreVolume();
+            mHandler.postDelayed(mRestorePlayerVolumeTask, 2500);
+        }
+    };
+
     private Runnable mUpdatePlayerStatusTask = new Runnable() {
         @Override
         public void run() {
@@ -1345,6 +1360,15 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                     App.v(TAG, "vlc:event: playing");
                     setBuffering(false);
                     onPlaying();
+                    if(mMediaPlayer != null) {
+                        if(mVolSave == -1) {
+                            mVolSave = mMediaPlayer.getVolume();
+                            Logger.v(TAG, "vlc:event: opening: init volume: " + mVolSave);
+                            if(mVolSave <= 0) {
+                                mVolSave = 100;
+                            }
+                        }
+                    }
                     if(mIsAdDisplayed) {
                         App.v(TAG, "Pause on play because ads are displayed");
                         mHandler.postDelayed(new Runnable() {
@@ -1712,6 +1736,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             mDiscoveryServerServiceClient.connect();
         }
 
+        if(mFixAudioVolume) {
+            mHandler.postDelayed(mRestorePlayerVolumeTask, 0);
+        }
+
         if(mShowUnpauseAdsOnResume) {
             App.v(TAG, "onResume: request ads");
             mShowUnpauseAdsOnResume = false;
@@ -1830,6 +1858,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
             // stop updating status
             mHandler.removeCallbacks(mUpdatePlayerStatusTask);
+            mHandler.removeCallbacks(mRestorePlayerVolumeTask);
         }
     }
 
@@ -3449,6 +3478,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
          * We don't want to always show the default UI volume, so show it only when volume is not set. */
         if (vol <= mAudioMax) {
             mMediaPlayer.setVolume(100);
+            mVolSave = 100;
             if (vol !=  mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC)) {
                 try {
                     mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vol, 0);
@@ -3460,21 +3490,31 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             vol = Math.round(vol * 100 / mAudioMax);
         } else {
             vol = Math.round(vol * 100 / mAudioMax);
-            mMediaPlayer.setVolume(Math.round(vol));
+            mMediaPlayer.setVolume(vol);
+            mVolSave = vol;
         }
         mTouchAction = TOUCH_VOLUME;
         showInfoWithVerticalBar(getString(R.string.volume) + "\n" + Integer.toString(vol) + '%', 1000, vol, 100);
     }
 
     private void mute(boolean mute) {
+        int state = mMediaPlayer.getPlayerState();
+
+        Logger.v(TAG, "mute: want=" + mute + " current=" + mMute + " state=" + state);
         if(mMute == mute) return;
+
+        if(mMediaPlayer == null) return;
+        if(state == VlcConstants.VlcState.IDLE
+            || state == VlcConstants.VlcState.STOPPING
+            || state == VlcConstants.VlcState.ENDED
+            || state == VlcConstants.VlcState.ERROR) return;
 
         mMute = mute;
         if (mMute)
             mVolSave = mMediaPlayer.getVolume();
 
         // Sometimes getVolume() returns 0, fix it
-        if(mVolSave == 0) {
+        if(mVolSave <= 0) {
             mVolSave = 100;
         }
 
@@ -5672,6 +5712,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private void onContentPauseRequested(AdSource source) {
         App.v(TAG, "onContentPauseRequested: source=" + source);
         showAds(source);
+        mute(true);
         pause();
         hideOverlay(false);
     }
@@ -5699,12 +5740,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
         if(doHideAds) {
             hideAds(source);
-
-            if (mMute && mMediaPlayer != null) {
-                // Restore volume if was muted
-                Log.v(TAG, "ads:event: restore volume: " + mVolSave);
-                mute(false);
-            }
 
             boolean resume = true;
             if(TextUtils.equals(placement, AdsWaterfall.Placement.PAUSE)) {
@@ -6851,6 +6886,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             opengl = Integer.parseInt(extras.getString("opengl", "-1"));
             resampler = extras.getString("resampler", null);
             deinterlaceMode = extras.getString("deinterlace_mode", null);
+            mFixAudioVolume = extras.getBoolean("fix_audio_volume", true);
         }
         else {
             mHardwareAcceleration = MiscUtils.getIntFromStringPreference(prefs,
@@ -6870,6 +6906,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             opengl = MiscUtils.getIntFromStringPreference(prefs,"opengl", -1);
             resampler = prefs.getString("resampler", null);
             deinterlaceMode = prefs.getString("deinterlace_mode", null);
+            mFixAudioVolume = prefs.getBoolean("fix_audio_volume", true);
         }
 
         mLibVlcOptions.add(timeStreching ? "--audio-time-stretch" : "--no-audio-time-stretch");
@@ -7244,5 +7281,21 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     @Override
     public String getProductKey() {
         return mProductKey;
+    }
+
+    private void restoreVolume() {
+        if(mIsPaused || !mIsStarted) return;
+        if(mMediaPlayer == null) return;
+        if(mIsAdDisplayed) return;
+        int state = mMediaPlayer.getPlayerState();
+        int vol = mMediaPlayer.getVolume();
+        if(state == VlcConstants.VlcState.OPENING
+                || state == VlcConstants.VlcState.PAUSED
+                || state == VlcConstants.VlcState.PLAYING) {
+            if(!mMute && mVolSave != -1 && vol != mVolSave) {
+                Logger.v(TAG, "restoreVolume: state=" + state + " vol=" + vol + " want=" + mVolSave);
+                mMediaPlayer.setVolume(mVolSave);
+            }
+        }
     }
 }

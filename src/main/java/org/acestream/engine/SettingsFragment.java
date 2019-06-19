@@ -545,6 +545,15 @@ public class SettingsFragment extends Fragment {
         item.put("defaultValue", Constants.PREF_DEFAULT_PAUSE_ON_AUDIOFOCUS_LOSS);
         list.add(item);
 
+        // bool enable_time_stretching_audio
+        item = new HashMap<>();
+        item.put("name", "fix_audio_volume");
+        item.put("type", "bool");
+        item.put("sendToEngine", false);
+        item.put("title", R.string.fix_audio_volume);
+        item.put("defaultValue", true);
+        list.add(item);
+
         // string subtitle_text_encoding
         // string subtitles_size
         // bool subtitles_bold
