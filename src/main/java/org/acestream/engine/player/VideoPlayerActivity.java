@@ -3498,12 +3498,13 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     }
 
     private void mute(boolean mute) {
+        if(mMediaPlayer == null) return;
+
         int state = mMediaPlayer.getPlayerState();
 
         Logger.v(TAG, "mute: want=" + mute + " current=" + mMute + " state=" + state);
         if(mMute == mute) return;
 
-        if(mMediaPlayer == null) return;
         if(state == VlcConstants.VlcState.IDLE
             || state == VlcConstants.VlcState.STOPPING
             || state == VlcConstants.VlcState.ENDED
