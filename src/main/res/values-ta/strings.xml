@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">விளம்பரங்கள் இல்லை. சிறிது நேரம் கழித்து முயலுங்கள்.</string>
     <string name="set_ads_price" source="google_translate">விளம்பரங்கள் பார்க்க போனஸ் தொகை</string>
     <string name="open_in_ace_player" source="google_translate">ஏஸ் பிளேயரில் திறக்க</string>
+    <string name="reset_selected_player_settings" source="google_translate">தேர்ந்தெடுக்கப்பட்ட பிளேயர் அமைப்புகளை மீட்டமைக்கவும்</string>
 </resources>

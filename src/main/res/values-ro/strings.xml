@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Nu există anunțuri. Încercați mai târziu.</string>
     <string name="set_ads_price" source="google_translate">Suma bonusurilor pentru vizionarea anunțurilor</string>
     <string name="open_in_ace_player" source="google_translate">Deschideți în Ace Player</string>
+    <string name="reset_selected_player_settings" source="google_translate">Resetați setările selectate ale playerului</string>
 </resources>

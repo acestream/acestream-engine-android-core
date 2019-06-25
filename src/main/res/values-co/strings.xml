@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Ùn ci hè micca annunci. Prova più tardi.</string>
     <string name="set_ads_price" source="google_translate">Quantità di bonus per guardà annunci</string>
     <string name="open_in_ace_player" source="google_translate">Apertu in Ace Player</string>
+    <string name="reset_selected_player_settings" source="google_translate">Ripristina i parametri di u lettore sceltu</string>
 </resources>

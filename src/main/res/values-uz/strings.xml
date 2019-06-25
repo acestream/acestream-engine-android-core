@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Reklama yo\'q. Keyinroq urinib ko\'ring.</string>
     <string name="set_ads_price" source="google_translate">Reklamalarni tomosha qilish uchun bonuslar miqdori</string>
     <string name="open_in_ace_player" source="google_translate">Ace Player-da oching</string>
+    <string name="reset_selected_player_settings" source="google_translate">Tanlangan pleyer sozlamalarini tiklash</string>
 </resources>

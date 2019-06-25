@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Neexistujú žiadne reklamy. Vyskúšaj neskôr.</string>
     <string name="set_ads_price" source="google_translate">Výška bonusov za sledovanie reklám</string>
     <string name="open_in_ace_player" source="google_translate">Otvoriť v Ace Player</string>
+    <string name="reset_selected_player_settings" source="google_translate">Obnovenie vybratých nastavení prehrávača</string>
 </resources>

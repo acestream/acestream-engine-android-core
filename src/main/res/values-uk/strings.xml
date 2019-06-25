@@ -77,4 +77,5 @@
     <string name="directories">Каталоги</string>
     <string name="network_browsing">Локальна мережа</string>
     <string name="open_in_ace_player">Перегляд у Ace Player</string>
+    <string name="reset_selected_player_settings">Скинути налаштування вибору плеєра</string>
 </resources>

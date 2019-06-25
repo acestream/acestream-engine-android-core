@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">ಯಾವುದೇ ಜಾಹೀರಾತುಗಳಿಲ್ಲ. ನಂತರ ಪ್ರಯತ್ನಿಸಿ.</string>
     <string name="set_ads_price" source="google_translate">ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಬೋನಸ್ಗಳ ಮೊತ್ತ</string>
     <string name="open_in_ace_player" source="google_translate">ಏಸ್ ಪ್ಲೇಯರ್ನಲ್ಲಿ ತೆರೆಯಿರಿ</string>
+    <string name="reset_selected_player_settings" source="google_translate">ಆಯ್ದ ಪ್ಲೇಯರ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮರುಹೊಂದಿಸಿ</string>
 </resources>

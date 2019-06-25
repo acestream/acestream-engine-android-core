@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">പരസ്യങ്ങളില്ല. പിന്നീട് ശ്രമിക്കുക.</string>
     <string name="set_ads_price" source="google_translate">പരസ്യങ്ങൾ കാണുന്നതിന് ബോണസ് തുക</string>
     <string name="open_in_ace_player" source="google_translate">എയ്സ് പ്ലെയറിൽ തുറക്കുക</string>
+    <string name="reset_selected_player_settings" source="google_translate">തിരഞ്ഞെടുത്ത പ്ലെയർ ക്രമീകരണങ്ങൾ പുന et സജ്ജമാക്കുക</string>
 </resources>

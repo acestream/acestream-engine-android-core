@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Nav reklāmu. Mēģiniet vēlāk.</string>
     <string name="set_ads_price" source="google_translate">Prēmiju summa reklāmu skatīšanai</string>
     <string name="open_in_ace_player" source="google_translate">Atvērt Ace Player</string>
+    <string name="reset_selected_player_settings" source="google_translate">Atjaunot izvēlēto atskaņotāja iestatījumus</string>
 </resources>

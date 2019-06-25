@@ -52,14 +52,14 @@
         android:text="@string/open_in_ace_player" />
 
     <CheckBox
-        android:id="@+id/chk_remember_choice"
+        android:id="@+id/chk_reset_selected_player_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:visibility="gone"
         android:checked="true"
-        android:text="@string/remember_choice"/>
+        android:text="@string/reset_selected_player_settings"/>
 
     <Button
         android:id="@+id/button_upgrade"

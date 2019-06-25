@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Нема огласа. Пробајте касније.</string>
     <string name="set_ads_price" source="google_translate">Износ бонуса за гледање огласа</string>
     <string name="open_in_ace_player" source="google_translate">Отвори у Аце Плаиер-у</string>
+    <string name="reset_selected_player_settings" source="google_translate">Ресетирајте изабране поставке плејера</string>
 </resources>

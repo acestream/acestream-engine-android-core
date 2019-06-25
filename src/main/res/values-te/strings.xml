@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">ప్రకటనలు లేవు. తర్వాత ప్రయత్నించండి.</string>
     <string name="set_ads_price" source="google_translate">ప్రకటనలను చూడడానికి బోనస్ మొత్తం</string>
     <string name="open_in_ace_player" source="google_translate">ఏస్ ప్లేయర్లో తెరవండి</string>
+    <string name="reset_selected_player_settings" source="google_translate">ఎంచుకున్న ప్లేయర్ సెట్టింగ్‌లను రీసెట్ చేయండి</string>
 </resources>

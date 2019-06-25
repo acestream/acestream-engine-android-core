@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Ez dago iragarkirik. Saiatu geroago.</string>
     <string name="set_ads_price" source="google_translate">Iragarkiak ikusteagatik hobari kopurua</string>
     <string name="open_in_ace_player" source="google_translate">Ireki Ace Player-en</string>
+    <string name="reset_selected_player_settings" source="google_translate">Berrezarri aukeratutako erreproduzitzailearen ezarpenak</string>
 </resources>

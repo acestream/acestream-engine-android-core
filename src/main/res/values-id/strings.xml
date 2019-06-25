@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Tidak ada iklan. Coba lagi nanti.</string>
     <string name="set_ads_price" source="google_translate">Jumlah bonus untuk menonton iklan</string>
     <string name="open_in_ace_player" source="google_translate">Buka di Ace Player</string>
+    <string name="reset_selected_player_settings" source="google_translate">Setel ulang pengaturan pemain yang dipilih</string>
 </resources>

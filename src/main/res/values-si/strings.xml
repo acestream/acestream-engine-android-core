@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">දැන්වීම් නොමැත. පසුව උත්සාහ කරන්න.</string>
     <string name="set_ads_price" source="google_translate">දැන්වීම් නැරඹීම සඳහා බෝනස් ප්රමාණය</string>
     <string name="open_in_ace_player" source="google_translate">Ace ක්රීඩකය තුළ විවෘත කරන්න</string>
+    <string name="reset_selected_player_settings" source="google_translate">තෝරාගත් ක්‍රීඩක සැකසුම් යළි පිහිටුවන්න</string>
 </resources>

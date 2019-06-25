@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Nincsenek hirdetések. Próbáld később.</string>
     <string name="set_ads_price" source="google_translate">Bónuszok a hirdetések megtekintéséhez</string>
     <string name="open_in_ace_player" source="google_translate">Nyissa meg az Ace Player-ben</string>
+    <string name="reset_selected_player_settings" source="google_translate">Állítsa vissza a kiválasztott lejátszó beállításait</string>
 </resources>

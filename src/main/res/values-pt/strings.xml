@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Não há anúncios. Tente depois.</string>
     <string name="set_ads_price" source="google_translate">Quantidade de bônus para assistir anúncios</string>
     <string name="open_in_ace_player" source="google_translate">Abrir no Ace Player</string>
+    <string name="reset_selected_player_settings" source="google_translate">Redefinir as configurações do player selecionado</string>
 </resources>

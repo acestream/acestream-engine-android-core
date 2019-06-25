@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">No hi ha anuncis. Intenta més tard.</string>
     <string name="set_ads_price" source="google_translate">Quantitat de primes per veure anuncis</string>
     <string name="open_in_ace_player" source="google_translate">Obre en Ace Player</string>
+    <string name="reset_selected_player_settings" source="google_translate">Restableix la configuració del reproductor seleccionada</string>
 </resources>

@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Der er ingen annoncer. Prøv senere.</string>
     <string name="set_ads_price" source="google_translate">Antal bonusser til at se annoncer</string>
     <string name="open_in_ace_player" source="google_translate">Åben i Ace Player</string>
+    <string name="reset_selected_player_settings" source="google_translate">Nulstil valgte afspillerindstillinger</string>
 </resources>

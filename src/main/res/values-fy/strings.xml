@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Der is gjin advertinsjes. Besykje letter.</string>
     <string name="set_ads_price" source="google_translate">Bûn fan bonussen foar bepaalde advertinsjes</string>
     <string name="open_in_ace_player" source="google_translate">Iepenje yn Ace-spiler</string>
+    <string name="reset_selected_player_settings" source="google_translate">Selektearre spilers ynstellings weromsette</string>
 </resources>

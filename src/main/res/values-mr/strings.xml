@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">तेथे जाहिराती नाहीत. नंतर प्रयत्न करा</string>
     <string name="set_ads_price" source="google_translate">जाहिराती पहाण्यासाठी बोनसची रक्कम</string>
     <string name="open_in_ace_player" source="google_translate">एस् प्लेयरमध्ये उघडा</string>
+    <string name="reset_selected_player_settings" source="google_translate">निवडलेल्या प्लेअर सेटिंग्ज रीसेट करा</string>
 </resources>

@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Ni oglasov. Poskusite pozneje.</string>
     <string name="set_ads_price" source="google_translate">Znesek bonusov za gledanje oglasov</string>
     <string name="open_in_ace_player" source="google_translate">Odpri v programu Ace Player</string>
+    <string name="reset_selected_player_settings" source="google_translate">Ponastavite izbrane nastavitve predvajalnika</string>
 </resources>

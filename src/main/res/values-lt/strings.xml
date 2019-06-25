@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Nėra skelbimų. Pabandyk vėliau.</string>
     <string name="set_ads_price" source="google_translate">Premijų už skelbimų žiūrėjimą suma</string>
     <string name="open_in_ace_player" source="google_translate">Atidaryti „Ace Player“</string>
+    <string name="reset_selected_player_settings" source="google_translate">Atstatyti pasirinktus grotuvo nustatymus</string>
 </resources>

@@ -15,4 +15,5 @@
     <string name="ads_are_missing_please_wait" source="google_translate">Il n\'y a pas d\'annonces. Essayer plus tard.</string>
     <string name="set_ads_price" source="google_translate">Montant des bonus pour regarder des annonces</string>
     <string name="open_in_ace_player" source="google_translate">Ouvrir dans Ace Player</string>
+    <string name="reset_selected_player_settings" source="google_translate">Réinitialiser les paramètres du joueur sélectionné</string>
 </resources>
