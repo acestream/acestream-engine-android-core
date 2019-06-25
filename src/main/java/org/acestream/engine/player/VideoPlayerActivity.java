@@ -301,7 +301,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private ImageView mPlaylistToggle;
     private ImageView mPipToggle;
     protected ImageView mSwitchPlayer;
-    protected ImageView mToggleInfo;
     private ImageView mAdvOptionsButton;
     private RecyclerView mPlaylistView;
     private PlaylistAdapter mPlaylistAdapter;
@@ -1542,9 +1541,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
         mSwitchPlayer = findViewById(R.id.switch_player);
         mSwitchPlayer.setOnClickListener(this);
-
-        mToggleInfo = findViewById(R.id.player_overlay_toggle_info);
-        mToggleInfo.setOnClickListener(this);
 
         mAdvOptionsButton = findViewById(R.id.player_overlay_adv_function);
         mAdvOptionsButton.setOnClickListener(this);
@@ -3765,12 +3761,13 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         } else if (i == R.id.player_overlay_adv_function) {
             showAdvancedOptions();
 
-        } else if (i == R.id.player_overlay_toggle_info) {
-            mShowInfo = !mShowInfo;
-            updatePlaybackStatus();
-
         }
 
+    }
+
+    public void toggleInfo() {
+        mShowInfo = !mShowInfo;
+        updatePlaybackStatus();
     }
 
     private void showResolver() {
@@ -4263,6 +4260,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             setListeners(true);
             initPlaylistUi();
             updateTracksSelectors();
+            updateToggleInfoButton();
         }
     }
 
@@ -6841,7 +6839,9 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     }
 
     private void updateToggleInfoButton() {
-        mToggleInfo.setVisibility(isCurrentMediaP2P() ? View.VISIBLE : View.GONE);
+        if(mHudBinding != null) {
+            mHudBinding.playerOverlayToggleInfo.setVisibility(isCurrentMediaP2P() ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void setRemoteClientId(String id) {

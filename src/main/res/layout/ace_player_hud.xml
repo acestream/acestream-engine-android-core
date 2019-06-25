@@ -45,12 +45,22 @@
         >
         <TextView
             android:id="@+id/player_overlay_title"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="left|start"
             android:textColor="@color/white"
             android:text="@{title}"
             android:textSize="15sp" />
+        <ImageView
+            android:id="@+id/player_overlay_toggle_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/rci_info_selector"
+            android:visibility="gone"
+            android:onClick="@{(v) -> player.toggleInfo()}"
+            android:focusable="true"/>
     </LinearLayout>
 
     <LinearLayout
