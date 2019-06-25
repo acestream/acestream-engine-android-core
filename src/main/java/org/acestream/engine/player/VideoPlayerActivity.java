@@ -4229,7 +4229,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     protected ObservableLong mMediaLength = new ObservableLong(0L);
     protected ObservableField<String> mTitle = new ObservableField<>();
     private boolean mHasPlaylist;
-    private boolean mShowLockButton = false;
+    private boolean mShowLockButton = true;
 
     @SuppressLint("RestrictedApi")
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)

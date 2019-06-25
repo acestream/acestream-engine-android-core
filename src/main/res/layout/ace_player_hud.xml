@@ -201,7 +201,7 @@
             android:scaleType="center"
             android:onClick="@{(v) -> player.toggleLock()}"
             android:focusable="true"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <ImageView
             android:id="@+id/select_subtitles"
