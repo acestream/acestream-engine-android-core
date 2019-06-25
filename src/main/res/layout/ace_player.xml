@@ -76,6 +76,18 @@
             android:textSize="10sp"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/engine_status_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_centerInParent="true"
+            android:background="@color/grey900transparent"
+            android:textColor="@color/white"
+            android:padding="16dp"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
         <androidx.appcompat.widget.ViewStubCompat
             android:id="@+id/player_info_stub"
             android:layout_width="wrap_content"

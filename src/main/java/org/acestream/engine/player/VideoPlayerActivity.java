@@ -245,6 +245,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     protected boolean mRestartingPlayer = false;
     protected boolean mWasStopped = false;
     protected TextView mEngineStatus;
+    protected TextView mEngineStatusOverlay;
     protected TextView mDebugInfo;
     protected boolean mFixAudioVolume = true;
 
@@ -300,6 +301,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private ImageView mPlaylistToggle;
     private ImageView mPipToggle;
     protected ImageView mSwitchPlayer;
+    protected ImageView mToggleInfo;
     private ImageView mAdvOptionsButton;
     private RecyclerView mPlaylistView;
     private PlaylistAdapter mPlaylistAdapter;
@@ -615,6 +617,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
             mIsLive = item.isLive();
             updateSwitchPlayerButton();
+            updateToggleInfoButton();
             updateSeekable(isSeekable());
 
             mMediaPlayer.setEventListener(null);
@@ -775,6 +778,8 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private void showAds(AdSource source) {
         Log.v(TAG, "ads:event:showAds");
 
+        hideEngineStatusOverlay();
+
         mIsAdDisplayed = true;
         mAdSource = source;
 
@@ -836,6 +841,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private View mVerticalBarProgress;
     private View mVerticalBarBoostProgress;
     private boolean mIsLoading;
+    private boolean mShowInfo = false;
     private boolean mIsPlaying = false;
     private boolean mIsBuffering = false;
     private boolean mMediaStartedPlaying = false;
@@ -1537,6 +1543,9 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         mSwitchPlayer = findViewById(R.id.switch_player);
         mSwitchPlayer.setOnClickListener(this);
 
+        mToggleInfo = findViewById(R.id.player_overlay_toggle_info);
+        mToggleInfo.setOnClickListener(this);
+
         mAdvOptionsButton = findViewById(R.id.player_overlay_adv_function);
         mAdvOptionsButton.setOnClickListener(this);
 
@@ -1546,6 +1555,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         mEngineStatus = findViewById(R.id.engine_status);
+        mEngineStatusOverlay = findViewById(R.id.engine_status_overlay);
         mDebugInfo = findViewById(R.id.debug_info);
 
         // player UI
@@ -3755,11 +3765,18 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         } else if (i == R.id.player_overlay_adv_function) {
             showAdvancedOptions();
 
+        } else if (i == R.id.player_overlay_toggle_info) {
+            mShowInfo = !mShowInfo;
+            updatePlaybackStatus();
+
         }
+
     }
 
     private void showResolver() {
         Log.d(TAG, "showResolver: startedFromExternalRequest=" + mStartedFromExternalRequest);
+
+        hideEngineStatusOverlay();
 
         if (mPlaylist == null) {
             App.v(TAG, "showResolver: no service");
@@ -4509,6 +4526,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         final FragmentManager fm = getSupportFragmentManager();
         final PlayerOptionsFragment dialog = new PlayerOptionsFragment();
         dialog.show(fm, "player_options");
+        hideEngineStatusOverlay();
         hideOverlay(false);
     }
 
@@ -4518,6 +4536,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             mPlaylistView.setOnClickListener(null);
             return;
         }
+        hideEngineStatusOverlay();
         hideOverlay(true);
         mPlaylistAdapter.resetCurrentIndex();
         mPlaylistView.setVisibility(View.VISIBLE);
@@ -5086,9 +5105,12 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
     protected void updatePlaybackStatus() {
         boolean showOverlay;
+        boolean showOverlay2;
         boolean showProgress;
+        boolean showInfo = mShowInfo;
         boolean p2p = isCurrentMediaP2P();
         String message = null;
+        String message2 = null;
 
         if(p2p && mLastEngineStatus != null) {
             switch(mLastEngineStatus.status) {
@@ -5117,28 +5139,55 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                     message = mLastEngineStatus.errorMessage;
                     break;
                 case "dl":
+                    if(showInfo) {
+                        message2 = getResources().getString(R.string.status_info, mLastEngineStatus.peers, mLastEngineStatus.speedDown, mLastEngineStatus.speedUp);
+                    }
                     break;
             }
         }
 
-        if(!p2p) {
+        if(!p2p || isFinishing()) {
             showOverlay = false;
+            showOverlay2 = false;
             showProgress = false;
         }
-        else if(TextUtils.isEmpty(message)) {
-            showOverlay = !mIsPlaying;
-            showProgress = !mIsPlaying || mIsBuffering;
+        else if(!TextUtils.isEmpty(message)) {
+            showOverlay = true;
+            showOverlay2 = false;
+            showProgress = false;
+        }
+        else if(!mIsPlaying) {
+            showOverlay = true;
+            showOverlay2 = false;
+            message = getResources().getString(R.string.status_info, mLastEngineStatus.peers, mLastEngineStatus.speedDown, mLastEngineStatus.speedUp);
+            showProgress = false;
         }
         else {
-            showOverlay = true;
-            showProgress = false;
+            showOverlay = false;
+            showOverlay2 = !TextUtils.isEmpty(message2);
+            showProgress = !showOverlay2 && mIsBuffering;
         }
 
         if(DEBUG_LOG_ENGINE_STATUS) {
-            Log.v(TAG, "show_status: engine=" + (mLastEngineStatus == null ? null : mLastEngineStatus.status) + " playing=" + mIsPlaying + " buffering=" + mIsBuffering + " overlay=" + showOverlay + " progress=" + showProgress + " msg=" + message);
+            int state = -1;
+            if(mMediaPlayer != null) {
+                state = mMediaPlayer.getPlayerState();
+            }
+            Log.v(TAG, "show_status:"
+                    + " engine=" + (mLastEngineStatus == null ? null : mLastEngineStatus.status)
+                    + " finishing=" + isFinishing()
+                    + " state=" + state
+                    + " playing=" + mIsPlaying
+                    + " buffering=" + mIsBuffering
+                    + " overlay=" + showOverlay
+                    + " overlay2=" + showOverlay2
+                    + " progress=" + showProgress
+                    + " msg=" + message
+                    + " msg2=" + message2);
         }
 
         showStatusOverlay(showOverlay, message);
+        showStatusOverlay2(showOverlay2, message2);
 
         if(showProgress)
             startLoading();
@@ -5156,6 +5205,27 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 }
                 else {
                     mEngineStatus.setText(message);
+                }
+            }
+        });
+    }
+
+    private void hideEngineStatusOverlay() {
+        mShowInfo = false;
+        showStatusOverlay2(false, null);
+    }
+
+    protected void showStatusOverlay2(final boolean visible, final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mEngineStatusOverlay.setVisibility(visible ? View.VISIBLE : View.GONE);
+                if(message == null) {
+                    mEngineStatusOverlay.setText("");
+                }
+                else {
+                    mEngineStatusOverlay.setTextSize(mPictureInPictureMode ? 12 : 18);
+                    mEngineStatusOverlay.setText(message);
                 }
             }
         });
@@ -6768,6 +6838,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         mSwitchPlayer.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    private void updateToggleInfoButton() {
+        mToggleInfo.setVisibility(isCurrentMediaP2P() ? View.VISIBLE : View.GONE);
     }
 
     private void setRemoteClientId(String id) {

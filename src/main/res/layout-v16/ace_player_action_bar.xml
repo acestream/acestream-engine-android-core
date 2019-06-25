@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_alignParentTop="true"
-    android:background="@color/transparent"
-    android:gravity="right"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp" >
+    android:layout_height="fill_parent" >
 
     <ImageView
         android:id="@+id/player_overlay_toggle_info"
@@ -23,8 +19,6 @@
         android:id="@+id/playlist_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/player_action_bar_icon_gap"
-        android:layout_marginEnd="@dimen/player_action_bar_icon_gap"
         android:layout_gravity="center_vertical"
         android:src="@drawable/rci_featured_play_list_selector"
         android:focusable="true"
