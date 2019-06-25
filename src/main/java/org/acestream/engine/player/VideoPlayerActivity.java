@@ -1368,14 +1368,13 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                     if(mMediaPlayer != null) {
                         if(mVolSave == -1) {
                             mVolSave = mMediaPlayer.getVolume();
-                            Logger.v(TAG, "vlc:event: opening: init volume: " + mVolSave);
+                            Logger.v(TAG, "vlc:event: playing: init volume: " + mVolSave);
                             if(mVolSave <= 0) {
                                 mVolSave = 100;
                             }
                         }
                     }
                     if(mIsAdDisplayed) {
-                        App.v(TAG, "Pause on play because ads are displayed");
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -1387,12 +1386,16 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                                 if(mIsAdDisplayed
                                         && !mIsPaused
                                         && mAdSource != null
-                                        && mAdSource != AdSource.IMA_SDK) {
-                                    App.v(TAG, "Force ads hide because player is resumed");
+                                        && mAdSource != AdSource.IMA_SDK
+                                        && mAdSource != AdSource.CUSTOM_ADS) {
+                                    App.v(TAG, "Force ads hide because player is resumed: source=" + mAdSource);
                                     hideAds(mAdSource);
                                 }
                                 else {
-                                    pause();
+                                    App.v(TAG, "Pause on play because ads are displayed: isLive=" + mIsLive);
+                                    if(!mIsLive) {
+                                        pause();
+                                    }
                                 }
                             }
                         }, 1000);
@@ -5779,10 +5782,12 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     }
 
     private void onContentPauseRequested(AdSource source) {
-        App.v(TAG, "onContentPauseRequested: source=" + source);
+        App.v(TAG, "onContentPauseRequested: source=" + source + " isLive=" + mIsLive);
         showAds(source);
         mute(true);
-        pause();
+        if(!mIsLive) {
+            pause();
+        }
         hideOverlay(false);
     }
 
