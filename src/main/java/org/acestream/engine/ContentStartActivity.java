@@ -1,6 +1,8 @@
 package org.acestream.engine;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import org.acestream.engine.ads.AdManager;
 import org.acestream.engine.aliases.App;
@@ -972,17 +974,27 @@ public class ContentStartActivity
     }
 
     private void startOurPlayer(@NonNull SelectedPlayer player, int fileIndex) {
-        App.v(TAG, "startOurPlayer: player=" + player + " fileIndex=" + fileIndex);
+	    MediaFilesResponse.MediaFile[] sortedFiles = mMediaFiles.files;
+        Arrays.sort(sortedFiles, new Comparator<MediaFilesResponse.MediaFile>() {
+            @Override
+            public int compare(MediaFilesResponse.MediaFile item1, MediaFilesResponse.MediaFile item2) {
+                return item1.filename.compareToIgnoreCase(item2.filename);
+            }
+        });
 
         int playlistPosition = 0;
         if(fileIndex != -1) {
-            for (int i = 0; i < mMediaFiles.files.length; i++) {
-                if (mMediaFiles.files[i].index == fileIndex) {
+            for (int i = 0; i < sortedFiles.length; i++) {
+                if (sortedFiles[i].index == fileIndex) {
                     playlistPosition = i;
                     break;
                 }
             }
         }
+
+        App.v(TAG, "startOurPlayer: player=" + player
+                + " fileIndex=" + fileIndex
+                + " playlistPosition=" + playlistPosition);
 
         //NOTE: currently we don't use VLC bridge when got product key (which means that
         // playback was initiated by third-party app which passed this key).
@@ -993,21 +1005,21 @@ public class ContentStartActivity
             new VlcBridge.LoadP2PPlaylistIntentBuilder(mDescriptor)
                     .setPlayer(player)
                     .setMetadata(mMediaFiles)
-                    .setMediaFiles(mMediaFiles.files)
+                    .setMediaFiles(sortedFiles)
                     .setPlaylistPosition(playlistPosition)
                     .send();
         }
         else {
             // Add to internal playlist
-            if (mMediaFiles.files.length > 0) {
+            if (sortedFiles.length > 0) {
                 mPlaybackManager.initPlaylist(mDescriptor, mMediaFiles, -1);
             }
 
-            AceStreamPlayer.PlaylistItem[] playlist = new AceStreamPlayer.PlaylistItem[mMediaFiles.files.length];
-            for(int i = 0; i < mMediaFiles.files.length; i++) {
+            AceStreamPlayer.PlaylistItem[] playlist = new AceStreamPlayer.PlaylistItem[sortedFiles.length];
+            for(int i = 0; i < sortedFiles.length; i++) {
                 playlist[i] = new AceStreamPlayer.PlaylistItem(
-                        mDescriptor.getMrl(mMediaFiles.files[i].index).toString(),
-                        mMediaFiles.files[i].filename);
+                        mDescriptor.getMrl(sortedFiles[i].index).toString(),
+                        sortedFiles[i].filename);
             }
 
             Intent intent = AceStreamPlayer.getPlayerIntent();
