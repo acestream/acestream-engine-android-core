@@ -229,6 +229,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     protected String mLastRemoteClientDeviceId = null;
     protected EngineStatus mLastEngineStatus = null;
     protected boolean mIsLive;
+    protected boolean mIsPausable = true;
     protected long freezeEngineStatusAt = 0;
     protected long freezeEngineStatusFor = 0;
     protected long freezeLiveStatusAt = 0;
@@ -4048,6 +4049,21 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             mHudBinding.playerOverlaySeekbar.setEnabled(seekable);
     }
 
+    private void updatePausable() {
+        if(mLastEngineStatus != null
+                && (mIsLive || mLastEngineStatus.isLive == 1)
+                && TextUtils.equals(mLastEngineStatus.outputFormat, "hls")) {
+            mIsPausable = false;
+        }
+        else {
+            mIsPausable = true;
+        }
+
+        if (mHudBinding != null) {
+            mHudBinding.playerOverlayPlay.setVisibility(mIsPausable ? View.VISIBLE : View.GONE);
+        }
+    }
+
     private void updatePausable(boolean pausable) {
         App.vv(TAG, "updatePausable: pausable=" + pausable);
         if (mHudBinding == null) return;
@@ -4055,6 +4071,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     }
 
     public void doPlayPause() {
+        if (!mIsPausable) return;
         if (!isPausable()) return;
         if (mMediaPlayer.isPlaying()) {
             showOverlayTimeout(OVERLAY_INFINITE);
@@ -4214,7 +4231,12 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
     private void showControls(boolean show) {
         if (mHudBinding != null) {
-            mHudBinding.playerOverlayPlay.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+            if(!mIsPausable) {
+                mHudBinding.playerOverlayPlay.setVisibility(View.GONE);
+            }
+            else {
+                mHudBinding.playerOverlayPlay.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+            }
             mHudBinding.playerOverlaySize.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
             if(mShowLockButton) {
                 mHudBinding.lockOverlayButton.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
@@ -5092,6 +5114,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     public void setEngineStatus(EngineStatus status) {
         mLastEngineStatus = status;
         updatePlaybackStatus();
+        updatePausable();
     }
 
     protected void setPlaying(boolean playing) {
