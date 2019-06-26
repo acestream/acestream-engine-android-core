@@ -956,7 +956,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             Log.d(TAG, "onMessage: msg=" + msg.toString());
             switch(msg.getMethod()) {
                 case "pause":
-                    if (mMediaPlayer.isPlaying()) {
+                    if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
