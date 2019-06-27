@@ -45,6 +45,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -67,6 +68,7 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -107,6 +109,7 @@ import org.acestream.engine.ContentStartActivity;
 import org.acestream.engine.PlaybackManager;
 import org.acestream.engine.R;
 import org.acestream.engine.RemoteControlActivity;
+import org.acestream.engine.ReportProblemActivity;
 import org.acestream.engine.ads.AdManager;
 import org.acestream.engine.ads.AdsWaterfall;
 import org.acestream.engine.aliases.App;
@@ -190,6 +193,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private String mUserAgent = null;
     private ArrayList<String> mLibVlcOptions = null;
 
+    private int mDebugLevel = 0;
     private boolean mShowTvUi;
     private boolean mAudioDigitalOutputEnabled;
     private int mHardwareAcceleration;
@@ -1166,6 +1170,9 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             App.v(TAG, "onEngineConnected: paused=" + mIsPaused + " service=" + mEngineService);
             if(mEngineService == null) {
                 mEngineService = service;
+                if(mDebugLevel > 0) {
+                    mEngineService.setDebugLevel(mDebugLevel, null);
+                }
             }
         }
 
@@ -3774,6 +3781,55 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         updatePlaybackStatus();
     }
 
+    public void toggleDebugLevel() {
+        mDebugLevel = (mDebugLevel + 1) % 3;
+        AceStream.toast("Debug level " + mDebugLevel);
+        if(mEngineService != null) {
+            mEngineService.setDebugLevel(mDebugLevel, null);
+        }
+    }
+
+    public void sendBugReport() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Write description");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String description = input.getText().toString();
+                AceStream.toast("Sending report...");
+                ReportProblemActivity.sendReport("from_player", description, true);
+                if(mHudBinding != null) {
+                    // disable for 5 seconds
+                    mHudBinding.playerOverlaySendBugReport.setEnabled(false);
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(mHudBinding != null) {
+                                mHudBinding.playerOverlaySendBugReport.setEnabled(true);
+                            }
+                        }
+                    }, 5000);
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
     private void showResolver() {
         Log.d(TAG, "showResolver: startedFromExternalRequest=" + mStartedFromExternalRequest);
 
@@ -4060,7 +4116,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         if (mHudBinding != null) {
-            mHudBinding.playerOverlayPlay.setVisibility(mIsPausable ? View.VISIBLE : View.GONE);
+            mHudBinding.playerOverlayPlay.setVisibility(!mIsPausable ? View.GONE : mIsLocked ? View.INVISIBLE : View.VISIBLE);
         }
     }
 
@@ -4238,9 +4294,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 mHudBinding.playerOverlayPlay.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
             }
             mHudBinding.playerOverlaySize.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
-            if(mShowLockButton) {
-                mHudBinding.lockOverlayButton.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
-            }
+            mHudBinding.lockOverlayButton.setVisibility(!mShowLockButton ? View.GONE : show ? View.VISIBLE : View.INVISIBLE);
             if (mHasPlaylist) {
                 mHudBinding.playlistPrevious.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
                 mHudBinding.playlistNext.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
@@ -4254,7 +4308,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     protected ObservableLong mMediaLength = new ObservableLong(0L);
     protected ObservableField<String> mTitle = new ObservableField<>();
     private boolean mHasPlaylist;
-    private boolean mShowLockButton = true;
+    private boolean mShowLockButton = !AceStreamEngineBaseApplication.showTvUi();
 
     @SuppressLint("RestrictedApi")
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -4278,6 +4332,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             else
                 layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
             mHudBinding.progressOverlay.setLayoutParams(layoutParams);
+            if(AceStreamEngineBaseApplication.showDebugInfo()) {
+                mHudBinding.playerOverlayToggleDebugMode.setVisibility(View.VISIBLE);
+                mHudBinding.playerOverlaySendBugReport.setVisibility(View.VISIBLE);
+            }
             resetHudLayout();
             updateOverlayPausePlay();
             updateSeekable(isSeekable());
@@ -4837,6 +4895,9 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private void processEngineStatus(final EngineStatus status) {
         setEngineStatus(status);
 
+        // debug level
+        mDebugLevel = status.debugLevel;
+
         // livepos
         mLastLivePos = status.livePos;
         if (status.livePos == null) {
@@ -4933,6 +4994,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             sb.append("\nul: ").append(status.speedUp);
             sb.append("\nlive: ").append(status.isLive);
             sb.append("\nof: ").append(status.outputFormat);
+            sb.append("\ndebug: ").append(status.debugLevel);
 
             SystemUsageInfo si = status.systemInfo;
             if(si == null) {

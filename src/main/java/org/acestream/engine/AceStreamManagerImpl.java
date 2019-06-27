@@ -2081,6 +2081,7 @@ public abstract class AceStreamManagerImpl
             engineStatus.errorMessage = response.optString("error_message");
             engineStatus.currentStreamIndex = response.optInt("selected_stream_index", 0);
             engineStatus.isLive = response.optInt("is_live", -1);
+            engineStatus.debugLevel = response.optInt("debug_level", 0);
 
             // livepos
             JSONObject livepos = response.optJSONObject("livepos");

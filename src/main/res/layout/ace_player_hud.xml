@@ -34,24 +34,43 @@
         android:id="@+id/title_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="left|start"
+        android:gravity="start|center_vertical"
         android:orientation="horizontal"
         android:visibility="visible"
         android:paddingLeft="@dimen/time_margin_sides"
         android:paddingRight="@dimen/time_margin_sides"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:layout_alignParentTop="true"
-        >
+        android:layout_alignParentTop="true">
         <TextView
             android:id="@+id/player_overlay_title"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="left|start"
+            android:gravity="start|center_vertical"
             android:textColor="@color/white"
             android:text="@{title}"
             android:textSize="15sp" />
+        <ImageView
+            android:id="@+id/player_overlay_send_bug_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/rci_bug_report_selector"
+            android:visibility="gone"
+            android:onClick="@{(v) -> player.sendBugReport()}"
+            android:focusable="true"/>
+        <ImageView
+            android:id="@+id/player_overlay_toggle_debug_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/rci_adb_selector"
+            android:visibility="gone"
+            android:onClick="@{(v) -> player.toggleDebugLevel()}"
+            android:focusable="true"/>
         <ImageView
             android:id="@+id/player_overlay_toggle_info"
             android:layout_width="wrap_content"
