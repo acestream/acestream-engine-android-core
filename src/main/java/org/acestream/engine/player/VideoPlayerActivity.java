@@ -4987,35 +4987,34 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 showStreamSelectorContainer(false);
             }
         }
+    }
 
-        // Debug info
-        if(AceStreamEngineBaseApplication.showDebugInfo()) {
-            StringBuilder sb = new StringBuilder(100);
-            sb.append("status: ").append(status.status);
-            sb.append("\npeers: ").append(status.peers);
-            sb.append("\ndl: ").append(status.speedDown);
-            sb.append("\nul: ").append(status.speedUp);
-            sb.append("\nlive: ").append(status.isLive);
-            sb.append("\noutput: ").append(status.outputFormat);
-            sb.append("\ndebug: ").append(status.debugLevel);
-            if(status.debugLevel > 0) {
-                sb.append("\ninet: ").append(status.wanConnectionStatus).append("/3");
-            }
-
-            SystemUsageInfo si = status.systemInfo;
-            if(si == null) {
-                si = MiscUtils.getSystemUsage(this);
-            }
-
-            if(si != null) {
-                long p = -1;
-                if(si.memoryTotal != 0)
-                    p = Math.round(si.memoryAvailable / si.memoryTotal * 100);
-                sb.append("\nram: ").append(p).append("%");
-            }
-
-            mDebugInfo.setText(sb.toString());
+    private void showDebugInfo(final EngineStatus status) {
+        StringBuilder sb = new StringBuilder(100);
+        sb.append("status: ").append(status.status);
+        sb.append("\npeers: ").append(status.peers);
+        sb.append("\ndl: ").append(status.speedDown);
+        sb.append("\nul: ").append(status.speedUp);
+        sb.append("\nlive: ").append(status.isLive);
+        sb.append("\noutput: ").append(status.outputFormat);
+        sb.append("\ndebug: ").append(status.debugLevel);
+        if(status.debugLevel > 0) {
+            sb.append("\ninet: ").append(status.wanConnectionStatus).append("/3");
         }
+
+        SystemUsageInfo si = status.systemInfo;
+        if(si == null) {
+            si = MiscUtils.getSystemUsage(this);
+        }
+
+        if(si != null) {
+            long p = -1;
+            if(si.memoryTotal != 0)
+                p = Math.round(si.memoryAvailable / si.memoryTotal * 100);
+            sb.append("\nram: ").append(p).append("%");
+        }
+
+        mDebugInfo.setText(sb.toString());
     }
 
     public void goLive() {
@@ -5183,6 +5182,11 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         mLastEngineStatus = status;
         updatePlaybackStatus();
         updatePausable();
+
+        // Debug info
+        if(AceStreamEngineBaseApplication.showDebugInfo()) {
+            showDebugInfo(status);
+        }
     }
 
     protected void setPlaying(boolean playing) {
@@ -5228,7 +5232,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                     message = getResources().getString(R.string.status_prebuffering, mLastEngineStatus.progress, mLastEngineStatus.peers, mLastEngineStatus.speedDown);
                     break;
                 case "error":
-                    message = mLastEngineStatus.errorMessage;
+                    message = EngineStatus.translateEngineError(mLastEngineStatus.errorMessage);
                     break;
                 case "dl":
                     if(showInfo) {
