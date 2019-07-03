@@ -4995,28 +4995,41 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
     private void showDebugInfo(final EngineStatus status) {
         StringBuilder sb = new StringBuilder(100);
-        sb.append("status: ").append(status.status);
-        sb.append("\npeers: ").append(status.peers);
-        sb.append("\ndl: ").append(status.speedDown);
-        sb.append("\nul: ").append(status.speedUp);
-        sb.append("\nlive: ").append(status.isLive);
-        sb.append("\noutput: ").append(status.outputFormat);
-        sb.append("\ndebug: ").append(status.debugLevel);
-        if(status.debugLevel > 0) {
-            sb.append("\ninet: ").append(status.wanConnectionStatus).append("/3");
-        }
-        sb.append("\nauth: ").append(getAuthLevel());
 
-        SystemUsageInfo si = status.systemInfo;
-        if(si == null) {
-            si = MiscUtils.getSystemUsage(this);
+        if(status == null) {
+            sb.append("status: null");
         }
+        else {
+            sb.append("status: ").append(status.status);
+            sb.append("\npeers: ").append(status.peers);
+            sb.append("\ndl: ").append(status.speedDown);
+            sb.append("\nul: ").append(status.speedUp);
+            sb.append("\nlive: ").append(status.isLive);
+            sb.append("\noutput: ").append(status.outputFormat);
+            sb.append("\ndebug: ").append(status.debugLevel);
+            if (status.debugLevel > 0) {
+                sb.append("\ninet: ").append(status.wanConnectionStatus).append("/3");
+            }
+            sb.append("\nauth: ").append(getAuthLevel());
+            if (status.livePos != null) {
+                sb.append("\npos: ")
+                        .append(status.livePos.pos)
+                        .append("/")
+                        .append(status.livePos.last);
+            }
 
-        if(si != null) {
-            long p = -1;
-            if(si.memoryTotal != 0)
-                p = Math.round(si.memoryAvailable / si.memoryTotal * 100);
-            sb.append("\nram: ").append(p).append("%");
+
+            SystemUsageInfo si = status.systemInfo;
+            if (si == null) {
+                si = MiscUtils.getSystemUsage(this);
+            }
+
+            if (si != null) {
+                long p = -1;
+                if (si.memoryTotal != 0)
+                    p = Math.round(si.memoryAvailable / si.memoryTotal * 100);
+                sb.append("\nram: ").append(p).append("%");
+            }
         }
 
         mDebugInfo.setText(sb.toString());
