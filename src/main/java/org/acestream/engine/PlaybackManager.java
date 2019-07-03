@@ -1001,6 +1001,12 @@ public class PlaybackManager extends AceStreamManagerImpl {
         updateEnginePreferences();
     }
 
+    @Override
+    public void onAuthUpdated() {
+        Logger.v(TAG, "onAuthUpdated");
+        updateAuth();
+    }
+
     public void sendPairingCode(String code) {
         Log.d(TAG, "sendPairingCode");
         if(mCurrentDevice != null) {

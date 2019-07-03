@@ -378,6 +378,15 @@ public class PyRpcModule extends RpcReceiver {
 	}
 
 	@SuppressWarnings("unused")
+	@Rpc(description = "Auth level updated")
+	public void onAuthUpdated(@RpcParameter(name="authLevel") final String authLevelString) {
+		Log.d(TAG, "onAuthUpdated: authLevel=" + authLevelString);
+		if(mContext instanceof AceStreamEngineService) {
+			((AceStreamEngineService)mContext).notifyAuthUpdated();
+		}
+	}
+
+	@SuppressWarnings("unused")
 	@Rpc(description="Get app dir")
 	public String getAppDir() {
 		return AceStream.filesDir();

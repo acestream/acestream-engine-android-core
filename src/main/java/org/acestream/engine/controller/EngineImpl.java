@@ -512,6 +512,10 @@ public class EngineImpl implements
     }
 
     @Override
+    public void onAuthUpdated() {
+    }
+
+    @Override
     public void onRestartPlayer() {
     }
 }

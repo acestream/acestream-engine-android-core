@@ -422,6 +422,9 @@ public class AceStreamEngineService extends ForegroundService
 					case REPORT_SETTINGS_UPDATED:
 						wrapper.onSettingsUpdated();
 						break;
+					case REPORT_AUTH_UPDATED:
+						wrapper.onAuthUpdated();
+						break;
                     default:
                         break;
                 }
@@ -524,6 +527,9 @@ public class AceStreamEngineService extends ForegroundService
 						case REPORT_SETTINGS_UPDATED:
 							mClients_V0.get(i).send(Message.obtain(null, AceStreamEngineMessages.MSG_SETTINGS_UPDATED));
 							break;
+						case REPORT_AUTH_UPDATED:
+							mClients_V0.get(i).send(Message.obtain(null, AceStreamEngineMessages.MSG_AUTH_UPDATED));
+							break;
 						default:
 							break;
 						} 
@@ -544,6 +550,7 @@ public class AceStreamEngineService extends ForegroundService
 	private static final int REPORT_EPG_UPDATED = 6;
 	private static final int REPORT_RESTART_PLAYER = 7;
 	private static final int REPORT_SETTINGS_UPDATED = 8;
+	private static final int REPORT_AUTH_UPDATED = 9;
 
 	private static final int MAINTAIN_INTERVAL = 900000;
 	private static final int ACECAST_MIN_RESTART_INTERVAL = 60000;
@@ -602,6 +609,12 @@ public class AceStreamEngineService extends ForegroundService
 		public void onSettingsUpdated() {
 			Log.d(TAG, "delegate callback: onSettingsUpdated");
 			mBroadcaster.sendEmptyMessage(REPORT_SETTINGS_UPDATED);
+		}
+
+		@Override
+		public void onAuthUpdated() {
+			Log.d(TAG, "delegate callback: onAuthUpdated");
+			mBroadcaster.sendEmptyMessage(REPORT_AUTH_UPDATED);
 		}
 
 		@Override
@@ -1123,6 +1136,11 @@ public class AceStreamEngineService extends ForegroundService
 		Log.d(TAG, "notifySettingsUpdated");
 		mBroadcaster.sendEmptyMessage(REPORT_SETTINGS_UPDATED);
 	}
+
+	public void notifyAuthUpdated() {
+		Log.d(TAG, "notifyAuthUpdated");
+		mBroadcaster.sendEmptyMessage(REPORT_AUTH_UPDATED);
+	}
 	
 	private void notifyReady(boolean justStarted) {
 		Log.d(TAG, "notifyReady: justStarted=" + justStarted);
@@ -1330,6 +1348,15 @@ public class AceStreamEngineService extends ForegroundService
 		void onSettingsUpdated() throws RemoteException {
 			if(mCallback instanceof org.acestream.engine.service.v0.IAceStreamEngineCallback) {
 				((org.acestream.engine.service.v0.IAceStreamEngineCallback) mCallback).onSettingsUpdated();
+			}
+			else {
+				Log.e(TAG, "Unknown callback type: class=" + mCallback.getClass().getName());
+			}
+		}
+
+		void onAuthUpdated() throws RemoteException {
+			if(mCallback instanceof org.acestream.engine.service.v0.IAceStreamEngineCallback) {
+				((org.acestream.engine.service.v0.IAceStreamEngineCallback) mCallback).onAuthUpdated();
 			}
 			else {
 				Log.e(TAG, "Unknown callback type: class=" + mCallback.getClass().getName());
