@@ -5001,6 +5001,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         if(status.debugLevel > 0) {
             sb.append("\ninet: ").append(status.wanConnectionStatus).append("/3");
         }
+        sb.append("\nauth: ").append(getAuthLevel());
 
         SystemUsageInfo si = status.systemInfo;
         if(si == null) {
@@ -5428,6 +5429,14 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         return mPlaybackManager.getAuthLevel() > 0;
+    }
+
+    private int getAuthLevel() {
+        if(mPlaybackManager == null) {
+            return -1;
+        }
+
+        return mPlaybackManager.getAuthLevel();
     }
 
     private boolean hasNoAds() {
