@@ -1505,6 +1505,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         Log.v(TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
+        // This must be called after super.onCreate() because showTvUi() method nees
+        // context to be initialized.
+        mShowLockButton = !AceStreamEngineBaseApplication.showTvUi();
+
         // Use media session to show metadata and playback controls while in PIP
         mMediaSessionServiceClient = new MediaSessionService.Client(this, new MediaSessionService.Client.Callback() {
             @Override
@@ -4311,7 +4315,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     protected ObservableLong mMediaLength = new ObservableLong(0L);
     protected ObservableField<String> mTitle = new ObservableField<>();
     private boolean mHasPlaylist;
-    private boolean mShowLockButton = !AceStreamEngineBaseApplication.showTvUi();
+    private boolean mShowLockButton;
 
     @SuppressLint("RestrictedApi")
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
