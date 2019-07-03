@@ -3,6 +3,7 @@ package org.acestream.engine.util;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.acestream.engine.AceStreamEngineBaseApplication;
+import org.acestream.engine.BuildConfig;
 import org.acestream.sdk.AceStream;
 
 import androidx.annotation.NonNull;
@@ -57,6 +59,11 @@ public class Util {
 	}
 	
 	public static boolean isUnpackRequired() {
+        if(BuildConfig.DEBUG && BuildConfig.alwaysUnpackEngineInDevBuild) {
+            Log.e("DEBUG", "FORCE UNPACK");
+            return true;
+        }
+
 		File mainPy = new File(AceStream.filesDir(), AceStreamEngineBaseApplication.DEFAULT_SCRIPT);
 		if(!mainPy.exists()) {
 			return true;

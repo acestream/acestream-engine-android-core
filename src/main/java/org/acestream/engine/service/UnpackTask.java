@@ -13,6 +13,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.acestream.engine.AceStreamEngineBaseApplication;
+import org.acestream.engine.BuildConfig;
 import org.acestream.engine.util.Util;
 import org.acestream.engine.python.PyEmbedded;
 
@@ -157,7 +158,12 @@ public class UnpackTask extends AceStreamEngineAsyncTask {
 		String curHash = MiscUtils.hash(content);
 		String savedHash = Util.readPrivateFileLine(hashfile);
 		Log.d(TAG, "Res hash=" + curHash + " savedHash=" + savedHash);
-		
+
+		if(BuildConfig.DEBUG && BuildConfig.alwaysUnpackEngineInDevBuild) {
+			Log.e(TAG, "FORCE UNPACK");
+			savedHash = "";
+		}
+
 		if(curHash.compareTo(savedHash) != 0) {
 			unzip(content, destination + "/", true);
 			Util.writePrivateFileLine(hashfile, curHash);

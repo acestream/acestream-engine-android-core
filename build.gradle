@@ -26,6 +26,7 @@ android {
         buildConfigField "boolean", "admobUseTestDevices", rootProject.ext.admobUseTestDevices
         buildConfigField "boolean", "appodealUseTestAds", rootProject.ext.appodealUseTestAds
         buildConfigField "boolean", "enableDebugLogging", rootProject.ext.enableDebugLogging
+        buildConfigField "boolean", "alwaysUnpackEngineInDevBuild", "false"
 
         resValue "string", "build_time", buildTime()
         resValue "string", "build_host", "buildbot@build-machine"
