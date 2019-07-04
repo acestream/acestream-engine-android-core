@@ -345,50 +345,53 @@ public abstract class AceStreamManagerImpl
         }
     };
 
-    private Runnable updateEngineStatusTask = new Runnable() {
-        @Override
-        public void run() {
-            synchronized (mEngineSessionLock) {
-                if (mEngineSession != null && mEngineSession.statUrl != null && mEngineApi != null) {
-                    String url = "http://" + mEngineApi.getHost() + ":" + mEngineApi.getPort() + mEngineSession.statUrl;
-                    if(!shouldUpdatePlayerActivity()) {
-                        url += "?skip_player_activity=1";
-                    }
-                    final String playbackSessionId = mEngineSession.playbackSessionId;
-                    HttpRequest.get(Uri.parse(url), null, new HttpRequest.Callback() {
-                        @Override
-                        public void onResponse(HttpRequest.Response response) {
-                            if(response == null) {
-                                Log.e(TAG, "status request failed");
-                                return;
-                            }
+    private void updateEngineStatus() {
+        synchronized (mEngineSessionLock) {
+            if (mEngineSession != null && mEngineSession.statUrl != null && mEngineApi != null) {
+                String url = "http://" + mEngineApi.getHost() + ":" + mEngineApi.getPort() + mEngineSession.statUrl;
+                if(!shouldUpdatePlayerActivity()) {
+                    url += "?skip_player_activity=1";
+                }
+                final String playbackSessionId = mEngineSession.playbackSessionId;
+                HttpRequest.get(Uri.parse(url), null, new HttpRequest.Callback() {
+                    @Override
+                    public void onResponse(HttpRequest.Response response) {
+                        if(response == null) {
+                            Log.e(TAG, "status request failed");
+                            return;
+                        }
 
-                            synchronized (mEngineSessionLock) {
-                                if (mEngineSession != null) {
-                                    try {
-                                        EngineStatus status = parseEngineStatus(response.body);
-                                        mLastEngineStatus = status;
-                                        if (status != null) {
-                                            mEngineSession.isLive = status.isLive;
-                                            status.outputFormat = mEngineSession.playbackData.outputFormat.format;
-                                            notifyEngineStatus(status, null);
-                                        }
-                                        mHandler.postDelayed(updateEngineStatusTask, ENGINE_STATUS_UPDATE_INTERVAL);
-                                    } catch (EngineSessionStoppedException e) {
-                                        if(BuildConfig.DEBUG) {
-                                            Log.v(TAG, "estatus:error: orig=" + playbackSessionId + " curr=" + mEngineSession.playbackSessionId);
-                                        }
+                        synchronized (mEngineSessionLock) {
+                            if (mEngineSession != null) {
+                                try {
+                                    EngineStatus status = parseEngineStatus(response.body);
+                                    mLastEngineStatus = status;
+                                    if (status != null) {
+                                        mEngineSession.isLive = status.isLive;
+                                        status.outputFormat = mEngineSession.playbackData.outputFormat.format;
+                                        notifyEngineStatus(status, null);
+                                    }
+                                    mHandler.postDelayed(updateEngineStatusTask, ENGINE_STATUS_UPDATE_INTERVAL);
+                                } catch (EngineSessionStoppedException e) {
+                                    if(TextUtils.equals(playbackSessionId, mEngineSession.playbackSessionId)) {
                                         stopEngineSession(false);
+                                    }
+                                    else {
+                                        Logger.v(TAG, "updateEngineStatus: other session stopped: curr=" + mEngineSession.playbackSessionId + " other=" + playbackSessionId);
                                     }
                                 }
                             }
                         }
-                    });
-                }
+                    }
+                });
             }
+        }
+    }
 
-            //TODO: don't check every second
-            //checkSelectDeviceButtonVisibility();
+    private Runnable updateEngineStatusTask = new Runnable() {
+        @Override
+        public void run() {
+            updateEngineStatus();
         }
     };
 
