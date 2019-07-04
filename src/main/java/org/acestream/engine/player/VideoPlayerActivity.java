@@ -4798,7 +4798,15 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
         unfreezeEngineStatus();
         App.v(TAG, "receiver: p2p failed: " + errorMessage);
+
+        if(TextUtils.equals(errorMessage, "download stopped")) {
+            // This happens when download is stopped on start, mainly because
+            // another download is starting and we will receive info about new session soon.
+            return;
+        }
+
         setEngineStatus(EngineStatus.error(errorMessage));
+
         if(mRemoteClientId != null) {
             JsonRpcMessage msg = new JsonRpcMessage(AceStreamRemoteDevice.Messages.PLAYBACK_START_FAILED);
             msg.addParam("error", errorMessage);
