@@ -1634,9 +1634,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             int hm = getResources().getDimensionPixelSize(R.dimen.tv_overscan_horizontal);
             int vm = getResources().getDimensionPixelSize(R.dimen.tv_overscan_vertical);
 
-            // for testing
-            Log.d(TAG, "ASDEBUG: apply overscan: hm=" + hm + " vm=" + vm);
-
             final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mPlayerUiContainer.getLayoutParams();
             lp.setMargins(hm, 0, hm, vm);
             mPlayerUiContainer.setLayoutParams(lp);
