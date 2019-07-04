@@ -4736,7 +4736,19 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         newItemSelected();
         setEngineStatus(EngineStatus.fromString("starting"));
         mExitOnStop = false;
-        mMediaPlayer.stop();
+
+        // Stop in a separate thread because LibVLC can block on stop for some time.
+        //
+        // For example, "adaptive" demux module (HLS) waits until all current HTTP
+        // requests are finished before stopping.
+        //
+        // Stopping on main thread can cause ANR.
+        AceStreamEngineBaseApplication.runBackground(new Runnable() {
+            @Override
+            public void run() {
+                mMediaPlayer.stop();
+            }
+        });
     }
 
     @Override
