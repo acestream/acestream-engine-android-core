@@ -4111,16 +4111,19 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
 
     private void updatePausable() {
         if(mLastEngineStatus != null
-                && (mIsLive || mLastEngineStatus.isLive == 1)
+                && mLastEngineStatus.outputFormat != null
+                && mLastEngineStatus.isLive != -1) {
+            if((mIsLive || mLastEngineStatus.isLive == 1)
                 && TextUtils.equals(mLastEngineStatus.outputFormat, "hls")) {
-            mIsPausable = false;
-        }
-        else {
-            mIsPausable = true;
-        }
+                mIsPausable = false;
+            }
+            else {
+                mIsPausable = true;
+            }
 
-        if (mHudBinding != null) {
-            mHudBinding.playerOverlayPlay.setVisibility(!mIsPausable ? View.GONE : mIsLocked ? View.INVISIBLE : View.VISIBLE);
+            if (mHudBinding != null) {
+                mHudBinding.playerOverlayPlay.setVisibility(!mIsPausable ? View.GONE : mIsLocked ? View.INVISIBLE : View.VISIBLE);
+            }
         }
     }
 
