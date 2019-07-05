@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import androidx.annotation.NonNull;
+
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -28,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PlaylistManager {
+public class PlaylistManager implements Handler.Callback {
     private final static String TAG = "AS/PlaylistManager";
 
     public final static int REPEAT_NONE = 0;
@@ -37,7 +40,16 @@ public class PlaylistManager {
 
     private final static int NEXT_INDEXES_LOOK_AHEAD = 5;
 
+    // Delay before actual starting when switching between playlist items.
+    // It's used to prevent starting session on engine when fast switching between
+    // playlist items.
+    private static final int TUNE_DELAY = 1000;
+
+    // handler messages
+    private static final int MSG_TUNE = 1001;
+
     private Context mContext;
+    private Handler mHandler;
     private Player mPlayer;
     private List<MediaItem> mItems = new ArrayList<>();
     private int mPosition = -1;
@@ -83,6 +95,7 @@ public class PlaylistManager {
     public PlaylistManager(Context context, Player player) {
         mContext = context;
         mPlayer = player;
+        mHandler = new Handler(this);
     }
 
     public void loadPlaylistFromJson(String jsonData, int pos, boolean autoPlay, boolean save) {
@@ -209,6 +222,16 @@ public class PlaylistManager {
         return mItems;
     }
 
+    private void playItemIfNotChanged(int index) {
+        if(index == mPosition) {
+            Logger.v(TAG, "playItemIfNotChanged: play: want=" + index + " curr=" + mPosition);
+            playIndex(index);
+        }
+        else {
+            Logger.v(TAG, "playItemIfNotChanged: skip: want=" + index + " curr=" + mPosition);
+        }
+    }
+
     public void playIndex(int index) {
         final MediaItem media = getItem(index);
         if(media == null) {
@@ -216,6 +239,7 @@ public class PlaylistManager {
             return;
         }
 
+        boolean switchingBetweenPlaylistItems = mPosition != -1 && index != mPosition;
         if(index != mPosition) {
             mPlayer.onBeforePlaylistPositionChanged(index);
         }
@@ -242,6 +266,16 @@ public class PlaylistManager {
             }
         }
         final boolean fRestartSessionWithOriginalInitiator = restartSessionWithOriginalInitiator;
+
+        mPlayer.onP2PStarting();
+
+        if(switchingBetweenPlaylistItems) {
+            Logger.v(TAG, "playIndex: tune delay: index=" + index + " delay=" + TUNE_DELAY);
+            Message msg = mHandler.obtainMessage(MSG_TUNE, index);
+            mHandler.removeMessages(MSG_TUNE);
+            mHandler.sendMessageDelayed(msg, TUNE_DELAY);
+            return;
+        }
 
         if(media.isP2PItem() && media.getPlaybackUri() == null) {
             //TODO: handle stream index
@@ -270,7 +304,6 @@ public class PlaylistManager {
             // 1 - connect to engine
             // 2 - start session
             // 3 - start playback
-            mPlayer.onP2PStarting();
             pm.getEngine(new IAceStreamManager.EngineStateCallback() {
                 @Override
                 public void onEngineConnected(@NonNull IAceStreamManager playbackManager, @NonNull EngineApi engineApi) {
@@ -300,7 +333,6 @@ public class PlaylistManager {
             });
         }
         else {
-            mPlayer.onP2PStarting();
             mPlayer.play(media);
         }
     }
@@ -530,7 +562,7 @@ public class PlaylistManager {
             return false;
         }
 
-        // Compate URIs
+        // Compare URIs
         for(int i = 0; i < playlist.length; i++) {
             if(!TextUtils.equals(playlist[i].uri, mItems.get(i).getUri().toString())) {
                 return false;
@@ -538,5 +570,17 @@ public class PlaylistManager {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+
+        switch (msg.what) {
+            case MSG_TUNE:
+                playItemIfNotChanged((int) msg.obj);
+                break;
+        }
+
+        return false;
     }
 }
