@@ -108,6 +108,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import androidx.annotation.MainThread;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -151,6 +152,7 @@ public abstract class AceStreamManagerImpl
     // AdManager
     private AdManager mAdManager = null;
 
+    private AtomicInteger mSessionId = new AtomicInteger(0);
     private long mLastNotificationAt = 0;
     protected AuthData mCurrentAuthData = null;
     // Local info about user package (obtained from Google Play Billing)
@@ -2086,6 +2088,7 @@ public abstract class AceStreamManagerImpl
             engineStatus.isLive = response.optInt("is_live", -1);
             engineStatus.debugLevel = response.optInt("debug_level", 0);
             engineStatus.wanConnectionStatus = response.optInt("wan_connection_status", 0);
+            engineStatus.clientSessionId = response.optInt("client_session_id", -1);
 
             // livepos
             JSONObject livepos = response.optJSONObject("livepos");
@@ -2780,8 +2783,17 @@ public abstract class AceStreamManagerImpl
         return mMediaInfo;
     }
 
-    public void initEngineSession(PlaybackData playbackData, EngineSessionStartListener listener) {
+    /**
+     * Start engine session
+     *
+     * @param playbackData
+     * @param listener
+     * @return Unique session id
+     */
+    public int initEngineSession(PlaybackData playbackData, EngineSessionStartListener listener) {
+        int sessionId = mSessionId.incrementAndGet();
         Log.d(TAG, "initEngineSession: descriptor=" + playbackData.descriptor.toString() +
+                " sessionId=" + sessionId +
                 " output=" + playbackData.outputFormat +
                 " mime=" + playbackData.mediaFile.mime +
                 " index=" + playbackData.mediaFile.index +
@@ -2793,7 +2805,7 @@ public abstract class AceStreamManagerImpl
 
         if(mHttpAsyncTaskFactory == null) {
             Log.e(TAG, "initEngineSession: missing http async task factory");
-            return;
+            return -1;
         }
 
         String requestUrl;
@@ -2833,6 +2845,7 @@ public abstract class AceStreamManagerImpl
                     playbackData.descriptor.getQueryString());
         }
 
+        requestUrl += "&client_session_id=" + sessionId;
         requestUrl += "&use_timeshift=" + (playbackData.useTimeshift ? 1 : 0);
         requestUrl += "&manifest_p2p_wait_timeout=10";
         requestUrl += "&proxy_vast_response=1";
@@ -2888,6 +2901,8 @@ public abstract class AceStreamManagerImpl
             mHttpAsyncTaskFactory.build(HttpAsyncTask.HTTPTASK_START_CONTENT, this, requestUrl, extraData)
                     .execute2("GET");
         }
+
+        return sessionId;
     }
 
     private void finishedStartingEngineSession(String responseText, Map<String, Object> extraData) {
@@ -2967,6 +2982,7 @@ public abstract class AceStreamManagerImpl
             engineSession.playbackData = playbackData;
             engineSession.infohash = response.optString("infohash");
             engineSession.playbackSessionId = response.optString("playback_session_id", null);
+            engineSession.clientSessionId = response.optInt("client_session_id", -1);
             engineSession.playbackUrl = playbackUrl;
             engineSession.vastTags = vastTags;
             engineSession.isLive = isLive;
