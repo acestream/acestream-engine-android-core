@@ -344,12 +344,15 @@ public class AdManager {
         String adBlockId = getAdBlockId(mCurrentAdSegment);
         if(adBlockId == null) {
             Log.e(TAG, "loadRewardedVideoAd: failed to get ad block id: segment=" + mCurrentAdSegment);
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    loadRewardedVideoAd(false);
-                }
-            }, 1000);
+            if(hasSegmentsConfig()) {
+                // Try another segment if we have config
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadRewardedVideoAd(false);
+                    }
+                }, 1000);
+            }
             return;
         }
 
@@ -370,17 +373,25 @@ public class AdManager {
     }
 
     private String getAdBlockId(int segment) {
-        if(mAdConfig == null) {
-            Log.e(TAG, "getAdBlockId: missing ad config");
-            return null;
-        }
-
-        if(mAdConfig.admob_rewarded_video_segments == null) {
-            Log.e(TAG, "getAdBlockId: missing admob rv config");
+        if(!hasSegmentsConfig()) {
             return null;
         }
 
         return mAdConfig.admob_rewarded_video_segments.get(segment);
+    }
+
+    private boolean hasSegmentsConfig() {
+        if(mAdConfig == null) {
+            Log.e(TAG, "hasSegmentsConfig: missing ad config");
+            return false;
+        }
+
+        if(mAdConfig.admob_rewarded_video_segments == null) {
+            Log.e(TAG, "hasSegmentsConfig: missing admob rv config");
+            return false;
+        }
+
+        return true;
     }
 
     public boolean isRewardedVideoLoaded() {
