@@ -66,6 +66,7 @@ public class WebViewActivity
     private boolean mNavigationStarted = false;
     private String mTargetUrl = null;
     protected String mTargetInfohash = null;
+    private boolean mIsStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,8 +133,15 @@ public class WebViewActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        mIsStarted = true;
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
+        mIsStarted = false;
     }
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
@@ -306,6 +314,10 @@ public class WebViewActivity
                     BroadcastReceiver onComplete = new BroadcastReceiver() {
                         public void onReceive(Context ctx, Intent intent) {
                             Log.d(TAG, "download completed");
+                            if(!mIsStarted) {
+                                // activity was stopped
+                                return;
+                            }
 
                             Long dwnId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
                             if(dwnId == downloadId) {
@@ -326,8 +338,11 @@ public class WebViewActivity
                             }
                         }
                     };
-                    //register receiver for when .apk download is compete
-                    ctx.registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+                    if(TextUtils.equals(mimeType, "application/vnd.android.package-archive")) {
+                        //register receiver for when .apk download is compete
+                        ctx.registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                    }
                 }
                 catch(Throwable e) {
                     Log.e(TAG, "Failed to download file", e);
