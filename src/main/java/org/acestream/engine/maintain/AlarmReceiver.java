@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.acestream.engine.BaseReceiver;
+import org.acestream.engine.service.AceStreamEngineService;
+import org.acestream.engine.util.NetworkUtil;
 import org.acestream.sdk.utils.PermissionUtils;
 
 public class AlarmReceiver extends BaseReceiver {
@@ -25,18 +27,22 @@ public class AlarmReceiver extends BaseReceiver {
         if(TextUtils.equals(action, "maintain")) {
             Log.d(TAG, "alarm: do maintain");
 
-            if(PermissionUtils.hasStorageAccess()) {
+            if(!PermissionUtils.hasStorageAccess()) {
+                Log.v(TAG, "alarm: no storage access");
+            }
+            else if(!NetworkUtil.isConnected2AvailableNetwork(false)) {
+                Log.v(TAG, "alarm: no wifi connection");
+            }
+            else {
                 Intent serviceIntent = new Intent(context, AlarmService.class);
                 serviceIntent.setAction("maintain");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !AceStreamEngineService.isCreated()) {
                     context.startForegroundService(serviceIntent);
                 }
                 else {
                     context.startService(serviceIntent);
                 }
-            }
-            else {
-                Log.w(TAG, "alarm: no storage access");
             }
         }
     }

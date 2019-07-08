@@ -66,6 +66,8 @@ public class AceStreamEngineService extends ForegroundService
 	private static final int CLIENT_TYPE_AIDL = 0;
 	private static final int CLIENT_TYPE_MESSENGER = 1;
 
+	private static boolean sServiceCreated = false;
+
 	private Status mStatus = Status.IDLE;
 	private final Object mStatusLock = new Object();
 
@@ -741,6 +743,7 @@ public class AceStreamEngineService extends ForegroundService
 
         super.onCreate();
 
+		sServiceCreated = true;
 		mStopFlag = false;
 		mNetworkStatus = NetworkStatus.CONNECTED;
 
@@ -887,6 +890,7 @@ public class AceStreamEngineService extends ForegroundService
 		mBroadcaster.removeCallbacksAndMessages(null);
 
 		super.onDestroy();
+		sServiceCreated = false;
 	}
 	
 	@Override
@@ -1387,5 +1391,9 @@ public class AceStreamEngineService extends ForegroundService
 				startForegroundCompat(notification);
 			}
 		}
+	}
+
+	public static boolean isCreated() {
+		return sServiceCreated;
 	}
 }

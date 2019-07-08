@@ -2,7 +2,7 @@ package org.acestream.engine;
 
 public abstract class Constants {
     // How long to skip maintain notifications (milliseconds)
-    public static final int MAINTAIN_INTENT_SNOOZE_INTERVAL = 86400;
+    public static final int MAINTAIN_INTENT_SNOOZE_INTERVAL = 86400000;
 
     public static final String PREF_MAINTAIN_INTENT_SNOOZE_UNTIL = "org.acestream.PREF_MAINTAIN_INTENT_SNOOZE_UNTIL";
 

@@ -64,8 +64,12 @@ public class AceStreamEngineNotificationManager {
 			}
 		}
 	}
-	
+
 	public AceStreamEngineNotificationManager(Context context) {
+		this(context, true);
+	}
+
+	public AceStreamEngineNotificationManager(Context context, boolean addQuitButton) {
 		mContext = context;
 		mNotificationManager = NotificationManagerCompat.from(mContext);
 		mBuilder = new NotificationCompat.Builder(context, SERVICE_NOTIFICATION_CHANNEL_ID);
@@ -89,9 +93,12 @@ public class AceStreamEngineNotificationManager {
 			.setContentTitle(mContext.getString(R.string.app_name))
 			.setPriority(NotificationCompat.PRIORITY_DEFAULT)
 			.setContentIntent(contentIntent)
-			.setAutoCancel(true)
-			.addAction(new NotificationCompat.Action(R.drawable.ace_ic_close_normal,
+			.setAutoCancel(true);
+
+		if(addQuitButton) {
+			mBuilder.addAction(new NotificationCompat.Action(R.drawable.ace_ic_close_normal,
 					mContext.getResources().getString(R.string.menu_quit), quitIntent));
+		}
 	}
 	
 	public void notify(Notification notification) {
@@ -110,14 +117,25 @@ public class AceStreamEngineNotificationManager {
 		mNotificationManager.cancel(notificationId);
 	}
 
-	public Notification simpleNotification(int resourceId) {
-		return simpleNotification(mContext.getString(resourceId));
+    public Notification simpleNotification(int resourceId) {
+	    return simpleNotification(resourceId, -1);
+    }
+
+	public Notification simpleNotification(int resourceId, int iconDrawableId) {
+		return simpleNotification(mContext.getString(resourceId), iconDrawableId);
 	}
 
-	public Notification simpleNotification(String text) {
+    public Notification simpleNotification(String text) {
+	    return simpleNotification(text, -1);
+    }
+
+	public Notification simpleNotification(String text, int iconDrawableId) {
 		if(text != null) {
 			mBuilder.setContentText(text);
 		}
+		if(iconDrawableId != -1) {
+		    mBuilder.setSmallIcon(iconDrawableId);
+        }
 		mBuilder.setProgress(0, 0, false);
 		mBuilder.setTicker(text);
 		return buildNotification();

@@ -106,7 +106,7 @@ public class AceStreamEngineBaseApplication {
 	public static final String DEFAULT_SCRIPT = "main.py";
 	public static final String VERSION_FILE = ".version";
     public static final String TAG = "AS/App";
-    public static final boolean ENABLE_MAINTAIN = false;
+    public static final boolean ENABLE_MAINTAIN = true;
 
 	public final static String ANALYTICS_EVENT_PLAY_REQUEST = "as_play_request";
 	public final static String ANALYTICS_EVENT_AD_IMPRESSION = "custom_ad_impression";
