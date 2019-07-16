@@ -41,6 +41,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -341,10 +343,18 @@ public class AceStreamDiscoveryServerClient
                 engineApi.getMediaFiles(playbackData.descriptor, new Callback<MediaFilesResponse>() {
                     @Override
                     public void onSuccess(MediaFilesResponse result) {
+                        MediaFilesResponse.MediaFile[] sortedFiles = result.files;
+                        Arrays.sort(sortedFiles, new Comparator<MediaFilesResponse.MediaFile>() {
+                            @Override
+                            public int compare(MediaFilesResponse.MediaFile item1, MediaFilesResponse.MediaFile item2) {
+                                return item1.filename.compareToIgnoreCase(item2.filename);
+                            }
+                        });
+
                         if(AceStreamEngineBaseApplication.useVlcBridge()) {
                             int playlistPosition = 0;
-                            for (int i = 0; i < result.files.length; i++) {
-                                if (result.files[i].index == playbackData.mediaFile.index) {
+                            for (int i = 0; i < sortedFiles.length; i++) {
+                                if (sortedFiles[i].index == playbackData.mediaFile.index) {
                                     playlistPosition = i;
                                     break;
                                 }
@@ -352,20 +362,20 @@ public class AceStreamDiscoveryServerClient
 
                             new VlcBridge.LoadP2PPlaylistIntentBuilder(playbackData.descriptor)
                                     .setMetadata(result)
-                                    .setMediaFiles(result.files)
+                                    .setMediaFiles(sortedFiles)
                                     .setPlaylistPosition(playlistPosition)
                                     .setRemoteClientId(getId())
                                     .setSeekOnStart(playbackData.seekOnStart)
                                     .send();
                         }
                         else {
-                            AceStreamPlayer.PlaylistItem[] playlist = new AceStreamPlayer.PlaylistItem[result.files.length];
+                            AceStreamPlayer.PlaylistItem[] playlist = new AceStreamPlayer.PlaylistItem[sortedFiles.length];
                             int playlistPosition = 0;
-                            for(int i = 0; i < result.files.length; i++) {
+                            for(int i = 0; i < sortedFiles.length; i++) {
                                 playlist[i] = new AceStreamPlayer.PlaylistItem(
-                                        playbackData.descriptor.getMrl(result.files[i].index).toString(),
-                                        result.files[i].filename);
-                                if (result.files[i].index == playbackData.mediaFile.index) {
+                                        playbackData.descriptor.getMrl(sortedFiles[i].index).toString(),
+                                        sortedFiles[i].filename);
+                                if (sortedFiles[i].index == playbackData.mediaFile.index) {
                                     playlistPosition = i;
                                 }
                             }
