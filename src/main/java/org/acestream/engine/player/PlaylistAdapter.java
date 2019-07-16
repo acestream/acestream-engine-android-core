@@ -66,6 +66,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         mCurrentIndex = index;
         notifyItemChanged(prev);
         notifyItemChanged(index);
+        mRecyclerView.scrollToPosition(index);
     }
 
     public void resetCurrentIndex() {
@@ -121,9 +122,9 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         }
 
         public void setCurrent(boolean isCurrent) {
-            mTitle.setTextColor(mContext.getResources().getColor(isCurrent
-                    ? R.color.controls_dark
-                    : R.color.bluegrey100));
+            mTitle.setBackgroundColor(mContext.getResources().getColor(isCurrent
+                    ? R.color.white_transparent
+                    : R.color.transparent));
         }
     }
 }
