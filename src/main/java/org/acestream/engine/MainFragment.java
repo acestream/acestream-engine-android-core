@@ -262,11 +262,14 @@ public class MainFragment extends Fragment implements OnClickListener
             if(visible) {
                 // There menu items are shown only on some conditions.
                 boolean showRemoteControl = false;
+                boolean showBonuses = false;
                 PlaybackManager pm = getPlaybackManager();
                 if (pm != null) {
                     showRemoteControl = pm.shouldShowRemoteControl();
-                    showBonusesMenu(!AceStreamEngineBaseApplication.showTvUi() && pm.isUserAuthenticated());
+                    showBonuses = !AceStreamEngineBaseApplication.showTvUi() && pm.isUserAuthenticated();
                 }
+
+                showBonusesMenu(showBonuses);
 
                 MenuItem menuItem = mMenu.findItem(R.id.action_remote_control);
                 if(menuItem != null) {
