@@ -100,6 +100,7 @@ public class MainFragment extends Fragment implements OnClickListener
     private boolean mIsStarted = false;
     private Menu mMenu;
     private Handler mHandler;
+    private boolean mShowBonusAdsActivity = false;
 
     private UserAdsStatus mUserAdsStatus = UserAdsStatus.SHOW_ADS;
     private BonusAdsStatus mBonusAdsStatus = BonusAdsStatus.NOT_AVAILABLE;
@@ -213,6 +214,9 @@ public class MainFragment extends Fragment implements OnClickListener
 		setHasOptionsMenu(true);
 
         mHandler = new Handler();
+
+        // don't show by default in "core"
+        mShowBonusAdsActivity = AceStreamEngineBaseApplication.useVlcBridge();
 
 		return view;
 	}
@@ -495,6 +499,8 @@ public class MainFragment extends Fragment implements OnClickListener
             pm.getAdConfigAsync(new AceStreamManagerImpl.AdConfigCallback() {
                 @Override
                 public void onSuccess(AdConfig config) {
+                    mShowBonusAdsActivity = config.show_bonus_ads_activity;
+
                     if(config.isProviderEnabled(AdManager.ADS_PROVIDER_ADMOB)) {
                         AdManager adManager = getAdManager();
                         if(adManager != null) {
@@ -1027,7 +1033,10 @@ public class MainFragment extends Fragment implements OnClickListener
     private void updateAds() {
         boolean showButton;
 
-        if(AceStreamEngineBaseApplication.showTvUi()) {
+        if(!mShowBonusAdsActivity) {
+            showButton = false;
+        }
+        else if(AceStreamEngineBaseApplication.showTvUi()) {
             showButton = false;
         }
         else if(mUserAdsStatus == UserAdsStatus.NOT_LOGGED_IN) {
@@ -1056,6 +1065,10 @@ public class MainFragment extends Fragment implements OnClickListener
     }
 
     private void showBonusesMenu(boolean visible) {
+        if(!mShowBonusAdsActivity) {
+            visible = false;
+        }
+
         if(mMenu != null) {
             MenuItem menuItem = mMenu.findItem(R.id.action_get_bonuses);
             if (menuItem != null) {

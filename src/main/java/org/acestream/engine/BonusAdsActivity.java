@@ -253,6 +253,12 @@ public class BonusAdsActivity
         mPlaybackManager.getAdConfigAsync(new AceStreamManagerImpl.AdConfigCallback() {
             @Override
             public void onSuccess(AdConfig config) {
+                if(!config.show_bonus_ads_activity) {
+                    Log.d(TAG, "bonus ads are disabled");
+                    finish();
+                    return;
+                }
+
                 if(config.isProviderEnabled(AdManager.ADS_PROVIDER_ADMOB)) {
                     AdManager adManager = getAdManager();
                     if(adManager != null) {
