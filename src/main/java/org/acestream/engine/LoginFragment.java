@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +27,7 @@ import org.acestream.sdk.controller.api.response.AuthData;
  */
 public class LoginFragment extends Fragment
 {
-    private static final String TAG = "AceStream/Login";
+    private static final String TAG = "AS/Login";
 
     // UI references.
     private EditText mEmailView;
@@ -48,8 +49,12 @@ public class LoginFragment extends Fragment
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 Log.d(TAG, "setOnEditorActionListener: id=" + id);
-                attemptLogin();
-                return true;
+                boolean handled = false;
+                if(id == EditorInfo.IME_ACTION_GO) {
+                    attemptLogin();
+                    handled = true;
+                }
+                return handled;
             }
         });
 
