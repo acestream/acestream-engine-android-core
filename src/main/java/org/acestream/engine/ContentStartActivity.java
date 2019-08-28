@@ -37,9 +37,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.appodeal.ads.Appodeal;
 import com.connectsdk.device.ConnectableDevice;
-import com.google.android.gms.ads.AdListener;
 
 import org.acestream.sdk.AceStream;
 import org.acestream.sdk.Constants;
@@ -370,10 +368,6 @@ public class ContentStartActivity
                         adManager.init(ContentStartActivity.this);
                         if(adConfig.isProviderEnabled(AdManager.ADS_PROVIDER_ADMOB)) {
                             initInterstitialAd(adManager);
-                        }
-
-                        if(adConfig.isProviderEnabled(AdManager.ADS_PROVIDER_APPODEAL)) {
-                            initAppodeal(adConfig);
                         }
                     }
                 }
@@ -1305,38 +1299,6 @@ public class ContentStartActivity
                     : AceStreamEngineBaseApplication.getStringAppMetadata("adMobInterstitialCloseId"),
                 null);
             adManager.loadInterstitial("close");
-        }
-    }
-
-    private void initAppodeal(@NonNull AdConfig adConfig) {
-        boolean loadInterstitial = true;
-        boolean loadRv = isUserLoggedIn();
-
-        if(hasNoAds()) {
-            // Users with NoAds can control ad placement
-            loadRv = AceStreamEngineBaseApplication.showAdsOnPreroll();
-            loadInterstitial = AceStreamEngineBaseApplication.showAdsOnPreroll()
-                    || AceStreamEngineBaseApplication.showAdsOnPause()
-                    || AceStreamEngineBaseApplication.showAdsOnClose();
-        }
-
-        int adTypes = 0;
-        if(loadInterstitial) {
-            adTypes |= Appodeal.INTERSTITIAL;
-        }
-        if(loadRv) {
-            adTypes |= Appodeal.REWARDED_VIDEO;
-        }
-
-        App.v(TAG, "initAppodeal: interstitial=" + loadInterstitial + " rv=" + loadRv);
-
-        if(adTypes > 0) {
-            AceStreamEngineBaseApplication.initAppodeal(
-                    -1,
-                    this,
-                    adTypes,
-                    true,
-                    adConfig);
         }
     }
 

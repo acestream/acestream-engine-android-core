@@ -143,10 +143,6 @@ public class LogcatOutputStreamWriter {
 						// log all tags with "AS/" prefix
 						skipLine = false;
 					}
-					else if(line.contains("/Appodeal")) {
-						// log all tags with "Appodeal/" prefix
-						skipLine = false;
-					}
 					else if(line.contains("/Ads")) {
 						skipLine = false;
 					}

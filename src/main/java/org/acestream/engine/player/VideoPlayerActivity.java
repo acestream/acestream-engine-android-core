@@ -79,9 +79,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.appodeal.ads.Appodeal;
-import com.appodeal.ads.InterstitialCallbacks;
-import com.appodeal.ads.RewardedVideoCallbacks;
 import com.google.ads.interactivemedia.v3.api.Ad;
 import com.google.ads.interactivemedia.v3.api.AdDisplayContainer;
 import com.google.ads.interactivemedia.v3.api.AdErrorEvent;
@@ -208,7 +205,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     private final List<Runnable> mPlaybackManagerOnReadyQueue = new ArrayList<>();
     private boolean mRenderAds = false;
     private boolean mShowUnpauseAdsOnResume = false;
-    private boolean mAppodealInitialized = false;
     private AdsWaterfall mAdsWaterfall;
     private AdManager mAdManager;
     protected ExtendedEngineApi mEngineService = null;
@@ -338,54 +334,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                         }
                     });
                 }
-            }
-        }
-        else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL)) {
-            if(mAdManager != null && mAdManager.isProviderEnabled(AdManager.ADS_PROVIDER_APPODEAL)) {
-                if (Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
-                                App.v(TAG, "loadInventory: interstitial was loaded");
-                                mAdsWaterfall.onLoaded(AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL);
-                            }
-                        }
-                    });
-                }
-            }
-            else {
-                Logger.v(TAG, "ads:loadInventory: appodeal disabled: inventory=" + inventory);
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAdsWaterfall.onFailed(inventory);
-                    }
-                });
-            }
-        }
-        else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.APPODEAL_REWARDED_VIDEO)) {
-            if(mAdManager != null && mAdManager.isProviderEnabled(AdManager.ADS_PROVIDER_APPODEAL)) {
-                if (Appodeal.isLoaded(Appodeal.REWARDED_VIDEO)) {
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (Appodeal.isLoaded(Appodeal.REWARDED_VIDEO)) {
-                                App.v(TAG, "loadInventory: rv was loaded");
-                                mAdsWaterfall.onLoaded(inventory);
-                            }
-                        }
-                    });
-                }
-            }
-            else {
-                Logger.v(TAG, "ads:loadInventory: appodeal disabled: inventory=" + inventory);
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAdsWaterfall.onFailed(inventory);
-                    }
-                });
             }
         }
         else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.ADMOB_REWARDED_VIDEO)) {
@@ -528,31 +476,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
                 }
                 return true;
             }
-        }
-        else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.APPODEAL_REWARDED_VIDEO)) {
-            mAdsWaterfall.resetInventoryStatus(AdsWaterfall.Inventory.APPODEAL_REWARDED_VIDEO);
-            if(Appodeal.show(this, Appodeal.REWARDED_VIDEO, placement)) {
-                goingToShowAds();
-            }
-            return true;
-        }
-        else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL)) {
-            mAdsWaterfall.resetInventoryStatus(AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL);
-            if(Appodeal.show(this, Appodeal.INTERSTITIAL, placement)) {
-                goingToShowAds();
-            }
-            else {
-                Logger.v(TAG, "ads:showInventory: cannot show, try next");
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(mIsStarted) {
-                            requestNextAds(true, false, true);
-                        }
-                    }
-                });
-            }
-            return true;
         }
         else if(TextUtils.equals(inventory, AdsWaterfall.Inventory.CUSTOM)) {
             if(AceStreamEngineBaseApplication.showRewardedAds()) {
@@ -2146,10 +2069,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         mEngineService = null;
 
         if(isFinishing && mRenderAds) {
-            mAppodealInitialized = false;
-            App.v(TAG, "internalStop: deinit appodeal");
-            Appodeal.hide(this, Appodeal.INTERSTITIAL | Appodeal.REWARDED_VIDEO);
-
             if(mAdManager != null) {
                 mAdManager.resetInterstitial("preroll");
                 mAdManager.resetInterstitial("pause");
@@ -5527,10 +5446,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
             initInterstitialAd();
             initRewardedVideo();
         }
-
-        if(adConfig.isProviderEnabled(AdManager.ADS_PROVIDER_APPODEAL)) {
-            initAppodeal();
-        }
     }
 
     private void initInterstitialAd() {
@@ -6633,222 +6548,6 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         return null;
-    }
-
-    private void initAppodeal() {
-        if(mAppodealInitialized) {
-            return;
-        }
-
-        mAppodealInitialized = true;
-        boolean loadInterstitial = true;
-        boolean loadRv = isUserLoggedIn();
-
-        if(hasNoAds()) {
-            // Users with NoAds can control ad placement
-            loadRv = AceStreamEngineBaseApplication.showAdsOnPreroll();
-            loadInterstitial = AceStreamEngineBaseApplication.showAdsOnPreroll()
-                    || AceStreamEngineBaseApplication.showAdsOnPause()
-                    || AceStreamEngineBaseApplication.showAdsOnClose();
-        }
-
-        if (loadInterstitial
-                && !mAdsWaterfall.has(AdsWaterfall.Placement.PREROLL, AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL)
-                && !mAdsWaterfall.has(AdsWaterfall.Placement.PAUSE, AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL)
-                && !mAdsWaterfall.has(AdsWaterfall.Placement.CLOSE, AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL)
-                ) {
-            loadInterstitial = false;
-        }
-
-        if(loadRv && !mAdsWaterfall.has(
-                AdsWaterfall.Placement.PREROLL,
-                new String[]{AdsWaterfall.Inventory.ADMOB_REWARDED_VIDEO, AdsWaterfall.Inventory.CUSTOM})) {
-            loadRv = false;
-        }
-
-        appodealInitInterstitial();
-        appodealInitRewardedVideo();
-
-        int adTypes = 0;
-        if(loadInterstitial) {
-            adTypes |= Appodeal.INTERSTITIAL;
-            mAdsWaterfall.onLoading(AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL);
-            if(Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
-                            App.v(TAG, "initAppodeal: interstitial was loaded");
-                            mAdsWaterfall.onLoaded(AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL);
-                        }
-                    }
-                });
-            }
-        }
-        if(loadRv) {
-            adTypes |= Appodeal.REWARDED_VIDEO;
-            mAdsWaterfall.onLoading(AdsWaterfall.Inventory.APPODEAL_REWARDED_VIDEO);
-            if(Appodeal.isLoaded(Appodeal.REWARDED_VIDEO)) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (Appodeal.isLoaded(Appodeal.REWARDED_VIDEO)) {
-                            App.v(TAG, "initAppodeal: rv was loaded");
-                            mAdsWaterfall.onLoaded(AdsWaterfall.Inventory.APPODEAL_REWARDED_VIDEO);
-                        }
-                    }
-                });
-            }
-        }
-
-        App.v(TAG, "initAppodeal: interstitial=" + loadInterstitial + " rv=" + loadRv);
-
-        if(adTypes > 0) {
-            AceStreamEngineBaseApplication.initAppodeal(
-                    -1,
-                    this,
-                    adTypes,
-                    true,
-                    mPlaybackManager.getAdConfig());
-        }
-    }
-
-    private void appodealInitInterstitial() {
-        Appodeal.setInterstitialCallbacks(new InterstitialCallbacks() {
-            @Override
-            public void onInterstitialLoaded(boolean isPrecache) {
-                App.v(TAG, "ads:appodeal:onInterstitialLoaded");
-                if(mAdsWaterfall != null) {
-                    mAdsWaterfall.onLoaded(AdsWaterfall.Inventory.APPODEAL_INTERSTITIAL);
-                }
-            }
-            @Override
-            public void onInterstitialFailedToLoad() {
-                App.v(TAG, "ads:appodeal:onInterstitialFailedToLoad");
-            }
-            @Override
-            public void onInterstitialShown() {
-                String placement = mAdsWaterfall.getPlacement();
-                App.v(TAG, "ads:appodeal:onInterstitialShown: placement=" + placement);
-                onContentPauseRequested(AdSource.INTERSTITIAL_AD);
-                addCoins("interstitial:player", 0, true);
-                AceStreamEngineBaseApplication.getInstance().logAdImpression(
-                        AdManager.ADS_PROVIDER_APPODEAL,
-                        placement,
-                        AdsWaterfall.AdType.INTERSTITIAL);
-
-                if(TextUtils.equals(placement, "preroll")) {
-                    AceStreamEngineBaseApplication.getInstance().logAdImpressionPreroll(
-                            AdManager.ADS_PROVIDER_APPODEAL,
-                            AdsWaterfall.AdType.INTERSTITIAL);
-                }
-                else if(TextUtils.equals(placement, "pause")) {
-                    AceStreamEngineBaseApplication.getInstance().logAdImpressionPause(
-                            AdManager.ADS_PROVIDER_APPODEAL,
-                            AdsWaterfall.AdType.INTERSTITIAL);
-                }
-                else if(TextUtils.equals(placement, "close")) {
-                    AceStreamEngineBaseApplication.getInstance().logAdImpressionClose(
-                            AdManager.ADS_PROVIDER_APPODEAL,
-                            AdsWaterfall.AdType.INTERSTITIAL);
-                }
-            }
-            @Override
-            public void onInterstitialClicked() {
-                App.v(TAG, "ads:appodeal:onInterstitialClicked");
-            }
-            @Override
-            public void onInterstitialClosed() {
-                String placement = mAdsWaterfall.getPlacement();
-                App.v(TAG, "ads:appodeal:onInterstitialClosed: placement=" + placement);
-                if(TextUtils.equals(placement, AdsWaterfall.Placement.CLOSE)) {
-                    onExitAdClosed();
-                }
-                else if (!isFinishing()) {
-                    boolean resume = true;
-                    if(TextUtils.equals(placement, AdsWaterfall.Placement.PREROLL)) {
-                        // Try to show VAST on preroll
-                        if(requestNextAds(true, true, true)) {
-                            resume = false;
-                        }
-                    }
-                    if(resume) {
-                        onContentResumeRequested(AdSource.INTERSTITIAL_AD);
-                    }
-                }
-
-            }
-            @Override
-            public void onInterstitialExpired() {
-                App.v(TAG, "ads:appodeal:onInterstitialExpired");
-            }
-        });
-    }
-
-    private void appodealInitRewardedVideo() {
-        Appodeal.setRewardedVideoCallbacks(new RewardedVideoCallbacks() {
-            @Override
-            public void onRewardedVideoLoaded(boolean isPrecache) {
-                Log.d(TAG, "appodeal:onRewardedVideoLoaded: isPrecache=" + isPrecache);
-                if(mAdsWaterfall != null) {
-                    mAdsWaterfall.onLoaded(AdsWaterfall.Inventory.APPODEAL_REWARDED_VIDEO);
-                }
-            }
-
-            @Override
-            public void onRewardedVideoFailedToLoad() {
-                Log.d(TAG, "appodeal:onRewardedVideoFailedToLoad");
-            }
-
-            @Override
-            public void onRewardedVideoShown() {
-                Log.d(TAG, "appodeal:onRewardedVideoShown");
-                onContentPauseRequested(AdSource.REWARDED_VIDEO);
-            }
-
-            @Override
-            public void onRewardedVideoFinished(double amount, String name) {
-                Log.d(TAG, "appodeal:onRewardedVideoFinished: amount=" + amount + " name=" + name);
-
-                String source = "rv:player:preroll";
-                addCoins(source, 0, false);
-
-                Bundle params = new Bundle();
-                params.putString("source", source);
-                AceStreamEngineBaseApplication.getInstance().logAdImpression(
-                        AdManager.ADS_PROVIDER_APPODEAL,
-                        AdsWaterfall.Placement.PREROLL,
-                        AdsWaterfall.AdType.REWARDED_VIDEO,
-                        params);
-
-                AceStreamEngineBaseApplication.getInstance().logAdImpressionPreroll(
-                        AdManager.ADS_PROVIDER_APPODEAL,
-                        AdsWaterfall.AdType.REWARDED_VIDEO);
-            }
-
-            @Override
-            public void onRewardedVideoClosed(boolean finished) {
-                Log.d(TAG, "appodeal:onRewardedVideoClosed");
-                if (!isFinishing() && mAdsWaterfall != null) {
-                    String placement = mAdsWaterfall.getPlacement();
-                    boolean resume = true;
-                    if(TextUtils.equals(placement, AdsWaterfall.Placement.PREROLL)) {
-                        // Try to show VAST on preroll
-                        if(requestNextAds(true, true, true)) {
-                            resume = false;
-                        }
-                    }
-                    if(resume) {
-                        onContentResumeRequested(AdSource.REWARDED_VIDEO);
-                    }
-                }
-            }
-
-            @Override
-            public void onRewardedVideoExpired() {
-                Log.d(TAG, "appodeal:onRewardedVideoExpired");
-            }
-        });
     }
 
     private boolean canShowAds(String placement, String inventory) {

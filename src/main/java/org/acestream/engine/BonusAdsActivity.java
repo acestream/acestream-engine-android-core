@@ -14,8 +14,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.appodeal.ads.Appodeal;
-import com.appodeal.ads.RewardedVideoCallbacks;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
@@ -80,8 +78,6 @@ public class BonusAdsActivity
     private Handler mHandler = new Handler();
     private BonusAdsStatus mBonusAdsStatus = BonusAdsStatus.REQUESTING;
     private BonusAdsStatus mSurveyStatus = BonusAdsStatus.REQUESTING;
-    private double mLastLoadedAppodealRewardedVideoCpm = 0;
-    private double mLastStartedAppodealRewardedVideoCpm = 0;
     private boolean mSurveyCached = false;
     private boolean mPollfishEnabled = true;
 
@@ -270,16 +266,6 @@ public class BonusAdsActivity
                     }
                 }
 
-                if(config.isProviderEnabled(AdManager.ADS_PROVIDER_APPODEAL)) {
-                    initAppodealRewardedVideo();
-                    AceStreamEngineBaseApplication.initAppodeal(
-                            AceStreamEngineBaseApplication.getAdSegment(),
-                            BonusAdsActivity.this,
-                            Appodeal.REWARDED_VIDEO,
-                            true,
-                            config);
-                }
-
                 if(!config.isProviderEnabled(AdManager.ADS_PROVIDER_POLLFISH)) {
                     disablePollfish();
                 }
@@ -292,17 +278,6 @@ public class BonusAdsActivity
         if(adManager != null && adManager.isRewardedVideoLoaded()) {
             Logger.v(TAG, "updateAdsStatus:admob: ads are loaded");
             onBonusAdsAvailable(BonusAdsStatus.AVAILABLE);
-            return;
-        }
-
-        if(Appodeal.isLoaded(Appodeal.REWARDED_VIDEO)) {
-            if (Appodeal.canShow(Appodeal.REWARDED_VIDEO, AdsWaterfall.Placement.MAIN_SCREEN)) {
-                Logger.v(TAG, "updateAdsStatus:appodeal: ads are loaded and can show");
-                onBonusAdsAvailable(BonusAdsStatus.AVAILABLE);
-            } else {
-                Logger.v(TAG, "updateAdsStatus:appodeal: ads are loaded, but cannot show");
-                onBonusAdsAvailable(BonusAdsStatus.NOT_AVAILABLE);
-            }
             return;
         }
 
@@ -347,69 +322,6 @@ public class BonusAdsActivity
         else {
             setSurveyStatus(BonusAdsStatus.NOT_AVAILABLE);
         }
-    }
-
-    private void initAppodealRewardedVideo() {
-        Appodeal.setRewardedVideoCallbacks(new RewardedVideoCallbacks() {
-            @Override
-            public void onRewardedVideoLoaded(boolean isPrecache) {
-                mLastLoadedAppodealRewardedVideoCpm = Appodeal.getPredictedEcpm(Appodeal.REWARDED_VIDEO);
-                Log.d(TAG, "appodeal:onRewardedVideoLoaded: isPrecache=" + isPrecache + " cpm=" + mLastLoadedAppodealRewardedVideoCpm);
-                updateAdsStatus(false);
-            }
-
-            @Override
-            public void onRewardedVideoFailedToLoad() {
-                Log.d(TAG, "appodeal:onRewardedVideoFailedToLoad");
-            }
-
-            @Override
-            public void onRewardedVideoShown() {
-                mLastStartedAppodealRewardedVideoCpm = mLastLoadedAppodealRewardedVideoCpm;
-                Log.d(TAG, "appodeal:onRewardedVideoShown: cpm=" + mLastLoadedAppodealRewardedVideoCpm);
-                // we show "not available" when loading in background
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateAdsStatus(true);
-                    }
-                }, 1000);
-            }
-
-            @Override
-            public void onRewardedVideoFinished(double amount, String name) {
-                int realAmount = (int)Math.round(mLastStartedAppodealRewardedVideoCpm * 100);
-                Log.d(TAG, "appodeal:onRewardedVideoFinished: cpm=" + mLastStartedAppodealRewardedVideoCpm + " amount=" + amount + " real=" + realAmount + " name=" + name);
-
-                String source = AceStreamEngineBaseApplication.getBonusSource(realAmount);
-                addCoins(
-                        source,
-                        realAmount,
-                        false);
-
-                Bundle params = new Bundle();
-                params.putString("source", source);
-                AceStreamEngineBaseApplication.getInstance().logAdImpression(
-                        AdManager.ADS_PROVIDER_APPODEAL,
-                        AdsWaterfall.Placement.MAIN_SCREEN,
-                        AdsWaterfall.AdType.REWARDED_VIDEO,
-                        params);
-
-                AceStreamEngineBaseApplication.getInstance().logAdImpressionBonusesScreen(
-                        AdManager.ADS_PROVIDER_APPODEAL,
-                        AdsWaterfall.AdType.REWARDED_VIDEO);
-            }
-
-            @Override
-            public void onRewardedVideoClosed(boolean finished) {
-                Log.d(TAG, "appodeal:onRewardedVideoClosed");
-            }
-
-            @Override
-            public void onRewardedVideoExpired() {
-                Log.d(TAG, "appodeal:onRewardedVideoExpired");
-            }
-        });
     }
 
     private void onBonusAdsAvailable(BonusAdsStatus status) {
@@ -609,11 +521,6 @@ public class BonusAdsActivity
         if(adManager != null && adManager.isRewardedVideoLoaded()) {
             Logger.v(TAG, "showBonusAds: admob");
             adManager.showRewardedVideo();
-        }
-        else if (Appodeal.isLoaded(Appodeal.REWARDED_VIDEO) && Appodeal.canShow(Appodeal.REWARDED_VIDEO, AdsWaterfall.Placement.MAIN_SCREEN)) {
-            Logger.v(TAG, "showBonusAds: appodeal");
-            onBonusAdsAvailable(BonusAdsStatus.LOADING);
-            Appodeal.show(this, Appodeal.REWARDED_VIDEO, AdsWaterfall.Placement.MAIN_SCREEN);
         } else {
             onBonusAdsAvailable(BonusAdsStatus.NOT_AVAILABLE);
         }

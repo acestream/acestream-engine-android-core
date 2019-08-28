@@ -26,8 +26,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.appodeal.ads.Appodeal;
-import com.appodeal.ads.RewardedVideoCallbacks;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
@@ -104,9 +102,6 @@ public class MainFragment extends Fragment implements OnClickListener
 
     private UserAdsStatus mUserAdsStatus = UserAdsStatus.SHOW_ADS;
     private BonusAdsStatus mBonusAdsStatus = BonusAdsStatus.NOT_AVAILABLE;
-
-    private double mLastLoadedAppodealRewardedVideoCpm = 0;
-    private double mLastStartedAppodealRewardedVideoCpm = 0;
 
     private Runnable mRotateUpgradeButton = new Runnable() {
         @Override
@@ -514,16 +509,6 @@ public class MainFragment extends Fragment implements OnClickListener
                             Log.e(TAG, "initAds: missing ad manager");
                         }
                     }
-
-                    if(config.isProviderEnabled(AdManager.ADS_PROVIDER_APPODEAL)) {
-                        appodealInitRewardedVideo();
-                        AceStreamEngineBaseApplication.initAppodeal(
-                                AceStreamEngineBaseApplication.getAdSegment(),
-                                activity,
-                                Appodeal.REWARDED_VIDEO,
-                                true,
-                                config);
-                    }
                 }
             });
         }
@@ -891,68 +876,6 @@ public class MainFragment extends Fragment implements OnClickListener
 
     }
 
-    private void appodealInitRewardedVideo() {
-        Appodeal.setRewardedVideoCallbacks(new RewardedVideoCallbacks() {
-            @Override
-            public void onRewardedVideoLoaded(boolean isPrecache) {
-                mLastLoadedAppodealRewardedVideoCpm = Appodeal.getPredictedEcpm(Appodeal.REWARDED_VIDEO);
-                Log.d(TAG, "appodeal:onRewardedVideoLoaded: isPrecache=" + isPrecache + " cpm=" + mLastLoadedAppodealRewardedVideoCpm);
-                updateBonusAdsStatus();
-            }
-
-            @Override
-            public void onRewardedVideoFailedToLoad() {
-                Log.d(TAG, "appodeal:onRewardedVideoFailedToLoad");
-                updateBonusAdsStatus();
-            }
-
-            @Override
-            public void onRewardedVideoShown() {
-                mLastStartedAppodealRewardedVideoCpm = mLastLoadedAppodealRewardedVideoCpm;
-                Log.d(TAG, "appodeal:onRewardedVideoShown: cpm=" + mLastStartedAppodealRewardedVideoCpm);
-            }
-
-            @Override
-            public void onRewardedVideoFinished(double amount, String name) {
-                int realAmount = (int)Math.round(mLastStartedAppodealRewardedVideoCpm * 100);
-                Log.d(TAG, "appodeal:onRewardedVideoFinished: cpm=" + mLastStartedAppodealRewardedVideoCpm + " amount=" + amount + " real=" + realAmount + " name=" + name);
-
-                String source = AceStreamEngineBaseApplication.getBonusSource(realAmount);
-                addCoins(
-                        source,
-                        realAmount,
-                        false);
-
-                Bundle params = new Bundle();
-                params.putString("source", source);
-                AceStreamEngineBaseApplication.getInstance().logAdImpression(
-                        AdManager.ADS_PROVIDER_APPODEAL,
-                        AdsWaterfall.Placement.MAIN_SCREEN,
-                        AdsWaterfall.AdType.REWARDED_VIDEO,
-                        params);
-
-                AceStreamEngineBaseApplication.getInstance().logAdImpressionBonusesScreen(
-                        AdManager.ADS_PROVIDER_APPODEAL,
-                        AdsWaterfall.AdType.REWARDED_VIDEO);
-            }
-
-            @Override
-            public void onRewardedVideoClosed(boolean finished) {
-                Log.d(TAG, "appodeal:onRewardedVideoClosed");
-                Activity activity = getActivity();
-                if(activity != null) {
-                    AceStream.openBonusAdsActivity(activity);
-                }
-            }
-
-            @Override
-            public void onRewardedVideoExpired() {
-                Log.d(TAG, "appodeal:onRewardedVideoExpired");
-                updateBonusAdsStatus();
-            }
-        });
-    }
-
     private void showBonusAds() {
         Log.v(TAG, "showBonusAds: userStatus=" + mUserAdsStatus);
 
@@ -967,16 +890,6 @@ public class MainFragment extends Fragment implements OnClickListener
             if(adManager != null && adManager.isRewardedVideoLoaded()) {
                 Logger.v(TAG, "showBonusAds: admob");
                 adManager.showRewardedVideo();
-            }
-            else if (Appodeal.isLoaded(Appodeal.REWARDED_VIDEO) && Appodeal.canShow(Appodeal.REWARDED_VIDEO, AdsWaterfall.Placement.MAIN_SCREEN)) {
-                Logger.v(TAG, "showBonusAds: appodeal");
-                Activity activity = getActivity();
-                if(activity != null) {
-                    Appodeal.show(activity, Appodeal.REWARDED_VIDEO, AdsWaterfall.Placement.MAIN_SCREEN);
-                }
-                else {
-                    Logger.v(TAG, "showBonusAds: appodeal: missing activity");
-                }
             }
             else {
                 Logger.v(TAG, "showBonusAds: ad is not loaded");
@@ -1016,15 +929,8 @@ public class MainFragment extends Fragment implements OnClickListener
             if (adManager != null && adManager.isRewardedVideoLoaded()) {
                 Logger.v(TAG, "updateBonusAdsStatus:admob: ads are loaded");
                 mBonusAdsStatus = BonusAdsStatus.AVAILABLE;
-            } else if (Appodeal.isLoaded(Appodeal.REWARDED_VIDEO)) {
-                if (Appodeal.canShow(Appodeal.REWARDED_VIDEO, AdsWaterfall.Placement.MAIN_SCREEN)) {
-                    Logger.v(TAG, "updateBonusAdsStatus:appodeal: ads are loaded and can show");
-                    mBonusAdsStatus = BonusAdsStatus.AVAILABLE;
-                } else {
-                    Logger.v(TAG, "updateBonusAdsStatus:appodeal: ads are loaded, but cannot show");
-                    mBonusAdsStatus = BonusAdsStatus.NOT_AVAILABLE;
-                }
-            } else {
+            }
+            else {
                 Logger.v(TAG, "updateBonusAdsStatus: ads are not loaded");
                 mBonusAdsStatus = BonusAdsStatus.NOT_AVAILABLE;
             }

@@ -69,7 +69,6 @@ public class AdsWaterfall {
         public final static String PAUSE = "pause";
         public final static String UNPAUSE = "unpause";
         public final static String CLOSE = "close";
-        // Used for Appodeal placement identification only
         public final static String MAIN_SCREEN = "main_screen";
     }
 
@@ -87,9 +86,6 @@ public class AdsWaterfall {
         public final static String ADMOB_REWARDED_VIDEO = "admob_rv";
         public final static String ADMOB_BANNER = "admob_banner";
         public final static String CUSTOM = "custom";
-        public final static String APPODEAL_BANNER = "appodeal_banner";
-        public final static String APPODEAL_REWARDED_VIDEO = "appodeal_rv";
-        public final static String APPODEAL_INTERSTITIAL = "appodeal_interstitial";
     }
 
     private final Map<String, InventoryState> mInventoryStatus = new HashMap<>(20);
@@ -460,9 +456,7 @@ public class AdsWaterfall {
         int timeout = 10000;
 
         if(TextUtils.equals(mPlacement, Placement.PREROLL) && getVastAdsCount() > 0) {
-            if(TextUtils.equals(inventory, Inventory.APPODEAL_INTERSTITIAL)
-                    || TextUtils.equals(inventory, Inventory.ADMOB_INTERSTITIAL_PREROLL)
-                    || TextUtils.equals(inventory, Inventory.APPODEAL_REWARDED_VIDEO)
+            if(TextUtils.equals(inventory, Inventory.ADMOB_INTERSTITIAL_PREROLL)
                     ||TextUtils.equals(inventory, Inventory.ADMOB_REWARDED_VIDEO)) {
                 inventory = "preroll_interstitial_with_vast";
             }

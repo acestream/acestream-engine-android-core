@@ -1,6 +1,5 @@
 package org.acestream.engine;
 
-import com.appodeal.ads.Appodeal;
 import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.gson.Gson;
@@ -1018,38 +1017,6 @@ public class AceStreamEngineBaseApplication {
 		return builder;
 	}
 
-	public static void initAppodeal(int segment, Activity activity, int adTypes, boolean autoCache, AdConfig config) {
-		if(BuildConfig.DEBUG) {
-			Appodeal.setTesting(BuildConfig.appodealUseTestAds);
-		}
-
-		if(Logger.verbose()) {
-			Appodeal.setLogLevel(com.appodeal.ads.utils.Log.LogLevel.debug);
-		}
-
-		String appKey = getStringAppMetadata("appodealAppKey");
-		boolean gdprConsent = getGdprConsent();
-		App.v(TAG, "initAppodeal: gdprConsent=" + gdprConsent + " segment=" + segment + " key=" + appKey);
-
-		if(config != null && config.appodeal_disable_networks != null) {
-			for(String network: config.appodeal_disable_networks) {
-				Logger.v(TAG, "initAppodeal: disable network: name=" + network);
-				Appodeal.disableNetwork(activity, network);
-			}
-		}
-
-		Appodeal.setAutoCache(adTypes, autoCache);
-		Appodeal.disableLocationPermissionCheck();
-		if(BuildConfig.DEBUG && BuildConfig.appodealUseTestAds) {
-			// Use segment without price floor (because test ads have eCPM=0)
-			Appodeal.setSegmentFilter("user_segment", 1001);
-		}
-		else {
-			Appodeal.setSegmentFilter("user_segment", segment);
-		}
-		Appodeal.initialize(activity, appKey, adTypes, gdprConsent);
-	}
-
 	public static AceStreamPreferences processSettings(ExtendedEnginePreferences preferences) {
 		SharedPreferences sp = getPreferences();
 		AceStreamPreferences prefs = new AceStreamPreferences();
@@ -1340,7 +1307,6 @@ public class AceStreamEngineBaseApplication {
 				.edit()
 				.putInt(PREF_KEY_AD_SEGMENT, value)
 				.apply();
-		Appodeal.setSegmentFilter("user_segment", value);
 	}
 
 	public static void setShowRewardedAds(boolean value) {

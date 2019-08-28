@@ -107,7 +107,7 @@
 
 ##---------------Begin: proguard configuration for JJWT & Jackson  ----------
 -keepnames class com.fasterxml.jackson.databind.** { *; }
--dontwarn com.fasterxml.jackson.databind.*
+-dontwarn com.fasterxml.jackson.databind.**
 -keepattributes InnerClasses
 
 -keep class org.bouncycastle.** { *; }
@@ -137,15 +137,8 @@
 -keep class com.connectsdk.** { * ; }
 -keep interface com.connectsdk.** { * ; }
 
-## BEGIN Appodeal
 # AdMediator
 -keep class com.admediator.** { *; }
-
-# Appodeal
--keep class com.appodeal.** { *; }
--keep class com.appodealx.** { *; }
--keep class org.nexage.** { *; }
--keepattributes EnclosingMethod, InnerClasses, Signature, JavascriptInterface
 
 # Amazon
 -keep class com.amazon.** { *; }
@@ -174,49 +167,6 @@
     public static final ** CREATOR;
 }
 
-# Applovin
--keep class com.applovin.** { *; }
--dontwarn com.applovin.**
-
-# Facebook
--keep class com.facebook.ads.** { *; }
--keeppackagenames com.facebook.*
--dontwarn com.facebook.ads.**
-
-# Chartboost
--keep class com.chartboost.** { *; }
--dontwarn com.chartboost.**
-
-# Unity Ads
--keepattributes SourceFile,LineNumberTable
--keep class com.unity3d.** { *; }
--dontwarn com.unity3d.**
-
-# Yandex
--keep class com.yandex.metrica.** { *; }
--dontwarn com.yandex.metrica.**
--keep class com.yandex.mobile.ads.** { *; }
--dontwarn com.yandex.mobile.ads.**
--keepattributes *Annotation*
--keep class com.android.installreferrer.api.* { *; }
--dontwarn com.android.installreferrer.api.*
-
-# StartApp
--keep class com.startapp.** { *;}
--keep class com.truenet.** { *;}
--dontwarn com.startapp.**
--dontwarn android.webkit.JavascriptInterface
--keepattributes Exceptions, InnerClasses, Signature, Deprecated, SourceFile, LineNumberTable, *Annotation*, EnclosingMethod
--dontwarn org.jetbrains.annotations.**
-
-# Flurry
--keep class com.flurry.** { *; }
--dontwarn com.flurry.**
--keepattributes *Annotation*,EnclosingMethod,Signature
--keepclasseswithmembers class * {
-  public <init>(android.content.Context, android.util.AttributeSet, int);
-}
-
 # Adcolony
 -keep class com.jirbo.adcolony.** { *;}
 -keep class com.adcolony.** { *;}
@@ -227,49 +177,6 @@
 -dontwarn com.adcolony.**
 -keepclassmembers class com.adcolony.sdk.ADCNative** { *; }
 
-# Vungle
--keep class com.vungle.warren.** { *; }
--dontwarn com.vungle.warren.error.VungleError$ErrorCode
-
-# Vungle/Moat SDK
--keep class com.moat.** { *; }
--dontwarn com.moat.**
-
-# Vungle/Okio
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-
-# Vungle/Retrofit
--dontwarn okio.**
--dontwarn retrofit2.Platform$Java8
-
-# Vungle/Gson
--keepattributes Signature
--keepattributes *Annotation*
--dontwarn sun.misc.**
--keep class com.google.gson.examples.android.model.** { *; }
--keep class * implements com.google.gson.TypeAdapterFactory
--keep class * implements com.google.gson.JsonSerializer
--keep class * implements com.google.gson.JsonDeserializer
-
-# Vungle/Google Android Advertising ID
--keep class com.google.android.gms.internal.** { *; }
--dontwarn com.google.android.gms.ads.identifier.**
-
-# MyTarget
--keep class com.my.target.** { *; }
--dontwarn com.my.target.**
-
-# Mobvista
--keepattributes Signature
--keepattributes *Annotation*
--keep class com.mintegral.** {*; }
--keep interface com.mintegral.** {*; }
--keep class android.support.v4.** { *; }
--dontwarn com.mintegral.**
--keep class **.R$* { public static final int mintegral*; }
--keep class com.alphab.** {*; }
--keep interface com.alphab.** {*; }
-
 # Admob
 -keep class com.google.android.gms.ads.** { *; }
 
@@ -277,37 +184,11 @@
 -keep class com.tapjoy.** { *; }
 -dontwarn com.tapjoy.**
 
-# IronSource
--keepclassmembers class com.ironsource.sdk.controller.IronSourceWebView$JSInterface { public *; }
--keepclassmembers class * implements android.os.Parcelable { public static final android.os.Parcelable$Creator *; }
--keep public class com.google.android.gms.ads.** { public *; }
--dontwarn com.moat.**
--keep class com.moat.** { public protected private *; }
--keep class com.ironsource.adapters.** { *; }
--keepnames class com.ironsource.mediationsdk.IronSource { *; }
--dontwarn com.ironsource.**
-
 # AdColonyV3
 -keepclassmembers class * { @android.webkit.JavascriptInterface <methods>; }
 -keep class com.adcolony.** { *; }
 -dontwarn com.adcolony.**
 -dontwarn android.app.Activity
-
-# Inmobi
--keep class com.inmobi.** { *; }
--dontwarn com.inmobi.**
--keep public class com.google.android.gms.**
--dontwarn com.squareup.picasso.**
--keep class com.google.android.gms.ads.identifier.AdvertisingIdClient{
-     public *;
-}
--keep class com.google.android.gms.ads.identifier.AdvertisingIdClient$Info{ *; }
--keep class com.squareup.picasso.** {*;}
--dontwarn com.squareup.picasso.**
--dontwarn com.squareup.okhttp.**
--keep class com.moat.** {*;}
--dontwarn com.moat.**
--keep class com.integralads.avid.library.* {*;}
 
 # Google
 -keep class com.google.android.gms.common.GooglePlayServicesUtil {*;}
@@ -389,7 +270,6 @@
 
 #MultiDex
 -keepnames class android.support.multidex.MultiDex
-## END Appodeal
 
 # pollfish
 -dontwarn com.pollfish.**
