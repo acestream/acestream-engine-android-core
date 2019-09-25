@@ -323,6 +323,18 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     public boolean loadInventory(final String inventory) {
         App.v(TAG, "ads:loadInventory: inventory=" + inventory);
 
+        // fail all non-vast ads when they are disabled
+        if(!TextUtils.equals(inventory, AdsWaterfall.Inventory.VAST) && !AceStreamEngineBaseApplication.shouldShowAdMobAds()) {
+            App.v(TAG, "ads:loadInventory: non-vast is disabled: inventory=" + inventory);
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mAdsWaterfall.onFailed(inventory);
+                }
+            });
+            return false;
+        }
+
         if(TextUtils.equals(inventory, AdsWaterfall.Inventory.VAST)) {
             if(TextUtils.equals(mAdsWaterfall.getPlacement(), AdsWaterfall.Placement.PREROLL)) {
                 mAdsWaterfall.onLoading(AdsWaterfall.Inventory.VAST);
