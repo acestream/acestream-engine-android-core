@@ -3421,6 +3421,10 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
     }
 
     private void setAudioVolume(int vol) {
+        if(mIsAdDisplayed) {
+            return;
+        }
+
         if (AndroidUtil.isNougatOrLater && (vol <= 0 ^ mMute)) {
             mute(!mMute);
             return; //Android N+ throws "SecurityException: Not allowed to change Do Not Disturb state"
