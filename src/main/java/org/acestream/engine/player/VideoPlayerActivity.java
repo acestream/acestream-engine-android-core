@@ -6265,6 +6265,7 @@ public class VideoPlayerActivity extends BaseAppCompatActivity
         }
 
         Media media = new Media(getLibVlc(), uri);
+        media.setHWDecoderEnabled(false, false);
         mAdPlayer.setMedia(media);
         mAdPlayer.setVolume(100);
         media.release();
